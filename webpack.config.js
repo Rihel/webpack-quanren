@@ -3,15 +3,30 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const ROOT = path.resolve(__dirname)
+const map = require('./map');
+let cliententry = {
+    'vendor': ['jquery']
+};
+let clientPlugins = [];
+
+for (chunk in map.client) {
+    cliententry[chunk] = map.client[chunk].src
+    clientPlugins.push(new htmlWebpackPlugin({
+        alwaysWriteToDisk: true,
+        filename: ROOT + '/dist/client/' + map.client[chunk].tpl,
+        template: ROOT + '/views/client/' + map.client[chunk].tpl,
+        chunks: ['common', 'vendor', chunk]
+    }))
+}
+
+console.log(cliententry);
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
-    entry: {
-        app: './app.js',
-        
-    },
+    entry: cliententry,
     output: {
-        filename: '[name].js',
+        filename: 'js/[name].js',
         path: path.resolve(__dirname, './dist/'),
 
     },
@@ -44,7 +59,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function () {
+                                plugins: function() {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -64,7 +79,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 7186, // inline base64 if <= 7K
-                    name: 'static/images/[name].[ext]'
+                    name: '../img/[name].[ext]'
                 }
             },
             {
@@ -73,7 +88,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 7186, // inline base64 if <= 7K
-                    name: 'static/fonts/[name].[ext]'
+                    name: 'css/fonts/[name].[ext]'
                 }
             }
         ],
@@ -82,40 +97,21 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-    
+
     },
 
-
-
-
-
-
-    plugins: [
+    plugins: clientPlugins.concat([
         new webpack.ProvidePlugin({
             $: 'jquery'
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            filename: '[name].js'
-        }),
-        
-        new htmlWebpackPlugin({
-            title: '111'
+            filename: 'js/[name].js'
         }),
         new ExtractTextPlugin({
             filename: 'css/[name].css',
             allChunks: true
         }),
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                postcss: function () {
-                    return [
-                        require("autoprefixer")({
-                            browsers: ['ie>=8', '>1% in CN']
-                        })
-                    ]
-                }
-            }
-        })
-    ]
+
+    ])
 }

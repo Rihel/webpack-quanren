@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header class="header">
+        <img src="<%= require('../../static/images/QuanRen-Logo.jpeg')%>" alt="全仁科技">
+    </header>
+    <section class="login-main main">
+        <div>
+            <h1>全仁科技欢迎你</h1>
+            <div class="login-box">
+                <div class="form-group  has-feedback">
+                    <label for="username">用户名</label>
+                    <input class="form-control " id="username" type="text" name="username" placeholder="请输入用户名">
+                    <span class="fa form-control-feedback" aria-hidden="false" style="line-height:30px;"></span>
+                    <p class="message"></p>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input class="form-control" id="password" type="password" name="password" placeholder="请输入密码">
+                </div>
+                <button class="login-btn btn btn-block btn-primary" type="button">登录</button>
+                <a href="register.html" class="login-btn btn btn-block btn-default">新用户注册</a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
