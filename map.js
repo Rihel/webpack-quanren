@@ -3,15 +3,15 @@ var ROOT = path.resolve(__dirname);
 
 module.exports = {
     client: {
-        'client/login': {
+        'login': {
             "src": ROOT + "/src/client/login",
             "tpl": "login.html"
         },
-        'client/register': {
+        'register': {
             "src": ROOT + '/src/client/register',
             "tpl": "register.html"
         },
-        'client/index': {
+        'index': {
             "src": ROOT + '/src/client/index',
             "tpl": "index.html"
         }

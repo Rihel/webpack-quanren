@@ -10,6 +10,10 @@ let cliententry = {
 };
 let clientPlugins = [];
 
+function resolve(dir) {
+    return path.join(__dirname, '..', dir)
+}
+
 for (chunk in map.client) {
     cliententry[chunk] = map.client[chunk].src
     clientPlugins.push(new htmlWebpackPlugin({
@@ -20,7 +24,7 @@ for (chunk in map.client) {
     }))
 }
 
-console.log(cliententry);
+
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
@@ -29,6 +33,13 @@ module.exports = {
         filename: 'js/[name].js',
         path: path.resolve(__dirname, './dist/'),
 
+    },
+    resolve: {
+        extensions: ['.js'],
+        alias: {
+
+            '@': resolve('src')
+        }
     },
     module: {
         rules: [{
@@ -59,7 +70,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function () {
+                                plugins: function() {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -76,11 +87,8 @@ module.exports = {
             {
                 // 处理图片文件
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 7186, // inline base64 if <= 7K
-                    name: '../img/[name].[ext]'
-                }
+                loader: 'url-loader?name=img/[name].[ext]&limit=8192',
+
             },
             {
                 // 处理字体文件
@@ -101,17 +109,18 @@ module.exports = {
     },
 
     plugins: clientPlugins.concat([
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
         new webpack.ProvidePlugin({
             $: 'jquery'
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            filename: 'js/[name].js'
+            filename: 'js/[name].js',
+            minchuck: 2
         }),
         new ExtractTextPlugin({
             filename: 'css/[name].css',

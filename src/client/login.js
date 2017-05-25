@@ -1,6 +1,6 @@
 import '../scss/common.scss';
 import '../scss/login.scss';
-import 'bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
 
 import {
     user_Status,
@@ -19,7 +19,7 @@ username.val(until.getItem('mobile') || '');
 console.log(until.getItem('mobile'));
 
 username.trigger('change');
-username.on('change', function () {
+username.on('change', function() {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).parent().addClass('has-error');
@@ -36,7 +36,7 @@ username.on('change', function () {
 
 
 
-$('.login-btn').on('click', function () {
+$('.login-btn').on('click', function() {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
