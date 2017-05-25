@@ -44,7 +44,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader', 'css-loader?importLoaders=1', 'postcss-loader'
+                    'style-loader', 'css-loader', 'postcss-loader'
                 ]
             }, {
                 test: /\.(sass|scss)$/,
@@ -59,7 +59,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function() {
+                                plugins: function () {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -101,6 +101,11 @@ module.exports = {
     },
 
     plugins: clientPlugins.concat([
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery'
         }),

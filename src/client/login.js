@@ -1,19 +1,25 @@
 import '../scss/common.scss';
 import '../scss/login.scss';
+import 'bootstrap-sass/assets/stylesheets/_bootstrap.scss';
 
-
-import { user_Status, login } from '../api/api';
+import {
+    user_Status,
+    login
+} from '../api/api';
 import until from '../modules/until';
-import { alert, dialog } from '../modules/dialog';
+import {
+    alert,
+    dialog
+} from '../modules/dialog';
 let loginBox = $('.login-box');
 
 let username = loginBox.find('#username');
 let password = loginBox.find('#password');
-username.val(until.getItem('username') || '');
-password.val(until.getItem('password') || '');
+username.val(until.getItem('mobile') || '');
+console.log(until.getItem('mobile'));
 
 username.trigger('change');
-username.on('change', function() {
+username.on('change', function () {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).parent().addClass('has-error');
@@ -30,7 +36,7 @@ username.on('change', function() {
 
 
 
-$('.login-btn').on('click', function() {
+$('.login-btn').on('click', function () {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
@@ -39,8 +45,10 @@ $('.login-btn').on('click', function() {
     }
 
     (async() => {
-        let { status } = await user_Status(name);
-        until.setItem('moblie', name);
+        let {
+            status
+        } = await user_Status(name);
+        until.setItem('mobile', name);
         console.log(status);
         if (status <= 6) {
             statusHander(status);
@@ -85,7 +93,7 @@ function statusHander(status) {
             title: '温馨提示',
             content: mes,
             btns: ['确定'],
-            btnsCallback: function(btns) {
+            btnsCallback: btns => {
                 if (arg.length > 1) {
                     $(btns).click(() => {
                         until.jumpPage(jumpPage, data);
