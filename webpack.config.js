@@ -105,7 +105,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        host:'192.168.1.2'
+        // host:'192.168.1.22'
     },
     externals: {
         'jquery': 'window.jQuery',

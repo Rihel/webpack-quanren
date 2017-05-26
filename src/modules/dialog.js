@@ -1,3 +1,9 @@
+
+/**
+ * @description 弹窗组件
+ * @constructor Dialog
+ * @class Dialog
+ */
 class Dialog {
     constructor(opt) {
         let defaults = {
@@ -19,6 +25,7 @@ class Dialog {
         })
         this.content = $('<div class="dialog-content modal-body">').html(this.setting.content);
         this.controls = $('<div class="dialog-controls modal-footer">');
+        this.closeButton.on('click',e=>this.close());
         this.start();
     }
     start() {
@@ -29,7 +36,6 @@ class Dialog {
             self.box.fadeIn();
         })
     }
-
     init() {
         let self = this;
         this.container.append(this.mark).append(this.box);
@@ -60,7 +66,10 @@ class Dialog {
     }
 }
 
-
+/**
+ * 美化原生alert
+ * @param {String} content 内容
+ */
 export const alert = content => {
     return new Dialog({
         title: '错误',
@@ -68,6 +77,11 @@ export const alert = content => {
         btns: ['确定'],
     })
 };
+
+/**
+ * 导出组件，使起无new创建
+ * @param {Object} opt 配置信息
+ */
 export const dialog = opt => {
     return new Dialog(opt);
 }

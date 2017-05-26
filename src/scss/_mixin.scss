@@ -4,6 +4,17 @@ $keylist:-webkit-,
 -ms-,
 -o-,
 "";
+
+$primary-color:#f73859;
+
+
+
+$halfBlack:rgba(0,0,0,.5);
+
+@function opaColor($num){
+    @return rgba(0,0,0,$num);
+}
+
 @mixin clearfix {
     @if $legacy-support-for-ie {
         *zoom: 1;
@@ -105,5 +116,5 @@ $keylist:-webkit-,
 }
 
 @function rem($num){
-    @return $num/10+rem;
+    @return $num/10/2+rem;
 }

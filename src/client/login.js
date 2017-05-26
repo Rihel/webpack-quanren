@@ -11,31 +11,35 @@ import {
     alert,
     dialog
 } from '../modules/dialog';
-let loginBox = $('.login-box');
 
-let username = loginBox.find('#username');
-let password = loginBox.find('#password');
+
+/**
+ * 获得节点
+ */
+let loginBox = $('.login');
+let username = loginBox.find('#mobile');
+let password = loginBox.find('#pwd');
 username.val(until.getItem('mobile') || '');
-console.log(until.getItem('mobile'));
 
-username.trigger('change');
+
+/**
+ * 手机号码校验
+ */
 username.on('change', function () {
     let name = username.val();
     if (!until.isPhone(name)) {
-        $(this).parent().addClass('has-error');
-        $(this).next().addClass('fa-close');
-        $(this).nextAll('.message').html('请输入正确的手机号码').css('color', '#a94442');
+        $(this).addClass('active');
+        $(this).next('.mesage').html('请输入正确的手机号码').show()
     } else {
-        $(this).parent().removeClass('has-error').addClass('has-success');
-        $(this).next().removeClass('fa-close').addClass('fa-check');
-        $(this).nextAll('.message').html('');
-        password.removeAttr('disabled');
-        $('.login-btn').removeAttr('disabled');
+        $(this).removeClass('active');
+        $(this).next('.mesage').hide();
     }
 })
 
 
-
+/**
+ * 登录操作
+ */
 $('.login-btn').on('click', function () {
     let name = username.val();
     let pwd = password.val();
@@ -43,13 +47,16 @@ $('.login-btn').on('click', function () {
         alert('用户名或者密码不能为空');
         return;
     }
-    console.log(11);
+
     (async() => {
-        let {
-            status
-        } = await user_Status(name);
+        try {
+            let {
+                status
+            } = await user_Status(name);
+        } catch (e) {
+            alert(e.errorDetail.msg);
+        }
         until.setItem('mobile', name);
-        console.log(status);
         if (status <= 6) {
             statusHander(status);
         } else {
@@ -64,7 +71,8 @@ $('.login-btn').on('click', function () {
                     }
                 }
             } catch (e) {
-                console.log(e);
+                until.closeLoading();
+                alert(e.errorDetail.msg);
             }
 
         }
@@ -72,14 +80,14 @@ $('.login-btn').on('click', function () {
     })();
 })
 
-function tipAlert(title, msg) {
-    dialog({
-        title: title,
-        content: msg,
-        btns: ['确定']
-    });
-}
 
+
+
+/**
+ * 
+ * 
+ * @param {any} status 
+ */
 function statusHander(status) {
     let message = [];
     message[0] = message[1] = message[2] = message[3] = '您的资料已经提交初步审核，请耐心等候.';

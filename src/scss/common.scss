@@ -2,22 +2,22 @@
 @import "./_reset.scss";
 html,
 body {
-    font-size: 62.5%;
+    font-size: 10px;
 }
 
-a {
-    text-decoration: none;
-    color: #333;
-    &:hover,
-    &:active {
-        text-decoration: none;
-        color: #333;
-    }
+input:focus,
+button:focus,
+input[type="text"].active,
+input[type="password"].active {
+    border: rem(1) solid $primary-color!important;
+    box-shadow: 0 0 rem(10) $primary-color;
 }
-
-* {
-    @include css3(box-sizing, border-box);
-  
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+input[type="file"]:active,
+button:active{
+    background: #a83146;
 }
 
 .title {
@@ -120,5 +120,51 @@ a {
         width: 80%;
         left: 50%;
         transform: translateX(-50%);
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #999;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: 6px;
+        outline: 0;
+        -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+        .dialog-title {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+            .close {
+                margin-top: -2px;
+                -webkit-appearance: none;
+                padding: 0;
+                cursor: pointer;
+                background: 0 0;
+                border: 0;
+                float: right;
+                font-size: 21px;
+                font-weight: 700;
+                line-height: 1;
+                color: #000;
+                text-shadow: 0 1px 0 #fff;
+                filter: alpha(opacity=20);
+                opacity: .2;
+            }
+        }
+        .dialog-content {
+            position: relative;
+            padding: 15px;
+        }
+        .dialog-controls {
+            padding: 15px;
+            text-align: right;
+            border-top: 1px solid #e5e5e5;
+            input,
+            button{
+                background: $primary-color;
+                border: rem(1) solid $primary-color;
+                padding: rem(10) rem(15);
+                color: #fff;
+                border-radius: rem(8);
+            }
+        }
     }
 }

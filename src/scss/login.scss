@@ -1,20 +1,105 @@
 @import "./_mixin.scss";
-html{
+html {
     height: 100%;
 }
-body{
+
+body {
     display: flex;
-     justify-content: center;
+    justify-content: center;
     align-items: center;
     height: 100%;
     background: url('../img/login-bg.jpg') no-repeat center;
     background-size: cover;
-   
 }
-.login-main {
+
+::-webkit-input-placeholder {
+    color: #fff;
+    letter-spacing: rem(4);
+}
+
+@mixin login-item {
+    height: rem(94);
+    border-radius: rem(8);
+    line-height: rem(94);
+    font-size: rem(27);
+}
+
+.login {
     width: 70%;
-    background: red;
-    .form-control{
-        height: rem(128/10);
+    .login-title {
+        margin-bottom: rem(56);
+        text-align: center;
+        font-size: rem(48);
+        font-weight: bold;
+        color: #fff;
+        small {
+            padding-left: rem(57);
+            position: relative;
+            &:before {
+                position: absolute;
+                top: rem(29);
+                left: rem(12);
+                content: '';
+                display: block;
+                background: $primary-color;
+                width: rem(10);
+                height: rem(10);
+            }
+        }
+    }
+    .form-item {
+        position: relative;
+        margin-bottom: rem(34);
+        i {
+            display: block;
+            width: rem(80);
+            text-align: center;
+            line-height: rem(90);
+        }
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            border: 1px solid #abaaaa;
+            border-radius: rem(8);
+            background: $halfBlack;
+            line-height: rem(90);
+            font-size: rem(27.77);
+            text-indent: rem(80);
+            color: #fff;
+        }
+        p {
+            
+            position: absolute;
+            top:rem(-30);
+            color: $primary-color;
+        }
+    }
+    button {
+        width: 100%;
+        @include login-item;
+        border: none;
+        background: $primary-color;
+        color: #fff;
+        margin-bottom: rem(34);
+        letter-spacing: 0.5rem;
+    }
+    a {
+        text-align: center;
+    }
+    .jump-reg {
+        display: block;
+        width: 100%;
+        @include login-item;
+        background: #fff;
+        color: $primary-color;
+    }
+    .forget-pwd {
+        display: block;
+        margin-top: rem(74);
+        font-size: rem(28);
+        color: #fff;
+        text-decoration: underline;
     }
 }

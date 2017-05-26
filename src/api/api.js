@@ -45,7 +45,7 @@ export const login = (mobile, passowrd) => {
                 until.loading('正在加载中...');
             },
             success: data => {
-                until.closeLoading();
+                // until.closeLoading();
                 if (data.success) {
                     resolve(data);
                 } else {
