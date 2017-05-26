@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ROOT = path.resolve(__dirname)
 const map = require('./map');
 let cliententry = {
-    'vendor': ['jquery']
+    // 'vendor': ['plupload']
 };
 let clientPlugins = [];
 
@@ -20,7 +20,7 @@ for (chunk in map.client) {
         alwaysWriteToDisk: true,
         filename: ROOT + '/dist/client/' + map.client[chunk].tpl,
         template: ROOT + '/views/client/' + map.client[chunk].tpl,
-        chunks: ['common', 'vendor', chunk]
+        chunks: ['common', chunk]
     }))
 }
 
@@ -70,7 +70,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function() {
+                                plugins: function () {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -105,9 +105,11 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-
+        host:'192.168.1.2'
     },
-
+    externals: {
+        'jquery': 'window.jQuery',
+    },
     plugins: clientPlugins.concat([
         // new webpack.optimize.UglifyJsPlugin({
         //     compress: {
@@ -115,7 +117,10 @@ module.exports = {
         //     }
         // }),
         new webpack.ProvidePlugin({
-            $: 'jquery'
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            'window.$': 'jquery',
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
@@ -123,7 +128,7 @@ module.exports = {
             minchuck: 2
         }),
         new ExtractTextPlugin({
-            filename: 'css/[name].css',
+            filename: '[name].css',
             allChunks: true
         }),
 

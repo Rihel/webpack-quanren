@@ -19,7 +19,7 @@ username.val(until.getItem('mobile') || '');
 console.log(until.getItem('mobile'));
 
 username.trigger('change');
-username.on('change', function() {
+username.on('change', function () {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).parent().addClass('has-error');
@@ -36,14 +36,14 @@ username.on('change', function() {
 
 
 
-$('.login-btn').on('click', function() {
+$('.login-btn').on('click', function () {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
         alert('用户名或者密码不能为空');
         return;
     }
-
+    console.log(11);
     (async() => {
         let {
             status
