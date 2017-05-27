@@ -6,6 +6,8 @@ export const api = {
     userStatus: hostName + 'user/status', //获取用户状态
 
 
+
+
     getDraftBox: hostName + 'user/draftbox/get', //获取用户注册草稿箱
     saveDraftBox: hostName + 'user/draftbox/save', //保存用户注册草稿箱
 

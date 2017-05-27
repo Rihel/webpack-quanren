@@ -4,15 +4,11 @@ $keylist:-webkit-,
 -ms-,
 -o-,
 "";
-
 $primary-color:#f73859;
 $default-color:#e8e8e8;
-
-
-$halfBlack:rgba(0,0,0,.5);
-
-@function opaColor($num){
-    @return rgba(0,0,0,$num);
+$halfBlack:rgba(0, 0, 0, .5);
+@function opaColor($num) {
+    @return rgba(0, 0, 0, $num);
 }
 
 @mixin clearfix {
@@ -91,6 +87,10 @@ $halfBlack:rgba(0,0,0,.5);
     ;
 }
 
+@mixin boxSizing {
+    @include css3(box-sizing, border-box);
+}
+
 @mixin animate($num...) {
     @each $key in $keylist {
         #{$key}animation: $num;
@@ -115,6 +115,6 @@ $halfBlack:rgba(0,0,0,.5);
     }
 }
 
-@function rem($num){
+@function rem($num) {
     @return $num/10/2+rem;
 }

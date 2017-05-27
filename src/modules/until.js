@@ -2,7 +2,7 @@ class Until {
     constructor() {
         this.baseName = 'QUANREN_';
     }
-   
+
     getItem(key) {
         return JSON.parse(window.localStorage.getItem(this.baseName + key));
     }
@@ -42,6 +42,7 @@ class Until {
     closeLoading() {
         $('body .loading').remove();
     }
+
 }
 
 export default new Until();

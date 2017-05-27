@@ -3,7 +3,7 @@ import {
     userStatus
 } from './apiUrls';
 import until from '../modules/until';
-import {alert} from '../modules/dialog';
+import { alert } from '../modules/dialog';
 
 /**
  * 
@@ -77,6 +77,27 @@ export const orderPage = arg => {
 
     })
 }
+
+export const clitypes = statusCode => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.clitype,
+            type: 'get',
+            data: {
+                statusCode: statusCode || ''
+            },
+            success: function(data) {
+
+                if (data.success) {
+                    resolve(data.data);
+                } else {
+                    reject(data);
+                }
+            }
+        })
+    });
+}
+
 export const userGet = arg => {
     return new Promise((resolve, reject) => {
         base({

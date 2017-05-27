@@ -54,7 +54,7 @@
             width: 100%;
             height: 100%;
             border: rem(2) solid #abaaaa;
-            border-radius: rem(6);
+            @include radius(rem(6));
             text-indent: rem(132);
             font-size: rem(30);
         }
@@ -65,7 +65,7 @@
             width: 100%;
             height: 100%;
             border: rem(2) solid #abaaaa;
-            border-radius: rem(6);
+            @include radius(rem(6));
             h3 {
                 position: absolute;
                 top: -1px;
@@ -104,7 +104,7 @@
                 border: 1px solid #abaaaa;
                 box-shadow: 0 0 5px $primary-color;
                 border-top: none;
-                border-radius: 0 0 rem(8) rem(8);
+                @include radius(0 0 rem(8) rem(8));
                 background: #fff;
                 li {
                     padding: rem(20) 0;
@@ -115,6 +115,100 @@
                     }
                 }
             }
+        }
+    }
+    .clitype-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: rem(30);
+        .cliter {
+            width: 48%;
+            border: rem(2) solid #abaaaa;
+            margin-bottom: rem(15);
+            @include radius(rem(8));
+            @include boxSizing;
+            &.active {
+                border: rem(2) solid $primary-color;
+                .cliter-title {
+                    border-bottom: rem(2) solid $primary-color;
+                    background: $primary-color;
+                    color: #fff;
+                }
+            }
+            .cliter-title {
+                @include boxSizing;
+                width: 100%;
+                border-bottom: rem(2) solid #abaaaa;
+                // background: $primary-color;
+                line-height: rem(77);
+                color: #abaaaa;
+                font-size: rem(25);
+            }
+            .cliter-text {
+                // display: table;
+                padding: rem(12) rem(10);
+                vertical-align: middle;
+                @include boxSizing;
+                // height: rem(128);
+                p {
+                    line-height: rem(31);
+                    width: 100%;
+                    font-size: rem(24);
+                    text-overflow: ellipsis;
+                    /*这就是省略号喽*/
+                    overflow: hidden;
+                    /*设置超过的隐藏*/
+                    white-space: nowrap;
+                    /*设置不断行*/
+                    width: 100%;
+                    /*设置宽度*/
+                    span {
+                        color: $primary-color;
+                        font-size: rem(24);
+                    }
+                }
+            }
+        }
+    }
+    &.image-box {
+        display: block;
+    }
+    .image-file {
+        position: relative;
+        height: rem(351);
+        @include radius(rem(6));
+        @include boxSizing;
+        padding: rem(50) rem(61);
+        margin-bottom: rem(20);
+        background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
+        background-size: contain;
+        .file {
+            z-index: 999;
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            line-height: rem(351);
+            font-size: rem(30);
+            color: #828282;
         }
     }
 }
@@ -159,10 +253,8 @@
             left: -50%;
             top: rem(41);
             z-index: -1;
-            /*put it behind the numbers*/
         }
         &:first-child:after {
-            /*connector not needed before the first step*/
             content: none;
         }
         &.active {

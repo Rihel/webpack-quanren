@@ -2,11 +2,31 @@ import '../scss/common.scss';
 import '../scss/register.scss';
 
 
+import until from '../modules/until';
+import tem from '../modules/template-web';
+
+import { clitypes } from '../api/api';
+
+
+/**
+ * 初始化
+ */
+(async() => {
+    let data = await clitypes();
+    tem.defaults.imports.timestamp = a => {
+        return a.replace(/(套餐包.+\n.+)/gmi, '').replace('该套餐', '');
+    }
+    let clitypesHtml = tem('clitype', { clitypes: data });
+
+    $('#clitype-content').append(clitypesHtml);
+})();
+
 var current_fs, next_fs, previous_fs;
 var left, opacity, scale;
 var animating;
 
-$(".next").click(function () {
+$(".next").on('click', function() {
+    console.log($(this))
     if (animating) return false;
     animating = true;
     current_fs = $(this).parent();
@@ -16,7 +36,7 @@ $(".next").click(function () {
     current_fs.animate({
         opacity: 0
     }, {
-        step: function (now, mx) {
+        step: function(now, mx) {
 
 
             scale = 1 - (1 - now) * 0.2;
@@ -25,6 +45,7 @@ $(".next").click(function () {
 
             opacity = 1 - now;
             current_fs.css({
+                '-webkit-transform': 'scale(' + scale + ')',
                 'transform': 'scale(' + scale + ')'
             });
             next_fs.css({
@@ -33,7 +54,7 @@ $(".next").click(function () {
             });
         },
         duration: 800,
-        complete: function () {
+        complete: function() {
             current_fs.hide();
             animating = false;
         },
@@ -41,7 +62,7 @@ $(".next").click(function () {
     });
 });
 
-$(".previous").click(function () {
+$(".previous").on('click', function() {
     if (animating) return false;
     animating = true;
 
@@ -57,7 +78,7 @@ $(".previous").click(function () {
     current_fs.animate({
         opacity: 0
     }, {
-        step: function (now, mx) {
+        step: function(now, mx) {
 
 
             scale = 0.8 + (1 - now) * 0.2;
@@ -74,7 +95,7 @@ $(".previous").click(function () {
             });
         },
         duration: 800,
-        complete: function () {
+        complete: function() {
             current_fs.hide();
             animating = false;
         },
@@ -83,16 +104,16 @@ $(".previous").click(function () {
     });
 });
 
-$(".submit").click(function () {
+$(".submit").click(function() {
     return false;
 });
 
 
-$('.form-box').find('.drop').find('h3').click(function () {
+$('.form-box').find('.drop').find('h3').click(function() {
     $(this).toggleClass('active');
     $(this).next('.drop-menu').toggle();
 });
-$('.drop-menu li').click(function () {
+$('.drop-menu li').click(function() {
     $(this).parent().prev().html($(this).text());
     $(this).parent().prev().toggleClass('active');
     $(this).parent().hide();
