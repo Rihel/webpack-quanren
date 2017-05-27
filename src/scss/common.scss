@@ -17,7 +17,7 @@ input[type="submit"]:active,
 input[type="reset"]:active,
 input[type="file"]:active,
 button:active{
-    background: #a83146;
+    background: #a4112b;
 }
 
 .title {
@@ -167,4 +167,23 @@ button:active{
             }
         }
     }
+}
+
+.btn{
+    display: block;
+    width: 100%;
+    height: rem(92);
+    line-height: rem(92);
+    border-radius: rem(8);
+    font-size: rem(30);
+}
+.btn-primary{
+    @extend .btn;
+    background: $primary-color;
+    color: #fff;
+}
+.btn-default{
+    @extend .btn;
+    background: $default-color;
+    color:$primary-color;
 }

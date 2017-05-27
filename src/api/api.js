@@ -3,6 +3,7 @@ import {
     userStatus
 } from './apiUrls';
 import until from '../modules/until';
+import {alert} from '../modules/dialog';
 
 /**
  * 
