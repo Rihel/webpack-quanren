@@ -50,11 +50,18 @@ body {
     .form-item {
         position: relative;
         margin-bottom: rem(34);
+        height: rem(90);
         i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
             display: block;
             width: rem(80);
             text-align: center;
             line-height: rem(90);
+            color: #fff;
+            font-size: rem(50);
         }
         input {
             position: absolute;
@@ -70,9 +77,8 @@ body {
             color: #fff;
         }
         p {
-            
             position: absolute;
-            top:rem(-30);
+            top: rem(-30);
             color: $primary-color;
         }
     }

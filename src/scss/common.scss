@@ -5,6 +5,11 @@ body {
     font-size: 10px;
 }
 
+input,
+button {
+    -webkit-appearance: none;
+}
+
 input:focus,
 button:focus,
 input[type="text"].active,
@@ -12,11 +17,12 @@ input[type="password"].active {
     border: rem(1) solid $primary-color!important;
     box-shadow: 0 0 rem(10) $primary-color;
 }
+
 input[type="button"]:active,
 input[type="submit"]:active,
 input[type="reset"]:active,
 input[type="file"]:active,
-button:active{
+button:active {
     background: #a4112b;
 }
 
@@ -158,7 +164,7 @@ button:active{
             text-align: right;
             border-top: 1px solid #e5e5e5;
             input,
-            button{
+            button {
                 background: $primary-color;
                 border: rem(1) solid $primary-color;
                 padding: rem(10) rem(15);
@@ -169,7 +175,7 @@ button:active{
     }
 }
 
-.btn{
+.btn {
     display: block;
     width: 100%;
     height: rem(92);
@@ -177,13 +183,111 @@ button:active{
     border-radius: rem(8);
     font-size: rem(30);
 }
-.btn-primary{
+
+.btn-primary {
     @extend .btn;
     background: $primary-color;
     color: #fff;
 }
-.btn-default{
+
+.btn-default {
     @extend .btn;
     background: $default-color;
-    color:$primary-color;
+    color: $primary-color;
+}
+
+
+/*
+字体图标
+*/
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('fonts/icomoon.eot?g3z1jj');
+    src: url('fonts/icomoon.eot?g3z1jj#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?g3z1jj') format('truetype'), url('fonts/icomoon.woff?g3z1jj') format('woff'), url('fonts/icomoon.svg?g3z1jj#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pwd:before {
+    content: "\e910";
+}
+
+.icon-close:before {
+    content: "\e900";
+}
+
+.icon-carbrand:before {
+    content: "\e901";
+}
+
+.icon-urgency:before {
+    content: "\e902";
+}
+
+.icon-position:before {
+    content: "\e903";
+}
+
+.icon-search:before {
+    content: "\e904";
+}
+
+.icon-tracker:before {
+    content: "\e905";
+}
+
+.icon-bingo:before {
+    content: "\e906";
+}
+
+.icon-king:before {
+    content: "\e907";
+}
+
+.icon-merchant:before {
+    content: "\e908";
+}
+
+.icon-setting:before {
+    content: "\e909";
+}
+
+.icon-time:before {
+    content: "\e90a";
+}
+
+.icon-mobile:before {
+    content: "\e90b";
+}
+
+.icon-project:before {
+    content: "\e90c";
+}
+
+.icon-smile:before {
+    content: "\e90d";
+}
+
+.icon-order:before {
+    content: "\e90e";
+}
+
+.icon-idcrad:before {
+    content: "\e90f";
 }

@@ -70,7 +70,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function () {
+                                plugins: function() {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -105,7 +105,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        // host:'192.168.1.22'
+        host: '192.168.0.101'
     },
     externals: {
         'jquery': 'window.jQuery',

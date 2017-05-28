@@ -5,7 +5,7 @@ $keylist:-webkit-,
 -o-,
 "";
 $primary-color:#f73859;
-$default-color:#e8e8e8;
+$default-color:#efefef;
 $halfBlack:rgba(0, 0, 0, .5);
 @function opaColor($num) {
     @return rgba(0, 0, 0, $num);
@@ -91,6 +91,10 @@ $halfBlack:rgba(0, 0, 0, .5);
     @include css3(box-sizing, border-box);
 }
 
+@mixin boxShadow($num...) {
+    @include css3(box-shadow, $num);
+}
+
 @mixin animate($num...) {
     @each $key in $keylist {
         #{$key}animation: $num;
@@ -117,4 +121,50 @@ $halfBlack:rgba(0, 0, 0, .5);
 
 @function rem($num) {
     @return $num/10/2+rem;
+}
+
+@mixin border($dir, $color) {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        @if $dir==left {
+            width: 1px;
+            height: 100%;
+            left: 0;
+            top: 0;
+            transform: scaleY(0.5);
+        }
+        @else if $dir==right {
+            width: 1px;
+            height: 100%;
+            right: 0;
+            top: 0;
+            transform: scaleY(0.5);
+        }
+        @else if $dir==top {
+            width: 100%;
+            height: 1px;
+            left: 0;
+            top: 0;
+            transform: scaleX(0.5);
+        }
+        @else if $dir==bottom {
+            width: 100%;
+            height: 1px;
+            left: 0;
+            bottom: 0;
+            transform: scaleX(0.5);
+        }
+        background-color: $color;
+    }
+}
+
+@mixin textOver {
+    text-overflow: ellipsis;
+    /*这就是省略号喽*/
+    overflow: hidden;
+    /*设置超过的隐藏*/
+    white-space: nowrap;
+    /*设置不断行*/
 }

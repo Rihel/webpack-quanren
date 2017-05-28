@@ -1,4 +1,8 @@
 @import "./_mixin.scss";
+body {
+    overflow-x: hidden;
+}
+
 #msform {
     width: 80%;
     margin: rem(50) auto;
@@ -6,6 +10,7 @@
     position: relative;
     fieldset {
         width: 100%;
+        padding: 0 0 rem(50);
         background: white;
         border: 0 none;
         border-radius: 3px;
@@ -101,26 +106,51 @@
                 left: -1px;
                 z-index: 99999;
                 width: 100%;
+                padding: rem(30);
                 border: 1px solid #abaaaa;
                 box-shadow: 0 0 5px $primary-color;
                 border-top: none;
                 @include radius(0 0 rem(8) rem(8));
                 background: #fff;
+                @include boxSizing;
                 li {
-                    padding: rem(20) 0;
-                    font-size: rem(30);
-                    background: #fff;
-                    &+li {
-                        border-top: 1px solid #abaaaa;
+                    float: left;
+                    margin: 0 rem(5) rem(10) 0;
+                    padding: rem(10) rem(20);
+                    background: #dcdddd;
+                    border-radius: rem(8);
+                    cursor: pointer;
+                    // @include boxShadow(1px 1px 1px #1c1c1c);
+                    color: #000;
+                    &:nth-last-of-type(1) {
+                        border-bottom: none;
+                    }
+                    &:nth-last-of-type(2) {
+                        border-bottom: none;
+                    }
+                    &:nth-last-of-type(3) {
+                        border-bottom: none;
                     }
                 }
             }
         }
     }
+    .lpprefix-warpper {
+        .lpprefix {
+            width: 25%;
+            h3 {
+                text-indent: rem(24);
+            }
+        }
+        .lpprefix-num {
+            width: 70%;
+            left: 30%;
+        }
+    }
     .clitype-list {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-around;
+        justify-content: space-between;
         margin-top: rem(30);
         .cliter {
             width: 48%;
@@ -155,12 +185,7 @@
                     line-height: rem(31);
                     width: 100%;
                     font-size: rem(24);
-                    text-overflow: ellipsis;
-                    /*这就是省略号喽*/
-                    overflow: hidden;
-                    /*设置超过的隐藏*/
-                    white-space: nowrap;
-                    /*设置不断行*/
+                    @include textOver;
                     width: 100%;
                     /*设置宽度*/
                     span {
@@ -174,41 +199,89 @@
     &.image-box {
         display: block;
     }
-    .image-file {
-        position: relative;
-        height: rem(351);
-        @include radius(rem(6));
-        @include boxSizing;
-        padding: rem(50) rem(61);
-        margin-bottom: rem(20);
-        background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
-        background-size: contain;
-        .file {
-            z-index: 999;
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+    .image-warpper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: rem(18);
+        .image-file {
+            position: relative;
+            width: 49%;
+            height: rem(170);
+            @include radius(rem(6));
+            @include boxSizing;
+            padding: rem(50) rem(61);
+            margin-bottom: rem(20);
+            background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
+            background-size: contain;
+            .moxie-shim {
+                display: none;
+            }
+            .file {
+                z-index: 9999999;
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            span {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                text-align: center;
+                line-height: rem(170);
+                font-size: rem(30);
+                color: #828282;
+            }
+            .progress-warpper {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: rem(25);
+                @include radius(rem(12));
+                background: $default-color;
+                overflow: hidden;
+                .progress {
+                    width: 50%;
+                    height: 100%;
+                    background: $primary-color;
+                    transition: all 0.6s;
+                }
+                .progress-text {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    text-align: center;
+                    line-height: rem(25);
+                    font-size: rem(12);
+                }
+            }
         }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+    }
+    .vcode-wrapper {
+        .vcode {
+            width: 63%;
         }
-        span {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
+        .vcode-btn {
+            left: 70%!important;
+            width: 30%!important;
+            text-indent: 0;
             text-align: center;
-            line-height: rem(351);
-            font-size: rem(30);
-            color: #828282;
         }
     }
 }

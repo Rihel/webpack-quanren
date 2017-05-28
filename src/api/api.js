@@ -3,10 +3,10 @@ import {
     userStatus
 } from './apiUrls';
 import until from '../modules/until';
-import { alert } from '../modules/dialog';
+import { alert, dialog } from '../modules/dialog';
 
 /**
- * 
+ * 底层函数
  */
 const base = opt => {
     let option = $.extend({}, {
@@ -33,6 +33,12 @@ const base = opt => {
     }, opt);
     $.ajax(option)
 }
+
+/**
+ * 用户登录
+ * @param {String} mobile 手机号码
+ * @param {String} passowrd 密码
+ */
 export const login = (mobile, passowrd) => {
     return new Promise((resolve, reject) => {
         base({
@@ -78,13 +84,18 @@ export const orderPage = arg => {
     })
 }
 
+/**
+ * 获取C端客户类型列表
+ * @param {Number} statusCode 状态编码（1 : 只返回有效， 其它(默认） ： 全部） 
+ */
+
 export const clitypes = statusCode => {
     return new Promise((resolve, reject) => {
         base({
             url: api.clitype,
             type: 'get',
             data: {
-                statusCode: statusCode || ''
+                statusCode: statusCode || 1
             },
             success: function(data) {
 
@@ -98,12 +109,18 @@ export const clitypes = statusCode => {
     });
 }
 
-export const userGet = arg => {
+/**
+ * 
+ * 加载用户自己的基本料。
+ * 此接口必须在用户成功登陆后才能调用。
+ */
+
+export const userGet = () => {
     return new Promise((resolve, reject) => {
         base({
             url: api.userGet,
             type: 'get',
-            data: arg,
+
             beforeSend: function() {
                 until.loading('正在加载数据...')
             },
@@ -119,6 +136,12 @@ export const userGet = arg => {
 
     })
 }
+
+/**
+ * 根据手机号码客户状态。
+ * @param {String} 手机号码
+ */
+
 export const user_Status = mobile => {
     return new Promise((resolve, reject) => {
         base({
@@ -136,27 +159,104 @@ export const user_Status = mobile => {
         })
     })
 }
+
+/**
+ * 根据手机号码获取未提交注册的草稿数据。
+ * @param {String} mobile 手机号码
+ */
+
 export const getDraftBox = mobile => {
-    base({
-        url: api.getDraftBox,
-        data: {
-            mobile: mobile
-        },
-        success: function(data) {
-            if (data.success) {
-                resolve(data.data);
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.getDraftBox,
+            data: {
+                mobile,
+            },
+            success: function(data) {
+                if (data.success) {
+                    resolve(data.data);
+                }
             }
-        }
+        });
     });
 }
 
-export const carBrandList = function() {
-    base({
-        url: api.carbrand,
-        success: data => {
-            if (data.success) {
-                resolve(dtaa.data);
+/**
+ * 保存草稿箱数据
+ * @param {String} mobile 手机号码
+ * @param {Object} arg 其他参数
+ */
+
+export const saveDraftBox = (mobile, arg) => {
+    let defa = {
+        mobile,
+    }
+    let opts = $.extend({}, defa, arg);
+    console.log(opts)
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.saveDraftBox,
+            data: opts,
+            success: function(data) {
+                if (data.success) {
+                    resolve(data);
+                }
             }
-        }
+        });
+    });
+}
+
+/**
+ * 获取汽车品牌列表
+ */
+
+export const getCarBrandList = function() {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.carbrand,
+            success: data => {
+                if (data.success) {
+                    resolve(data.data);
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 获取汽车车型
+ * @param {Number} brandCode 汽车品牌编码
+ */
+
+export const getCarModelList = (brandCode) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.carmodel,
+            data: {
+                brandCode: brandCode,
+            },
+            success: data => {
+                if (data.success) {
+                    resolve(data.data);
+                }
+            }
+        });
+    });
+}
+
+/**
+ * 获取车牌前缀列表
+ */
+
+export const getLpprefixList = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.lpprefix,
+            success: data => {
+                if (data.success) {
+                    resolve(data.data);
+                }
+            }
+        });
     });
 }

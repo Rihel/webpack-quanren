@@ -13,7 +13,7 @@ export const api = {
 
     carbrand: hostName + 'dict/carbrand/list', //车品牌
     carmodel: hostName + 'dict/carmodel/list', //车型
-
+    lpprefix: hostName + 'dict/lpprefix/list',
 
     clitype: hostName + 'dict/clitype/list', //客户类型
     clitStatus: hostName + 'dict/clitstatus/list', //客户状态
