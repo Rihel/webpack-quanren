@@ -10,9 +10,7 @@ let cliententry = {
 };
 let clientPlugins = [];
 
-function resolve(dir) {
-    return path.join(__dirname, '..', dir)
-}
+
 
 for (chunk in map.client) {
     cliententry[chunk] = map.client[chunk].src
@@ -36,10 +34,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js'],
-        alias: {
-
-            '@': resolve('src')
-        }
     },
     module: {
         rules: [{
@@ -105,7 +99,8 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        host: '192.168.0.101'
+        // host: '192.168.0.101',
+
     },
     externals: {
         'jquery': 'window.jQuery',

@@ -4,27 +4,96 @@ import '../scss/register.scss';
 
 import until from '../modules/until';
 import tem from '../modules/template-web';
-import { alert } from '../modules/dialog';
+import { alert, dialog } from '../modules/dialog';
 import {
     clitypes,
     getDraftBox,
     getCarBrandList,
     getCarModelList,
     saveDraftBox,
-    getLpprefixList
+    getLpprefixList,
+    getVcode,
+    register
 } from '../api/api';
 import { uploadImages, uploadTypes, alias } from '../modules/uploadOssAll';
 
+
+
+/**
+ * 整个流程的入口
+ */
+$(function() {
+
+    /**
+     * 下拉框的操作，利用事件委托达到不同效果
+     */
+    $('.drop').click(e => {
+        let target = e.target,
+            tagname = target.nodeName.toLowerCase();
+        if (tagname === 'h3') {
+            // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
+            $(e.target).toggleClass('active');
+            $(e.target).next().slideToggle();
+
+        }
+        if (tagname === 'li') {
+            let code = $(target).attr('code'),
+                text = $(target).text(),
+                dropMenu = $(target).parent(),
+                title = dropMenu.prev();
+            dropMenu.slideUp();
+            title.text(text).attr('code', code);
+            title.toggleClass('active')
+
+        }
+
+    });
+
+
+    /**
+     * 当用户信息的手机号码发生改变的时候，会从后台请求数据，初始化
+     * 
+     * 如果本地存储有手机号码，那么就会自动获取数据，进行初始化
+     */
+    $('#mobile').on('change', function(e) {
+        let name = e.target.value;
+
+        if (!until.isPhone(name)) {
+            $(this).addClass('active');
+            alert('请输入正确的手机号码')
+        } else {
+            until.setItem('mobile', Number(name));
+            initDraftBox(name);
+        }
+    });
+
+    if (until.getItem('mobile')) {
+        initDraftBox(until.getItem('mobile'))
+    }
+
+})
+
+/**************全局变量************** */
+/**
+ * 页面切换变量
+ */
 let current_fs, next_fs, previous_fs,
     left, opacity, scale,
     animating,
-    // animating = false;
+
+    /**
+     * 身份证信息相关节点
+     */
     idCardNumber = $('#idCardNumber'),
     id_card_front_image = $('#id_card_front_image'),
     id_card_front_input = $('#id_card_front_input'),
     id_card_back_image = $('#id_card_back_image'),
     id_card_back_input = $('#id_card_back_input'),
 
+
+    /**
+     * 车牌号码和行驶证相关节点
+     */
     lpprefix = $('#lpprefix'),
     licensePlateNumber = $('#licensePlateNumber'),
     drivingLicenseNumber = $('#drivingLicenseNumber'),
@@ -35,6 +104,9 @@ let current_fs, next_fs, previous_fs,
     car_license_back_input = $('#car_license_back_input'),
 
 
+    /**
+     * 保单号码和照片相关节点
+     */
     baodanDate = $('#baodanDate'),
     bao_dan_page_01_image = $('#bao_dan_page_01_image'),
     bao_dan_page_01_input = $('#bao_dan_page_01_input'),
@@ -42,12 +114,13 @@ let current_fs, next_fs, previous_fs,
     bao_dan_page_02_input = $('#bao_dan_page_02_input'),
     bao_dan_page_03_image = $('#bao_dan_page_03_image'),
     bao_dan_page_03_input = $('#bao_dan_page_03_input');
+
+
+/**************全局变量************** */
+
 /**
- * 获取注册节点
+ * 初始化oss的上传Uploader
  */
-
-
-
 let uploaders = {
     idCardFrontUrl: uploadImages(id_card_front_input[0], progress),
     idCardBackUrl: uploadImages(id_card_back_input[0], progress),
@@ -58,20 +131,46 @@ let uploaders = {
     baodanUrl3: uploadImages(bao_dan_page_03_input[0], progress)
 };
 
-
+/**
+ * 上传进度制作
+ * @param {Element} fileInputDom 上传input节点
+ * @param {Number} percent  上传进度
+ */
 function progress(fileInputDom, percent) {
-    console.log(percent)
     let progressWarpper = $(fileInputDom).next(),
         progresser = progressWarpper.find('.progress'),
         progressText = progressWarpper.find('.progress-text');
-    console.log(progresser);
+
     progressWarpper.fadeIn();
     if (percent < 100) {
         progresser.css('width', percent + '%');
         progressText.text('上传中' + percent + '%');
+
     } else {
-        progressText.text('上传成功');
+        until.closeLoading();
+
     }
+}
+
+
+
+/**
+ * 初始化草稿箱数据，将获取的草稿箱数据分发给各个模块
+ * 
+ * initPersonInfo() 初始化个人信息相关模块以及相关操作
+ * initClitypes（） 初始化VIP等级相关模块以及相关操作
+ * initOssAll()  初始化证件相关的数据以及相关操作
+ * reg（） 初始化注册模块的操作以及验证
+ */
+async function initDraftBox(mobile) {
+    until.loading('加载数据。。。')
+    let data = await getDraftBox(mobile);
+    until.closeLoading();
+    initPersonInfo(data);
+    initClitypes(data);
+    initOssAll(data);
+    reg();
+    until.renderTem('lpprefix-list', 'lpprefix-tem', { lpprefixList: await getLpprefixList() })
 }
 
 
@@ -79,6 +178,8 @@ function progress(fileInputDom, percent) {
  * 初始化Oss相关模块
  */
 async function initOssAll(draftBoxData) {
+
+    /*************相关节点的数据初始化开始*******************/
     idCardNumber.val(draftBoxData.idCardNumber);
     id_card_front_image.attr('src', draftBoxData.idCardFrontImg || '');
     id_card_back_image.attr('src', draftBoxData.idCardBackImg || '');
@@ -87,14 +188,23 @@ async function initOssAll(draftBoxData) {
     car_license_back_image.attr('src', draftBoxData.drivingLicenseBackImg || '');
 
 
+    bao_dan_page_01_image.attr('src', draftBoxData.baodanImg1 || '');
+    bao_dan_page_02_image.attr('src', draftBoxData.baodanImg2 || '');
+    bao_dan_page_03_image.attr('src', draftBoxData.baodanImg3 || '');
+
+
+
     licensePlateNumber.val(draftBoxData.licensePlateNumber ? draftBoxData.licensePlateNumber.substr(1) : '');
     drivingLicenseNumber.val(draftBoxData.drivingLicenseNumber || '');
     drivingLicenseRegTime.val(draftBoxData.drivingLicenseRegTime || '');
 
-
-
     baodanDate.val(draftBoxData.baodanDate);
-    let types = [];
+
+    /*************相关节点的数据初始化结束*******************/
+
+    let types = []; //这个数组，是将需要上传到oss的证件类型KEY存储起来
+
+    /********这个对象是用来存储草稿箱图片的路径（ps：dev/13xxxxxxxx）***********/
     let uploadImgKey = {
         idCardFrontUrl: '',
         idCardBackUrl: '',
@@ -104,18 +214,32 @@ async function initOssAll(draftBoxData) {
         baodanUrl2: '',
         baodanUrl3: ''
     }
+
+
+    /**
+     * 当文件input值改变的时候，types会对应的uploadType（ps：即是上传证件的类型，是身份证还是保单）
+     * 会让对应的uploader添加文件
+     */
     $('.file').on('change', async function(e) {
         let file = e.target.files[0];
+        let postfix = /\.[^\.]+$/.exec(file.name);
+        if (!/\.(png|gif|jpg|svg)/.test(postfix[0])) {
+            alert('这个不是图片哟,重新上传吧');
+            return;
+        }
+        console.log(postfix);
         let dataUrl = window.URL.createObjectURL(file);
         let key = $(this).attr('uploadType');
         $(this).prev().attr('src', dataUrl);
         uploaders[key].addFile(file);
+
         // uploadTypes['upload' + key](uploaders[key]);
+        console.log(`dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`, '添加上传名称');
         $.extend(uploadImgKey, {
-            [key]: `dev/${mobile}${alias[key]}.png`
+            [key]: `dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`
         });
         types.push(key);
-        console.log(uploadImgKey);
+
     });
 
 
@@ -151,50 +275,68 @@ async function initOssAll(draftBoxData) {
             alert('续保日期不能为空');
             return;
         }
-        if (types.length > 0) {
-            types.forEach(key => {
-                uploadTypes['upload' + key](uploaders[key]);
-            })
-        }
+        let query = 0;
+        let timer = setInterval(async() => {
+            let key = types[query];
+            if (query < types.length) {
+                console.log(`上传${key}中`);
+                uploadTypes['upload' + key](uploaders[key])
+                query++;
+            } else {
+                clearTimeout(timer);
+                let result = await saveDraftBox(draftBoxData.mobile, $.extend({}, {
+                    idCardNumber: idCardNumber.val(),
+                    licensePlateNumber: vehicleNumber,
+                    drivingLicenseNumber: drivingLicenseNumber.val(),
+                    drivingLicenseRegDate: drivingLicenseRegTime.val(),
+                    baodanDate: baodanDate.val()
+                }, uploadImgKey));
+                if (result.success) {
+                    pageNext.call(this);
+                }
+            }
 
+        }, 1000);
 
-        let result = await saveDraftBox(draftBoxData.mobile, $.extend({}, {
-            idCardNumber: idCardNumber.val(),
-            licensePlateNumber: vehicleNumber,
-            drivingLicenseNumber: drivingLicenseNumber.val(),
-            drivingLicenseRegTime: drivingLicenseRegTime.val(),
-            baodanDate: baodanDate.val()
-        }, uploadImgKey));
-        if (result.success) {
-            pageNext.call(this);
-        }
+        console.log(`
+        /**********证件上传部分开始保存草稿箱*************/
+            保存的数据为\n
+            身份证号码${idCardNumber.val()}，\n
+            车牌号号${vehicleNumber}，\n
+            行驶证号码${drivingLicenseNumber.val()}，\n
+            行驶证注册日${drivingLicenseRegTime.val()}，\n
+            保单续费日${baodanDate.val()}\n
+        /**********证件保存部分结束保存草稿箱*************/
+        `)
+
     })
 }
 
 
 async function initPersonInfo(draftBoxData) {
-    $('#CarBrandList').html(tem('CarBrandItem', {
-        carBrandList: await getCarBrandList(),
-        carBrandCode: draftBoxData.carBrandCode,
-    }));
-    carModel(draftBoxData.carBrandCode || 1, draftBoxData.carModelCode);
-    let mobile = $('#mobile'); //手机号码
-    let name = $('#name'); //姓名
-    let genderCode = $('#genderCode'); //性别
-    let carBrandCode = $('#carBrandCode'); //汽车品牌
-    let carModelCode = $('#carModelCode'); //车型
 
-    let carPrice = $('#carPrice'); //车价
-    let carMileage = $('#carMileage'); //里程
-    let recommendClientMobile = $('#recommendClientMobile'); //推荐人
+    until.renderTem('CarBrandList', 'CarBrandItem', {
+        carBrandList: await getCarBrandList(),
+        carBrandCode: defaultData(draftBoxData.carBrandCode),
+    })
+    console.log(draftBoxData.carBrandCode);
+    carModel(defaultData(draftBoxData.carBrandCode), defaultData(draftBoxData.carModelCode));
+    let mobile = $('#mobile'), //手机号码
+        name = $('#name'), //姓名
+        genderCode = $('#genderCode'), //性别
+        carBrandCode = $('#carBrandCode'), //汽车品牌
+        carModelCode = $('#carModelCode'), //车型
+        carPrice = $('#carPrice'), //车价
+        carMileage = $('#carMileage'), //里程
+        recommendClientMobile = $('#recommendClientMobile'); //推荐人
 
     $('#mobile').val(draftBoxData.mobile || '');
     name.val(draftBoxData.name || '');
-    genderCode.attr('code', draftBoxData.genderCode || '1').text((draftBoxData.genderCode === '1' ? '先生' : '女士'));
+    genderCode.attr('code', defaultData(draftBoxData.genderCode)).text((draftBoxData.genderCode === 1 ? '先生' : '女士'));
     recommendClientMobile.val(draftBoxData.recommendClientMobile || '');
     carPrice.val(draftBoxData.carPrice);
     carMileage.val(draftBoxData.carMileage);
-    console.log(draftBoxData.carBrandCode);
+
 
     $('#CarBrandList').on('click', e => {
         let target = e.target;
@@ -226,7 +368,18 @@ async function initPersonInfo(draftBoxData) {
             alert('里程不能为空');
             return;
         }
-        console.log(carBrandCode.attr('code'));
+        console.log(`
+        /**********个人信息部分开始保存草稿箱*************/
+            保存的数据为\n
+            姓名号码：${name.val()}，\n
+            性别代码：${genderCode.attr('code')}，\n
+            汽车品牌代码：${carBrandCode.attr('code')}，\n
+            汽车车型代码：${$('#carModelCode').attr('code')}，\n
+            汽车价格：${carPrice.val()}\n
+            汽车里程：${carMileage.val()}\n
+            推荐人手机号码：${recommendClientMobile.val()}\n
+        /**********个人信息部分结束保存草稿箱*************/
+        `)
         let result = await saveDraftBox(mobile.val(), {
             name: name.val(),
             genderCode: genderCode.attr('code'),
@@ -242,6 +395,13 @@ async function initPersonInfo(draftBoxData) {
     })
 
 }
+
+
+/**
+ * 渲染对应的汽车品牌下拉菜单
+ * @param {Number} bradCode 汽车品牌代码
+ * @param {Number} carModelCode 汽车车型代码（默认为当前汽车品牌代码的第一个）
+ */
 async function carModel(bradCode, carModelCode) {
     let carModelList = await getCarModelList(bradCode);
     tem.defaults.imports.getTitle = a => {
@@ -252,14 +412,15 @@ async function carModel(bradCode, carModelCode) {
                 title = item.title;
             }
         });
-
         return title;
     }
-    $('#CarModelList').html(tem('CarModelItem', {
+    until.renderTem('CarModelList', 'CarModelItem', {
         carModelList: carModelList || [{ title: '暂时没有该车型' }],
-        carModelCode: carModelCode
-    }));
+        carModelCode: defaultData(carModelCode, carModelList[0].code)
+    })
 }
+
+
 /**
  * 初始化VIP类型
  */
@@ -268,7 +429,9 @@ async function initClitypes({ vipLevelCode }) {
     tem.defaults.imports.timestamp = a => {
         return a.replace(/(套餐包.+\n.+)/gmi, '').replace('该套餐', '');
     }
-    $('#vipLevelCode').html(tem('clitype-tem', { clitypes: await clitypes(), vipLevelCode: vipLevelCode || 1 }));
+
+    until.renderTem('vipLevelCode', 'clitype-tem', { clitypes: await clitypes(), vipLevelCode: defaultData(vipLevelCode) })
+
     let cliters = $('#vipLevelCode').find('.cliter');
     cliters.on('click', function() {
 
@@ -284,6 +447,12 @@ async function initClitypes({ vipLevelCode }) {
             vipLevelCode: vipcode,
 
         });
+        console.log(`
+        /**********VIP选择开始保存草稿箱*************/
+            保存的数据为\n
+            vip代码为${vipcode}\n
+        /**********VIP选择保存草稿箱*************/
+        `)
         if (result.success) {
             pageNext.call(this);
         }
@@ -292,23 +461,150 @@ async function initClitypes({ vipLevelCode }) {
 
 
 /**
- * 初始化草稿箱数据
+ * 初始化注册窗口
  */
-async function initDraftBox(mobile) {
-    until.loading('加载数据。。。')
-    let data = await getDraftBox(until.getItem('mobile') || mobile);
-    until.closeLoading();
-    initPersonInfo(data);
-    initClitypes(data);
-    initOssAll(data);
+async function reg() {
+    let vcodeBtn = $('.vcode-btn'),
+        vcode = $('#vcode'),
+        passwd = $('#passwd'),
+        surepasswd = $('#surepasswd'),
+        registerbtn = $('.register');
+    let min = 30;
+    let passwordStrong = $('.password-strong');
 
-    $('#lpprefix-list').html(tem('lpprefix-tem', { lpprefixList: await getLpprefixList() }));
+
+    /**
+     * 密码强度校验
+     */
+    passwd.on('input', function() {
+        passwordStrong.show();
+        let len = $(this).val().length;
+        if (len < 8) {
+            passwordStrong.find('li').removeAttr('class');
+            passwordStrong.find('li').eq(0).addClass('error');
+        }
+        if (len > 8 && len < 14) {
+            passwordStrong.find('li').removeAttr('class');
+            passwordStrong.find('li').eq(0).addClass('warring');
+            passwordStrong.find('li').eq(1).addClass('warring');
+        }
+        if (len > 14) {
+            passwordStrong.find('li').removeAttr('class');
+            passwordStrong.find('li').addClass('success');
+
+        }
+    })
+
+
+
+    vcodeBtn.click(async(e) => {
+        if (until.isEmpty(passwd.val())) {
+            alert('密码不能为空');
+            return;
+        }
+        if (until.isEmpty(surepasswd.val())) {
+            alert('重复密码不能为空');
+            return;
+        }
+        if (passwd.val() !== surepasswd.val()) {
+            alert('两次密码不一致，请重新输入...');
+            passwd.val('');
+
+            return;
+        }
+
+        /**
+         * 后去验证码
+         */
+        let verifyCode = await getVcode(until.getItem('mobile'));
+
+        if (verifyCode.success) {
+            vcodeBtn.prop('disabled', 'disabled');
+            registerbtn.removeAttr('disabled');
+        } else {
+            alert('获取验证码太频繁了，稍等下吧~~');
+            return;
+        }
+
+        /**
+         * 获取验证码倒计时
+         */
+        let timer = setInterval(function() {
+            if (min > 0) {
+                vcodeBtn.val(min + 's');
+                min--;
+            } else {
+                clearInterval(timer);
+                vcodeBtn.val('获取验证码');
+                vcodeBtn.removeProp('disabled');
+            }
+        }, 1000);
+
+        registerbtn.on('click', async function() {
+
+            if (vcode.val() != verifyCode.data.vCode) {
+                alert('验证码错误，请重新输入');
+                return;
+            }
+
+            /**
+             * 获取草稿信息
+             */
+            let draftBoxData = await getDraftBox(until.getItem('mobile'));
+
+            /**
+             * 发送注册请求，合并草稿和验证码密码
+             */
+            let result = await register($.extend({}, {
+                passwd: passwd.val(),
+                verifyCode: vcode.val(),
+            }, draftBoxData));
+            if (result.success) {
+
+                dialog({
+                    title: '尊敬的用户你好',
+                    btns: ['确认并返回登录页'],
+                    btnsCallback(btns) {
+                        btns.click(e => {
+                            until.jumpPage('login', { p: until.getItem('mobile') });
+                        })
+                    }
+                })
+            }
+        })
+
+    })
+
 }
 
 
 
 
 
+
+/**
+ * 从后台获取的草稿箱数据，如果有的话就返回，如果没有，则返回code，code默认为1
+ * 
+ * @param {any} data 草稿箱获得的数据
+ * @param {Number} number 代码
+ */
+function defaultData(data, code = 1) {
+    return data !== undefined ? data : code;
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 下一页的页面控制，这个主要是在上传数据的时候调用，当然，要上传数据通过后才可以调用
+ */
 function pageNext() {
 
     if (animating) return false;
@@ -348,6 +644,10 @@ function pageNext() {
     });
 }
 
+
+/**
+ * 上一页的页面控制
+ */
 function pagePrev() {
     if (animating) return false;
     animating = true;
@@ -390,58 +690,9 @@ function pagePrev() {
     });
 }
 
+/**
+ * 上一页是必须会有的
+ */
 $('.previous').on('click', function() {
     pagePrev.call(this);
-    console.log(11)
-});
-/**
- * 初始化汽车品牌和汽车车型
- */
-$(function() {
-    $('.drop').click(e => {
-        let target = e.target,
-            tagname = target.nodeName.toLowerCase();
-        if (tagname === 'h3') {
-            // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
-            $(e.target).toggleClass('active');
-            $(e.target).next().slideToggle();
-
-        }
-        if (tagname === 'li') {
-            let code = $(target).attr('code'),
-                text = $(target).text(),
-                dropMenu = $(target).parent(),
-                title = dropMenu.prev();
-            dropMenu.slideUp();
-            title.text(text).attr('code', code);
-            title.toggleClass('active')
-
-        }
-
-    });
-    $('#mobile').on('change', function(e) {
-        let name = e.target.value;
-
-        if (!until.isPhone(name)) {
-            $(this).addClass('active');
-            alert('请输入正确的手机号码')
-        } else {
-            until.setItem('mobile', name);
-            initDraftBox();
-        }
-    });
-
-
-    initDraftBox();
-})
-
-
-
-
-
-
-
-
-$(".submit").click(function() {
-    return false;
 });

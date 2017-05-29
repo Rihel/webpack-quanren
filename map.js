@@ -1,5 +1,5 @@
-var path = require('path')
-var ROOT = path.resolve(__dirname);
+const path = require('path')
+const ROOT = path.resolve(__dirname);
 
 module.exports = {
     client: {

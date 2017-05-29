@@ -1,20 +1,51 @@
+import tem from '../modules/template-web';
+
 class Until {
     constructor() {
+        /**
+         * 本地数据的前缀
+         */
         this.baseName = 'QUANREN_';
     }
 
+    /**
+     * 获取本地数据
+     * @param {String} key 数据的Key
+     * @return 返回值
+     */
     getItem(key) {
         return JSON.parse(window.localStorage.getItem(this.baseName + key));
     }
+
+    /**
+     * 
+     * @param {String} key 数据的Key
+     * @param {any} value  数据的值
+     */
     setItem(key, value) {
         window.localStorage.setItem(this.baseName + key, JSON.stringify(value));
     }
+
+    /**
+     * 删除本地数据
+     * @param {String} key 数据的Key
+     */
     removeItem(key) {
         window.localStorage.removeItem(this.baseName + key);
     }
+
+    /**
+     * 数据是否为空
+     * @param {String} value 数据 
+     */
     isEmpty(value) {
         return (value === null || value === undefined || value === '') ? true : false;
     }
+
+    /**
+     * 数据是否为手机号码
+     * @param {String} value 数据 
+     */
     isPhone(value) {
         if (this.isEmpty(value)) {
             return;
@@ -25,6 +56,11 @@ class Until {
             return false;
         }
     }
+
+    /**
+     * 数据是否为身份证
+     * @param {String} value 数据 
+     */
     isIdCard(value) {
         if (this.isEmpty(value)) {
             return;
@@ -35,6 +71,11 @@ class Until {
             return false;
         }
     }
+
+    /**
+     * 数据是否为车牌号码
+     * @param {String} value 数据 
+     */
     isVehicleNumber(vehicleNumber) {
         var result = false;
         if (vehicleNumber.length == 7) {
@@ -43,6 +84,12 @@ class Until {
         }
         return result;
     }
+
+    /**
+     * 跳转页面
+     * @param {String} name 跳转页面名
+     * @param {Object} data 参数
+     */
     jumpPage(name, data) {
         var href = name.concat('.html');
         if (data) {
@@ -50,17 +97,36 @@ class Until {
         }
         window.location.href = href;
     }
+
+    /**
+     * 插入加载效果
+     * @param {String} text 文本
+     */
     loading(text) {
-        var loading = $('<div class="loading">');
-        var roll = $('<div><i class="fa fa-spin fa-circle-o-notch"></div>');
-        var text = $('<div>' + text + '</div>')
-        loading.append(roll).append(text);
+        let loading = $('<div class="loading">'),
+            roll = $('<div><i class="fa fa-spin fa-circle-o-notch"></div>'),
+            content = $('<div>' + text + '</div>');
+        loading.append(roll).append(content);
         $('body').append(loading);
     }
+
+    /**
+     * 删除加载效果
+     */
     closeLoading() {
         $('body .loading').remove();
     }
 
+    /**
+     * 再次封装模板引擎
+     * @param {String} domId 渲染挂载的DomId
+     * @param {String} templateId 模板Id
+     * @param {Object} data 渲染数据
+     * @param {boolean} isAppend 是否添加
+     */
+    renderTem(domId, templateId, data, isAppend = false) {
+        isAppend ? $(`#${domId}`).append(tem(templateId, data)) : $(`#${domId}`).html(tem(templateId, data));
+    }
 }
 
 export default new Until();

@@ -102,6 +102,10 @@ button:active {
     font-size: 1.5rem;
 }
 
+.dialog-template {
+    display: none;
+}
+
 .dialog-container {
     position: fixed;
     z-index: 9999;
@@ -157,7 +161,9 @@ button:active {
         }
         .dialog-content {
             position: relative;
-            padding: 15px;
+            padding: rem(10) rem(70);
+            line-height: rem(40);
+            font-size: rem(28);
         }
         .dialog-controls {
             padding: 15px;
@@ -167,7 +173,7 @@ button:active {
             button {
                 background: $primary-color;
                 border: rem(1) solid $primary-color;
-                padding: rem(10) rem(15);
+                // padding: rem(10) rem(15);
                 color: #fff;
                 border-radius: rem(8);
             }
@@ -182,6 +188,11 @@ button:active {
     line-height: rem(92);
     border-radius: rem(8);
     font-size: rem(30);
+}
+
+.btn:disabled {
+    background: $default-color!important;
+    color: #fff!important;
 }
 
 .btn-primary {

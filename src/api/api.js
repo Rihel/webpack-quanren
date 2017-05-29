@@ -68,7 +68,6 @@ export const login = (mobile, passowrd) => {
  * @param {Object} arg 请求的列表数据：详情见：http://m.qren163.cn:8080
  * @return {Promise}
  */
-
 export const orderPage = arg => {
     return new Promise((resolve, reject) => {
         base({
@@ -84,11 +83,11 @@ export const orderPage = arg => {
     })
 }
 
+
 /**
  * 获取C端客户类型列表
  * @param {Number} statusCode 状态编码（1 : 只返回有效， 其它(默认） ： 全部） 
  */
-
 export const clitypes = statusCode => {
     return new Promise((resolve, reject) => {
         base({
@@ -109,12 +108,12 @@ export const clitypes = statusCode => {
     });
 }
 
+
 /**
  * 
  * 加载用户自己的基本料。
  * 此接口必须在用户成功登陆后才能调用。
  */
-
 export const userGet = () => {
     return new Promise((resolve, reject) => {
         base({
@@ -137,11 +136,11 @@ export const userGet = () => {
     })
 }
 
+
 /**
  * 根据手机号码客户状态。
  * @param {String} 手机号码
  */
-
 export const user_Status = mobile => {
     return new Promise((resolve, reject) => {
         base({
@@ -160,11 +159,11 @@ export const user_Status = mobile => {
     })
 }
 
+
 /**
  * 根据手机号码获取未提交注册的草稿数据。
  * @param {String} mobile 手机号码
  */
-
 export const getDraftBox = mobile => {
     return new Promise((resolve, reject) => {
         base({
@@ -181,12 +180,12 @@ export const getDraftBox = mobile => {
     });
 }
 
+
 /**
  * 保存草稿箱数据
  * @param {String} mobile 手机号码
  * @param {Object} arg 其他参数
  */
-
 export const saveDraftBox = (mobile, arg) => {
     let defa = {
         mobile,
@@ -206,10 +205,10 @@ export const saveDraftBox = (mobile, arg) => {
     });
 }
 
+
 /**
  * 获取汽车品牌列表
  */
-
 export const getCarBrandList = function() {
     return new Promise((resolve, reject) => {
         base({
@@ -227,7 +226,6 @@ export const getCarBrandList = function() {
  * 获取汽车车型
  * @param {Number} brandCode 汽车品牌编码
  */
-
 export const getCarModelList = (brandCode) => {
     return new Promise((resolve, reject) => {
         base({
@@ -244,10 +242,10 @@ export const getCarModelList = (brandCode) => {
     });
 }
 
+
 /**
  * 获取车牌前缀列表
  */
-
 export const getLpprefixList = () => {
     return new Promise((resolve, reject) => {
         base({
@@ -258,5 +256,45 @@ export const getLpprefixList = () => {
                 }
             }
         });
+    });
+}
+
+
+/**
+ * 发送验证码
+ * @param {Number} mobile 手机号码
+ */
+export const getVcode = mobile => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.vcode,
+            data: {
+                mobile: mobile
+            },
+            success: data => {
+
+                resolve(data);
+
+            }
+        })
+    });
+}
+
+
+/**
+ * 注册账号
+ * @param {Object} arg 注册信息
+ */
+export const register = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: api.register,
+            data: arg,
+            success: data => {
+
+                resolve(data);
+
+            }
+        })
     });
 }

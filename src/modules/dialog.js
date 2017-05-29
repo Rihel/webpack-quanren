@@ -1,4 +1,3 @@
-
 /**
  * @description 弹窗组件
  * @constructor Dialog
@@ -17,7 +16,7 @@ class Dialog {
         this.box = $('<div class="dialog-box modal-content">');
         this.title = $('<div class="dialog-title modal-header">');
         this.titleText = $('<h4 class="modal-title"></h4>').html(this.setting.title)
-        this.closeButton = $('<button type="button" class="close" ><span class="fa fa-close"></span></button>')
+        this.closeButton = $('<button type="button" class="close" ><span class="icon-close"></span></button>')
         this.title.append(this.closeButton).append(this.titleText);
 
         this.closeButton.click(() => {
@@ -25,7 +24,7 @@ class Dialog {
         })
         this.content = $('<div class="dialog-content modal-body">').html(this.setting.content);
         this.controls = $('<div class="dialog-controls modal-footer">');
-        this.closeButton.on('click',e=>this.close());
+        this.closeButton.on('click', e => this.close());
         this.start();
     }
     start() {

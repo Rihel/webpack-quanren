@@ -5,7 +5,8 @@ export const api = {
     userGet: hostName + 'user/get', //获取用户信息
     userStatus: hostName + 'user/status', //获取用户状态
 
-
+    register: hostName + 'auth/register', //注册
+    vcode: hostName + 'auth/reg/vcode', //获取验证码
 
 
     getDraftBox: hostName + 'user/draftbox/get', //获取用户注册草稿箱
