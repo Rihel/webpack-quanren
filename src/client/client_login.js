@@ -1,10 +1,11 @@
 import '../scss/common.scss';
+import '../scss/font.scss';
 import '../scss/login.scss';
 
 
 import {
-    user_Status,
-    login
+    client_user_Status,
+    client_login
 } from '../api/api';
 import until from '../modules/until';
 import {
@@ -25,7 +26,7 @@ username.val(until.getItem('mobile') || '');
 /**
  * 手机号码校验
  */
-username.on('change', function () {
+username.on('change', function() {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).addClass('active');
@@ -40,7 +41,7 @@ username.on('change', function () {
 /**
  * 登录操作
  */
-$('.login-btn').on('click', function () {
+$('.login-btn').on('click', function() {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
@@ -49,19 +50,17 @@ $('.login-btn').on('click', function () {
     }
 
     (async() => {
-        try {
-            let {
-                status
-            } = await user_Status(name);
-        } catch (e) {
-            alert(e.errorDetail.msg);
-        }
+
+        let { status } = await client_user_Status(name);
+
+
+        console.log(status);
         until.setItem('mobile', name);
         if (status <= 6) {
             statusHander(status);
         } else {
             try {
-                let data = await login(name, pwd);
+                let data = await client_login(name, pwd);
                 if (status === 7) {
                     until.jumpPage('index', {
                         p: name
@@ -88,12 +87,16 @@ $('.login-btn').on('click', function () {
  * 
  * @param {any} status 
  */
+
+
 function statusHander(status) {
+    console.log(`用户状态编码为${status}`)
     let message = [];
     message[0] = message[1] = message[2] = message[3] = '您的资料已经提交初步审核，请耐心等候.';
     message[4] = '您的注册资料需要修改。';
     message[5] = '您的支付资料需要修改';
     message[6] = '用户已失效';
+
 
     function tips(mes, jumpPage, data) {
         let arg = arguments;
@@ -138,6 +141,6 @@ function statusHander(status) {
         }
 
     }
-    hander[status.toString()];
+    hander[status.toString()]();
 
 }

@@ -1,0 +1,153 @@
+<!DOCTYPE>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>订单管理</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="down-main">
+        <div class="left-main left-off">
+            <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
+            <div class="subNavBox">
+                <div class="sBox">
+
+                    <ul class="navContent" style="display:block">
+                        <li>
+
+                            <a href="index.html">
+                                <span class="sublist-icon glyphicon glyphicon-home"></span><span class="sub-title">首页</span></a>
+                        </li>
+                        <li>
+
+                            <a href="orderList.html">
+                                <span class="sublist-icon glyphicon glyphicon-list-alt"></span><span class="sub-title">订单管理</span></a>
+                        </li>
+                        <li class="active">
+
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
+                        <li>
+
+                            <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="right-product my-index right-off">
+            <div class="container-fluid">
+                <div class="info-center">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h4>服务单列表</h4>
+                        </div>
+                    </div>
+                    <div class="info-center-title clearfix">
+                        <span class="padding-large-right manage-title pull-left">
+                           <a  class="active" href="#">全部消息</a>
+                        </span>
+                        <span class="padding-large-right manage-title pull-left">
+                           <a href="#">普洗</a>
+                        </span>
+                        <span class="padding-large-right pull-left"><a href="#">精洗</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">保养</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">维修</a></span>
+                    </div>
+                    <div class="info-center-title">
+
+
+                        <span class="padding-large-right pull-left"><a href="#">待确认</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">已确认</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">等待服务</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">服务进行中</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">被冻结</a></span>
+
+                        <span class="padding-large-right pull-left"><a href="#">等待维修报价</a></span>
+
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="table-margin">
+                        <table class="table table-bordered table-header">
+                            <thead>
+                                <tr>
+
+                                    <td>编号</td>
+                                    <td>服务</td>
+                                    <td>状态</td>
+                                    <td>车牌</td>
+                                    <td>车型</td>
+                                    <td>预约时间</td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                <tr>
+                                    <td>2</td>
+                                    <td>维修</td>
+                                    <td>预约已确认</td>
+                                    <td>粤A12345</td>
+                                    <td> 一汽奥迪Q7</td>
+                                    <td>
+                                        <span>2017-05-03 09:00:00</span>
+                                        <a href="#" class="btn btn-primary seeDetail">查看详情</a>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="show-page hidden">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+
+
+            /*左侧导航栏缩进功能*/
+            $(".left-main .sidebar-fold").click(function() {
+
+                if ($(this).parent().attr('class') == "left-main left-full") {
+                    $(this).parent().removeClass("left-full");
+                    $(this).parent().addClass("left-off");
+
+                    $(this).parent().parent().find(".right-product").removeClass("right-full");
+                    $(this).parent().parent().find(".right-product").addClass("right-off");
+
+                } else {
+                    $(this).parent().removeClass("left-off");
+                    $(this).parent().addClass("left-full");
+
+                    $(this).parent().parent().find(".right-product").removeClass("right-off");
+                    $(this).parent().parent().find(".right-product").addClass("right-full");
+
+                }
+            })
+
+        })
+    </script>
+</body>
+
+</html>

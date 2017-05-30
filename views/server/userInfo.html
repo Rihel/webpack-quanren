@@ -1,0 +1,102 @@
+<!DOCTYPE>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>用户中心</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="down-main">
+        <div class="left-main left-off">
+            <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
+            <div class="subNavBox">
+                <div class="sBox">
+
+                    <ul class="navContent" style="display:block">
+                        <li>
+
+                            <a href="index.html">
+                                <span class="sublist-icon glyphicon glyphicon-home"></span><span class="sub-title">首页</span></a>
+                        </li>
+                        <li>
+
+                            <a href="orderList.html">
+                                <span class="sublist-icon glyphicon glyphicon-list-alt"></span><span class="sub-title">订单管理</span></a>
+                        </li>
+                        <li>
+
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
+                        <li class="active">
+
+                            <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="right-product userInfo my-index right-off">
+            <div class="container-fluid">
+                <div class="manage account-manage info-center">
+                    <div class="page-header">
+                        <div class="pull-left">
+                            <h4>店铺信息</h4>
+                        </div>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item ">
+                            <h4 class="list-group-item-heading"><i class="icon-merchant"></i>店铺名称</h4>
+                            <p class="list-group-item-text">车道汽车维修服务有限公司</p>
+                        </a>
+                        <a href="#" class="list-group-item ">
+                            <h4 class="list-group-item-heading"><i class="icon-position"></i>店铺地址</h4>
+                            <p class="list-group-item-text">广州市海珠区瑞宝南洲北路泊岸森邻</p>
+                        </a>
+                        <a href="#" class="list-group-item ">
+                            <h4 class="list-group-item-heading"><i class="icon-project"></i>可提供服务</h4>
+                            <ul class="servers">
+                                <li class="active">普洗</li>
+                                <li class="active">精洗</li>
+                                <li class="active">保养</li>
+                                <li>维修</li>
+                            </ul>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+
+
+            /*左侧导航栏缩进功能*/
+            $(".left-main .sidebar-fold").click(function() {
+
+                if ($(this).parent().attr('class') == "left-main left-full") {
+                    $(this).parent().removeClass("left-full");
+                    $(this).parent().addClass("left-off");
+
+                    $(this).parent().parent().find(".right-product").removeClass("right-full");
+                    $(this).parent().parent().find(".right-product").addClass("right-off");
+
+                } else {
+                    $(this).parent().removeClass("left-off");
+                    $(this).parent().addClass("left-full");
+
+                    $(this).parent().parent().find(".right-product").removeClass("right-off");
+                    $(this).parent().parent().find(".right-product").addClass("right-full");
+
+                }
+            })
+
+        })
+    </script>
+</body>
+
+</html>

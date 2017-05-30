@@ -1,34 +1,41 @@
-const hostName = 'http://m.qren163.cn:8080/v1/api/';
-export const api = {
-    userLogin: hostName + 'auth/login', //登录
-    orderPage: hostName + 'order/page', //预约列表
-    userGet: hostName + 'user/get', //获取用户信息
-    userStatus: hostName + 'user/status', //获取用户状态
+const clientHostName = 'http://m.qren163.cn:8080/v1/api/';
+const serverHostName = 'http://m.qren163.cn:8083/v1/api/'
+export const clientApi = {
+    userLogin: clientHostName + 'auth/login', //登录
+    orderPage: clientHostName + 'order/page', //预约列表
+    userGet: clientHostName + 'user/get', //获取用户信息
+    userStatus: clientHostName + 'user/status', //获取用户状态
 
-    register: hostName + 'auth/register', //注册
-    vcode: hostName + 'auth/reg/vcode', //获取验证码
-
-
-    getDraftBox: hostName + 'user/draftbox/get', //获取用户注册草稿箱
-    saveDraftBox: hostName + 'user/draftbox/save', //保存用户注册草稿箱
-
-    carbrand: hostName + 'dict/carbrand/list', //车品牌
-    carmodel: hostName + 'dict/carmodel/list', //车型
-    lpprefix: hostName + 'dict/lpprefix/list',
-
-    clitype: hostName + 'dict/clitype/list', //客户类型
-    clitStatus: hostName + 'dict/clitstatus/list', //客户状态
+    register: clientHostName + 'auth/register', //注册
+    vcode: clientHostName + 'auth/reg/vcode', //获取验证码
 
 
-    province: hostName + 'dict/province/list', //省份
-    city: hostName + 'dict/city/list', //城市
-    district: hostName + 'dict/district/list', //城区列表
+    getDraftBox: clientHostName + 'user/draftbox/get', //获取用户注册草稿箱
+    saveDraftBox: clientHostName + 'user/draftbox/save', //保存用户注册草稿箱
 
-    payStatus: hostName + 'dict/paystatus/list', //支付状态
+    carbrand: clientHostName + 'dict/carbrand/list', //车品牌
+    carmodel: clientHostName + 'dict/carmodel/list', //车型
+    lpprefix: clientHostName + 'dict/lpprefix/list',
 
-    providerList: hostName + 'provider/list', //服务商列表
+    clitype: clientHostName + 'dict/clitype/list', //客户类型
+    clitStatus: clientHostName + 'dict/clitstatus/list', //客户状态
+
+
+    province: clientHostName + 'dict/province/list', //省份
+    city: clientHostName + 'dict/city/list', //城市
+    district: clientHostName + 'dict/district/list', //城区列表
+
+    payStatus: clientHostName + 'dict/paystatus/list', //支付状态
+
+    providerList: clientHostName + 'provider/list', //服务商列表
 }
+export const serverApi = {
+    login: `${serverHostName}auth/login`,
+    myInfo: `${serverHostName}auth/myInfo`,
 
+    ysummary: `${serverHostName}order/ysummary`,
+    osummary: `${serverHostName}order/osummary`,
+}
 export const userStatus = {
     preForVal01: "0", //等待1审
     inVal01: "1", //一审中

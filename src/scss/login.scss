@@ -109,3 +109,9 @@ body {
         text-decoration: underline;
     }
 }
+
+@include media(lg) {
+    .login {
+        width: 20%;
+    }
+}

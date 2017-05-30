@@ -28,27 +28,27 @@ $halfBlack:rgba(0, 0, 0, .5);
 
 @mixin media($point) {
     @if $point==superbig {
-        @media only screen and (max-width: 1200px) {
+        @media only screen and (min-width: 1200px) {
             @content;
         }
     }
     @else if $point==lg {
-        @media only screen and (max-width: 992px) {
+        @media only screen and (min-width: 992px) {
             @content;
         }
     }
     @else if $point==md {
-        @media only screen and (max-width: 768px) {
+        @media only screen and (min-width: 768px) {
             @content;
         }
     }
     @else if $point==sm {
-        @media only screen and (max-width: 480px) {
+        @media only screen and (min-width: 480px) {
             @content;
         }
     }
     @else if $point==xs {
-        @media only screen and (max-width: 320px) {
+        @media only screen and (min-width: 320px) {
             @content;
         }
     }

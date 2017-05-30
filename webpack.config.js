@@ -8,25 +8,38 @@ const map = require('./map');
 let cliententry = {
     // 'vendor': ['plupload']
 };
-let clientPlugins = [];
+let htmlPlugin = [];
 
 
+let serverentry = {
 
+};
 for (chunk in map.client) {
     cliententry[chunk] = map.client[chunk].src
-    clientPlugins.push(new htmlWebpackPlugin({
+    htmlPlugin.push(new htmlWebpackPlugin({
         alwaysWriteToDisk: true,
         filename: ROOT + '/dist/client/' + map.client[chunk].tpl,
         template: ROOT + '/views/client/' + map.client[chunk].tpl,
         chunks: ['common', chunk]
     }))
 }
+for (chunk in map.server) {
+    serverentry[chunk] = map.server[chunk].src
+    htmlPlugin.push(new htmlWebpackPlugin({
+        alwaysWriteToDisk: true,
+        filename: ROOT + '/dist/server/' + map.server[chunk].tpl,
+        template: ROOT + '/views/server/' + map.server[chunk].tpl,
+        chunks: ['common', chunk]
+    }))
+}
 
+
+console.log(cliententry, serverentry, Object.assign(cliententry, serverentry));
 
 
 module.exports = {
     context: path.resolve(__dirname, './src'),
-    entry: cliententry,
+    entry: Object.assign(cliententry, serverentry),
     output: {
         filename: 'js/[name].js',
         path: path.resolve(__dirname, './dist/'),
@@ -105,7 +118,7 @@ module.exports = {
     externals: {
         'jquery': 'window.jQuery',
     },
-    plugins: clientPlugins.concat([
+    plugins: htmlPlugin.concat([
         // new webpack.optimize.UglifyJsPlugin({
         //     compress: {
         //         warnings: false

@@ -1,6 +1,7 @@
 import {
-    api,
-    userStatus
+    clientApi,
+    userStatus,
+    serverApi
 } from './apiUrls';
 import until from '../modules/until';
 import { alert, dialog } from '../modules/dialog';
@@ -39,10 +40,10 @@ const base = opt => {
  * @param {String} mobile 手机号码
  * @param {String} passowrd 密码
  */
-export const login = (mobile, passowrd) => {
+export const client_login = (mobile, passowrd) => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.userLogin,
+            url: clientApi.userLogin,
             type: 'post',
             data: {
                 name: mobile,
@@ -68,10 +69,10 @@ export const login = (mobile, passowrd) => {
  * @param {Object} arg 请求的列表数据：详情见：http://m.qren163.cn:8080
  * @return {Promise}
  */
-export const orderPage = arg => {
+export const client_orderPage = arg => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.orderPage,
+            url: clientApi.orderPage,
             data: arg,
             success: function(data) {
                 if (data.success) {
@@ -88,10 +89,10 @@ export const orderPage = arg => {
  * 获取C端客户类型列表
  * @param {Number} statusCode 状态编码（1 : 只返回有效， 其它(默认） ： 全部） 
  */
-export const clitypes = statusCode => {
+export const client_clitypes = statusCode => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.clitype,
+            url: clientApi.clitype,
             type: 'get',
             data: {
                 statusCode: statusCode || 1
@@ -114,10 +115,10 @@ export const clitypes = statusCode => {
  * 加载用户自己的基本料。
  * 此接口必须在用户成功登陆后才能调用。
  */
-export const userGet = () => {
+export const client_userGet = () => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.userGet,
+            url: clientApi.userGet,
             type: 'get',
 
             beforeSend: function() {
@@ -141,10 +142,10 @@ export const userGet = () => {
  * 根据手机号码客户状态。
  * @param {String} 手机号码
  */
-export const user_Status = mobile => {
+export const client_user_Status = mobile => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.userStatus,
+            url: clientApi.userStatus,
             data: {
                 mobile: mobile
             },
@@ -164,10 +165,10 @@ export const user_Status = mobile => {
  * 根据手机号码获取未提交注册的草稿数据。
  * @param {String} mobile 手机号码
  */
-export const getDraftBox = mobile => {
+export const client_getDraftBox = mobile => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.getDraftBox,
+            url: clientApi.getDraftBox,
             data: {
                 mobile,
             },
@@ -186,7 +187,7 @@ export const getDraftBox = mobile => {
  * @param {String} mobile 手机号码
  * @param {Object} arg 其他参数
  */
-export const saveDraftBox = (mobile, arg) => {
+export const client_saveDraftBox = (mobile, arg) => {
     let defa = {
         mobile,
     }
@@ -194,7 +195,7 @@ export const saveDraftBox = (mobile, arg) => {
     console.log(opts)
     return new Promise((resolve, reject) => {
         base({
-            url: api.saveDraftBox,
+            url: clientApi.saveDraftBox,
             data: opts,
             success: function(data) {
                 if (data.success) {
@@ -209,10 +210,10 @@ export const saveDraftBox = (mobile, arg) => {
 /**
  * 获取汽车品牌列表
  */
-export const getCarBrandList = function() {
+export const client_getCarBrandList = function() {
     return new Promise((resolve, reject) => {
         base({
-            url: api.carbrand,
+            url: clientApi.carbrand,
             success: data => {
                 if (data.success) {
                     resolve(data.data);
@@ -226,10 +227,10 @@ export const getCarBrandList = function() {
  * 获取汽车车型
  * @param {Number} brandCode 汽车品牌编码
  */
-export const getCarModelList = (brandCode) => {
+export const client_getCarModelList = (brandCode) => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.carmodel,
+            url: clientApi.carmodel,
             data: {
                 brandCode: brandCode,
             },
@@ -246,10 +247,10 @@ export const getCarModelList = (brandCode) => {
 /**
  * 获取车牌前缀列表
  */
-export const getLpprefixList = () => {
+export const client_getLpprefixList = () => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.lpprefix,
+            url: clientApi.lpprefix,
             success: data => {
                 if (data.success) {
                     resolve(data.data);
@@ -264,10 +265,10 @@ export const getLpprefixList = () => {
  * 发送验证码
  * @param {Number} mobile 手机号码
  */
-export const getVcode = mobile => {
+export const client_getVcode = mobile => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.vcode,
+            url: clientApi.vcode,
             data: {
                 mobile: mobile
             },
@@ -285,15 +286,83 @@ export const getVcode = mobile => {
  * 注册账号
  * @param {Object} arg 注册信息
  */
-export const register = arg => {
+export const client_register = arg => {
     return new Promise((resolve, reject) => {
         base({
-            url: api.register,
+            url: clientApi.register,
             data: arg,
             success: data => {
 
                 resolve(data);
 
+            }
+        })
+    });
+}
+
+
+export const server_login = (mobile, passowrd) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.login,
+            data: {
+                name: mobile,
+                pwd: passowrd
+            },
+            success: data => {
+                if (!data.success) {
+                    alert(data.errorDetail.msg);
+                } else {
+                    resolve(data)
+                };
+            }
+        })
+    });
+}
+
+
+export const server_myInfo = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.myInfo,
+            success: data => {
+                if (!data.success) {
+                    alert(data.errorDetail.msg);
+                } else {
+                    resolve(data)
+                };
+            }
+        })
+    });
+}
+
+
+export const server_osummary = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.osummary,
+            success: data => {
+                if (!data.success) {
+                    alert(data.errorDetail.msg);
+                } else {
+                    resolve(data.data)
+                };
+            }
+        })
+    });
+}
+
+
+export const server_ysummary = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.ysummary,
+            success: data => {
+                if (!data.success) {
+                    alert(data.errorDetail.msg);
+                } else {
+                    resolve(data.data)
+                };
             }
         })
     });

@@ -6,14 +6,14 @@ import until from '../modules/until';
 import tem from '../modules/template-web';
 import { alert, dialog } from '../modules/dialog';
 import {
-    clitypes,
-    getDraftBox,
-    getCarBrandList,
-    getCarModelList,
-    saveDraftBox,
-    getLpprefixList,
-    getVcode,
-    register
+    client_clitypes,
+    client_getDraftBox,
+    client_getCarBrandList,
+    client_getCarModelList,
+    client_saveDraftBox,
+    client_getLpprefixList,
+    client_getVcode,
+    client_register
 } from '../api/api';
 import { uploadImages, uploadTypes, alias } from '../modules/uploadOssAll';
 
@@ -70,6 +70,7 @@ $(function() {
     if (until.getItem('mobile')) {
         initDraftBox(until.getItem('mobile'))
     }
+
 
 })
 
@@ -164,13 +165,13 @@ function progress(fileInputDom, percent) {
  */
 async function initDraftBox(mobile) {
     until.loading('加载数据。。。')
-    let data = await getDraftBox(mobile);
+    let data = await client_getDraftBox(mobile);
     until.closeLoading();
     initPersonInfo(data);
     initClitypes(data);
     initOssAll(data);
     reg();
-    until.renderTem('lpprefix-list', 'lpprefix-tem', { lpprefixList: await getLpprefixList() })
+    until.renderTem('lpprefix-list', 'lpprefix-tem', { lpprefixList: await client_getLpprefixList() })
 }
 
 
@@ -220,7 +221,7 @@ async function initOssAll(draftBoxData) {
      * 当文件input值改变的时候，types会对应的uploadType（ps：即是上传证件的类型，是身份证还是保单）
      * 会让对应的uploader添加文件
      */
-    $('.file').on('change', async function(e) {
+    $('.file').on('change', function(e) {
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
         if (!/\.(png|gif|jpg|svg)/.test(postfix[0])) {
@@ -284,7 +285,7 @@ async function initOssAll(draftBoxData) {
                 query++;
             } else {
                 clearTimeout(timer);
-                let result = await saveDraftBox(draftBoxData.mobile, $.extend({}, {
+                let result = await client_saveDraftBox(draftBoxData.mobile, $.extend({}, {
                     idCardNumber: idCardNumber.val(),
                     licensePlateNumber: vehicleNumber,
                     drivingLicenseNumber: drivingLicenseNumber.val(),
@@ -316,7 +317,7 @@ async function initOssAll(draftBoxData) {
 async function initPersonInfo(draftBoxData) {
 
     until.renderTem('CarBrandList', 'CarBrandItem', {
-        carBrandList: await getCarBrandList(),
+        carBrandList: await client_getCarBrandList(),
         carBrandCode: defaultData(draftBoxData.carBrandCode),
     })
     console.log(draftBoxData.carBrandCode);
@@ -380,7 +381,7 @@ async function initPersonInfo(draftBoxData) {
             推荐人手机号码：${recommendClientMobile.val()}\n
         /**********个人信息部分结束保存草稿箱*************/
         `)
-        let result = await saveDraftBox(mobile.val(), {
+        let result = await client_saveDraftBox(mobile.val(), {
             name: name.val(),
             genderCode: genderCode.attr('code'),
             carBrandCode: carBrandCode.attr('code'),
@@ -403,7 +404,7 @@ async function initPersonInfo(draftBoxData) {
  * @param {Number} carModelCode 汽车车型代码（默认为当前汽车品牌代码的第一个）
  */
 async function carModel(bradCode, carModelCode) {
-    let carModelList = await getCarModelList(bradCode);
+    let carModelList = await client_getCarModelList(bradCode);
     tem.defaults.imports.getTitle = a => {
         let title;
         carModelList.forEach(item => {
@@ -430,7 +431,7 @@ async function initClitypes({ vipLevelCode }) {
         return a.replace(/(套餐包.+\n.+)/gmi, '').replace('该套餐', '');
     }
 
-    until.renderTem('vipLevelCode', 'clitype-tem', { clitypes: await clitypes(), vipLevelCode: defaultData(vipLevelCode) })
+    until.renderTem('vipLevelCode', 'clitype-tem', { clitypes: await client_clitypes(), vipLevelCode: defaultData(vipLevelCode) })
 
     let cliters = $('#vipLevelCode').find('.cliter');
     cliters.on('click', function() {
@@ -443,7 +444,7 @@ async function initClitypes({ vipLevelCode }) {
     $('#vipLevel').click(async function() {
         let vipcode = $('#vipLevelCode').attr('code');
 
-        let result = await saveDraftBox(until.getItem('mobile'), {
+        let result = await client_saveDraftBox(until.getItem('mobile'), {
             vipLevelCode: vipcode,
 
         });
@@ -516,7 +517,7 @@ async function reg() {
         /**
          * 后去验证码
          */
-        let verifyCode = await getVcode(until.getItem('mobile'));
+        let verifyCode = await client_getVcode(until.getItem('mobile'));
 
         if (verifyCode.success) {
             vcodeBtn.prop('disabled', 'disabled');
@@ -550,12 +551,12 @@ async function reg() {
             /**
              * 获取草稿信息
              */
-            let draftBoxData = await getDraftBox(until.getItem('mobile'));
+            let draftBoxData = await client_getDraftBox(until.getItem('mobile'));
 
             /**
              * 发送注册请求，合并草稿和验证码密码
              */
-            let result = await register($.extend({}, {
+            let result = await client_register($.extend({}, {
                 passwd: passwd.val(),
                 verifyCode: vcode.val(),
             }, draftBoxData));

@@ -11,7 +11,7 @@ class Dialog {
             btnVal: '确定'
         }
         this.setting = $.extend({}, defaults, opt);
-        this.container = $('<div class="container dialog-container">');
+        this.container = $('<div class=" dialog-container">');
         this.mark = $('<div class="dialog-mark">');
         this.box = $('<div class="dialog-box modal-content">');
         this.title = $('<div class="dialog-title modal-header">');
