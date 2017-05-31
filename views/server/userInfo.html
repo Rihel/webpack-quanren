@@ -14,6 +14,10 @@
 
     <div class="down-main">
         <div class="left-main left-off">
+            <div class="logo">
+                <span class="icon-logo"></span>
+            
+            </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
                 <div class="sBox">
@@ -71,32 +75,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(function() {
-
-
-            /*左侧导航栏缩进功能*/
-            $(".left-main .sidebar-fold").click(function() {
-
-                if ($(this).parent().attr('class') == "left-main left-full") {
-                    $(this).parent().removeClass("left-full");
-                    $(this).parent().addClass("left-off");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-full");
-                    $(this).parent().parent().find(".right-product").addClass("right-off");
-
-                } else {
-                    $(this).parent().removeClass("left-off");
-                    $(this).parent().addClass("left-full");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-off");
-                    $(this).parent().parent().find(".right-product").addClass("right-full");
-
-                }
-            })
-
-        })
-    </script>
+  
 </body>
 
 </html>

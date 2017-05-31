@@ -26,7 +26,7 @@ username.val(until.getItem('mobile') || '');
 /**
  * 手机号码校验
  */
-username.on('change', function() {
+username.on('change', function () {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).addClass('active');
@@ -41,7 +41,7 @@ username.on('change', function() {
 /**
  * 登录操作
  */
-$('.login-btn').on('click', function() {
+$('.login-btn').on('click', function () {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
@@ -51,7 +51,9 @@ $('.login-btn').on('click', function() {
 
     (async() => {
 
-        let { status } = await client_user_Status(name);
+        let {
+            status
+        } = await client_user_Status(name);
 
 
         console.log(status);
@@ -65,9 +67,11 @@ $('.login-btn').on('click', function() {
                     until.jumpPage('index', {
                         p: name
                     });
-                    if (status === 9) {
-                        until.jumpPage('notify_bind_wx')
-                    }
+
+                }
+                if (status === 9) {
+
+                    until.jumpPage('wechat_pay');
                 }
             } catch (e) {
                 until.closeLoading();

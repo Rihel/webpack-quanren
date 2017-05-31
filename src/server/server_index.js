@@ -10,10 +10,10 @@ import {
 } from '../api/api';
 
 
-(async() => {
-    let myInfo = await server_myInfo();
-    let ysummary = await server_ysummary();
-    let osummary = await server_osummary();
+// (async() => {
+//     let myInfo = await server_myInfo();
+//     let ysummary = await server_ysummary();
+//     let osummary = await server_osummary();
 
-    console.log(myInfo, ysummary, osummary)
-})()
+//     console.log(myInfo, ysummary, osummary)
+// })()

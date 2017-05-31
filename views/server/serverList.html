@@ -15,6 +15,10 @@
 
     <div class="down-main">
         <div class="left-main left-off">
+            <div class="logo">
+                <span class="icon-logo"></span>
+            
+            </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
                 <div class="sBox">
@@ -62,20 +66,20 @@
 
                         <span class="padding-large-right pull-left"><a href="#">维修</a></span>
                     </div>
-                    <div class="info-center-title">
+                  <div class="info-center-title">
 
 
-                        <span class="padding-large-right pull-left"><a href="#">待确认</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">待确认订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">已确认</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">已经确认订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">等待服务</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">待服务的订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">服务进行中</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">等待维修报价单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">被冻结</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">被冻结订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">等待维修报价</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">正在服务订单</a></span>
 
 
                     </div>
@@ -122,32 +126,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(function() {
-
-
-            /*左侧导航栏缩进功能*/
-            $(".left-main .sidebar-fold").click(function() {
-
-                if ($(this).parent().attr('class') == "left-main left-full") {
-                    $(this).parent().removeClass("left-full");
-                    $(this).parent().addClass("left-off");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-full");
-                    $(this).parent().parent().find(".right-product").addClass("right-off");
-
-                } else {
-                    $(this).parent().removeClass("left-off");
-                    $(this).parent().addClass("left-full");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-off");
-                    $(this).parent().parent().find(".right-product").addClass("right-full");
-
-                }
-            })
-
-        })
-    </script>
+   
 </body>
 
 </html>

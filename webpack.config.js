@@ -34,7 +34,7 @@ for (chunk in map.server) {
 }
 
 
-console.log(cliententry, serverentry, Object.assign(cliententry, serverentry));
+console.log(cliententry, serverentry);
 
 
 module.exports = {
@@ -105,7 +105,8 @@ module.exports = {
                     limit: 7186, // inline base64 if <= 7K
                     name: 'css/fonts/[name].[ext]'
                 }
-            }
+            },
+          
         ],
     },
     devServer: {

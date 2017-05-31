@@ -1,6 +1,7 @@
 import '../scss/server.scss'
 import '../scss/font.scss'
 import './menu_toggle';
+import until from '../modules/until';
 import { alert, dialog } from '../modules/dialog';
 
 
@@ -29,9 +30,12 @@ $('.seeDetail').click(function() {
             </a>
         </div>
     `,
-        btns: ['取消预约', '返回'],
+   
+        btns: [ '接受订单','冻结订单'],
         btnsCallback(btns) {
-            console.log(btns);
+            $(btns[0]).on('click',function(){
+                until.jumpPage('upload');
+            })
         }
     })
 })

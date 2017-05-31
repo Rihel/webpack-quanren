@@ -14,7 +14,11 @@
 <body>
 
     <div class="down-main">
+
         <div class="left-main left-off">
+            <div class="logo">
+                <span class="icon-logo"></span>
+            </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
                 <div class="sBox">
@@ -32,7 +36,7 @@
                         </li>
                         <li>
 
-                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a>                            </li>
                         <li>
 
                             <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
@@ -65,17 +69,17 @@
                     <div class="info-center-title">
 
 
-                        <span class="padding-large-right pull-left"><a href="#">待确认</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">待确认订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">已确认</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">已经确认订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">等待服务</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">待服务的订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">服务进行中</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">等待维修报价单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">被冻结</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">被冻结订单</a></span>
 
-                        <span class="padding-large-right pull-left"><a href="#">等待维修报价</a></span>
+                        <span class="padding-large-right pull-left"><a href="#">正在服务订单</a></span>
 
 
                     </div>
@@ -87,10 +91,12 @@
 
                                     <td>编号</td>
                                     <td>服务</td>
-                                    <td>状态</td>
+
                                     <td>车牌</td>
                                     <td>预约时间</td>
                                     <td>车型</td>
+                                    <td>状态</td>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,11 +105,12 @@
                                 <tr>
                                     <td>2</td>
                                     <td>维修</td>
-                                    <td>预约已确认</td>
+
                                     <td>粤A12345</td>
                                     <td>2017-05-03 09:00:00</td>
-                                    <td> 一汽奥迪Q7</td>
 
+                                    <td> 一汽奥迪Q7</td>
+                                    <td>预约已确认</td>
                                 </tr>
 
                             </tbody>
@@ -117,32 +124,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(function() {
 
-
-            /*左侧导航栏缩进功能*/
-            $(".left-main .sidebar-fold").click(function() {
-
-                if ($(this).parent().attr('class') == "left-main left-full") {
-                    $(this).parent().removeClass("left-full");
-                    $(this).parent().addClass("left-off");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-full");
-                    $(this).parent().parent().find(".right-product").addClass("right-off");
-
-                } else {
-                    $(this).parent().removeClass("left-off");
-                    $(this).parent().addClass("left-full");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-off");
-                    $(this).parent().parent().find(".right-product").addClass("right-full");
-
-                }
-            })
-
-        })
-    </script>
 </body>
 
 </html>

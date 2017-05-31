@@ -9,7 +9,7 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+   
 </head>
 
 
@@ -17,12 +17,16 @@
 
     <div class="down-main">
         <div class="left-main left-off">
+            <div class="logo">
+                <span class="icon-logo"></span>
+
+            </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
                 <div class="sBox">
 
                     <ul class="navContent" style="display:block">
-                        <li class="active">
+                        <li>
 
                             <a href="index.html">
                                 <span class="sublist-icon glyphicon glyphicon-home"></span><span class="sub-title">首页</span></a>
@@ -32,9 +36,9 @@
                             <a href="orderList.html">
                                 <span class="sublist-icon glyphicon glyphicon-list-alt"></span><span class="sub-title">订单管理</span></a>
                         </li>
-                        <li>
+                        <li  class="active">
 
-                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a>                            </li>
                         <li>
 
                             <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
@@ -54,31 +58,35 @@
                         </div>
 
                         <div class="image-warpper">
-                            <h3>请对车辆里程牌拍照上传</h3>
-                            <div class="image-file">
-                                <img id="id_card_front_image" src="" alt="">
-                                <input class="file" id="id_card_front_input" uploadType="idCardFrontUrl" type="file">
-                                <div class="progress-warpper">
-                                    <div class="progress"></div>
-                                    <div class="progress-text">
-                                        正在上传中...
+                            <div class="warpper">
+                                <h3>请对车辆里程牌拍照上传</h3>
+                                <div class="image-file">
+                                    <img id="id_card_front_image" src="" alt="">
+                                    <input class="file" id="id_card_front_input" uploadType="idCardFrontUrl" type="file">
+                                    <div class="progress-warpper">
+                                        <div class="progress"></div>
+                                        <div class="progress-text">
+                                            正在上传中...
+                                        </div>
                                     </div>
+                                    <span>上传正面</span>
                                 </div>
-                                <span>上传正面</span>
                             </div>
-                            <h3>请对接车单拍照上传</h3>
-                            <div class="image-file">
-                                <img id="id_card_back_image" src="" alt="">
-                                <input class="file" id="id_card_back_input" uploadType="idCardBackUrl" type="file">
-                                <div class="progress-warpper">
-                                    <div class="progress"></div>
-                                    <div class="progress-text">
-                                        正在上传中...
+                            <div class="warpper">
+                                <h3>请对接车单拍照上传</h3>
+                                <div class="image-file">
+                                    <img id="id_card_back_image" src="" alt="">
+                                    <input class="file" id="id_card_back_input" uploadType="idCardBackUrl" type="file">
+                                    <div class="progress-warpper">
+                                        <div class="progress"></div>
+                                        <div class="progress-text">
+                                            正在上传中...
+                                        </div>
                                     </div>
+                                    <span>上传反面</span>
                                 </div>
-                                <span>上传反面</span>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
 
@@ -89,32 +97,6 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(function() {
-
-
-            $(".left-main .sidebar-fold").click(function() {
-
-                if ($(this).parent().attr('class') == "left-main left-full") {
-                    $(this).parent().removeClass("left-full");
-                    $(this).parent().addClass("left-off");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-full");
-                    $(this).parent().parent().find(".right-product").addClass("right-off");
-
-                } else {
-                    $(this).parent().removeClass("left-off");
-                    $(this).parent().addClass("left-full");
-
-                    $(this).parent().parent().find(".right-product").removeClass("right-off");
-                    $(this).parent().parent().find(".right-product").addClass("right-full");
-
-                }
-            })
-
-
-        })
-    </script>
 
 </body>
 
