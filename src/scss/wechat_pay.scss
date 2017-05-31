@@ -1,0 +1,51 @@
+@import './_mixin.scss';
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-size: rem(30);
+}
+
+.wechat_pay {
+    width: 80%;
+    padding-top: rem(282);
+    .smile {
+        font-size: 15rem;
+        color: $primary-color;
+        text-align: center;
+    }
+    p {
+        text-align: center;
+        line-height: rem(52);
+    }
+    .content {
+        .block {
+            display: none;
+            margin-top: rem(74);
+            ul {
+                padding-left: rem(24);
+                li {
+                    margin-bottom: rem(26)
+                }
+            }
+        }
+    }
+    .don1 {
+        display: block;
+        margin-top: rem(84);
+    }
+}
+
+.phone {
+    padding-bottom: rem(48);
+    a {
+        color: $primary-color;
+    }
+}

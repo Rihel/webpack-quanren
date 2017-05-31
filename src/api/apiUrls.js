@@ -28,6 +28,8 @@ export const clientApi = {
     payStatus: clientHostName + 'dict/paystatus/list', //支付状态
 
     providerList: clientHostName + 'provider/list', //服务商列表
+    wxbingd: clientHostName + 'wxbingd', //微信绑定
+    unifiedorder: clientHostName + 'wxpay/unifiedorder', //创建支付事务订单，由客户端在调用微信支付接口之前调用。
 }
 export const serverApi = {
     login: `${serverHostName}auth/login`,

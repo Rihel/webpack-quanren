@@ -1,7 +1,7 @@
 const path = require('path')
 const ROOT = path.resolve(__dirname);
 
-let clientPages = ['login', 'register', 'index', 'wechat_pay'];
+let clientPages = ['login', 'register', 'index', 'wechat_pay', 'wait_pay'];
 let serverPages = ['login', 'orderList', 'userInfo', 'serverList', 'upload', 'index'];
 let client = {};
 let server = {};

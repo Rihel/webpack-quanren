@@ -127,6 +127,16 @@ class Until {
     renderTem(domId, templateId, data, isAppend = false) {
         isAppend ? $(`#${domId}`).append(tem(templateId, data)) : $(`#${domId}`).html(tem(templateId, data));
     }
+
+
+    isWechat() {
+        let ua = window.navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 export default new Until();

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="wechat_pay">
+        <div class="icon-smile smile"></div>
+        <p> 用户您好：您提交的会员资料 <br>已经审核通过，请完成支付</p>
+        <div class="content">
+            <div class="block">
+                <ul id="warpper">
+
+                </ul>
+                <button class="btn btn-primary sure">确认支付</button>
+            </div>
+            <button class="btn btn-primary don1">支付会员费用</button>
+
+
+        </div>
+
+    </div>
+    <p class="phone">我们的24小时客户服务热线：<a href="tel:020-82455421">020-82455421</a></p>
+    <script type="text/html" id="wechat_pay_userinfo">
+        <li>全仁账号：{{clientMobile}}</li>
+        <li>会员姓名：{{clientName}}</li>
+        <li>会员套餐：{{vipTitle}}</li>
+        <li>套餐费用：{{packageFee}}</li>
+        <li>总费用：{{packageFee + premiumFee}}</li>
+    </script>
+</body>
+
+</html>
