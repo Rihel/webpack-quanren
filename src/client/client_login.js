@@ -96,7 +96,7 @@ $('.login-btn').on('click', function() {
 function statusHander(status) {
     console.log(`用户状态编码为${status}`)
     let message = [];
-    message[0] = message[1] = message[2] = message[3] = '您的资料已经提交审核，请耐心等候.';
+    message[0] = message[1] = message[2] = message[3] = '您的资料已经提交审核，请耐心等候. <p class="phone">24小时服务热线：<a href="tel:020-82455421" style="color:#f73859;">020-82455421</a></p>';
     message[4] = '您的注册资料需要修改。';
     message[5] = '您的支付资料需要修改';
     message[6] = '用户已失效';

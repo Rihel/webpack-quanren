@@ -19,7 +19,7 @@
         <div class="left-main left-off">
             <div class="logo">
                 <span class="icon-logo"></span>
-            
+
             </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
@@ -28,7 +28,7 @@
                     <ul class="navContent" style="display:block">
                         <li class="active">
                             <a href="index.html">
-                            <span class="sublist-icon glyphicon glyphicon-home"></span><span class="sub-title">首页</span></a>
+                                <span class="sublist-icon glyphicon glyphicon-home"></span><span class="sub-title">首页</span></a>
                         </li>
                         <li>
                             <a href="orderList.html">
@@ -61,54 +61,57 @@
 
                         <div class="row">
                             <h4>订单管理</h4>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>待确认订单</p>
-                                    </a>
+                            <div id="ysummary">
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{unconfirmNum}}</h3>
+                                            <p>待确认订单</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{confirmedNum}}</h3>
+                                            <p>已经确认订单</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{forServiceNum}}</h3>
+                                            <p>待服务的订单</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{forPriceSheepNum}}</h3>
+                                            <p>等待维修报价单</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{lockedNum}}</h3>
+                                            <p>被冻结订单</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="content">
+                                        <a class=" right-title" href="orderList.html">
+                                            <h3 class="number">{{servicingNum}}</h3>
+                                            <p>正在服务订单</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>已经确认订单</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>待服务的订单</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>等待维修报价单</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>被冻结订单</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xs-6 col-sm-6">
-                                <div class="content">
-                                    <a class=" right-title" href="orderList.html">
-                                        <h3 class="number">90</h3>
-                                        <p>正在服务订单</p>
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="content-list clearfix">

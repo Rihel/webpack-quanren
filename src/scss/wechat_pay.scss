@@ -49,3 +49,12 @@ body {
         color: $primary-color;
     }
 }
+
+.noWechatBrowser {
+    text-align: center;
+    .erweima {
+        width: rem(250);
+        height: rem(250);
+        @include blockCenter;
+    }
+}

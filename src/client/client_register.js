@@ -1,4 +1,5 @@
 import '../scss/common.scss';
+import '../scss/font.scss';
 import '../scss/register.scss';
 
 
@@ -13,7 +14,8 @@ import {
     client_saveDraftBox,
     client_getLpprefixList,
     client_getVcode,
-    client_register
+    client_register,
+    client_isReg,
 } from '../api/api';
 import { uploadImages, uploadTypes, alias } from '../modules/uploadOssAll';
 
@@ -55,21 +57,53 @@ $(function() {
      * 
      * 如果本地存储有手机号码，那么就会自动获取数据，进行初始化
      */
-    $('#mobile').on('change', function(e) {
-        let name = e.target.value;
+    // $('#mobile').on('change', function(e) {
+    //     let name = e.target.value;
 
-        if (!until.isPhone(name)) {
-            $(this).addClass('active');
-            alert('请输入正确的手机号码')
-        } else {
-            until.setItem('mobile', Number(name));
-            initDraftBox(name);
+    //     if (!until.isPhone(name)) {
+    //         $(this).addClass('active');
+    //         alert('请输入正确的手机号码')
+    //     } else {
+    //         until.setItem('mobile', Number(name));
+    //         initDraftBox(name);
+    //     }
+    // });
+
+    let isRegBtn = $('.isreg-btn'),
+        isRegText = $('.isreg-text');
+    isRegBtn.click(async function(e) {
+        if (until.isEmpty(isRegText.val())) {
+            alert('手机号码不能为空');
+            return;
         }
-    });
+        if (!until.isPhone(isRegText.val())) {
+            alert('请输入正确的手机号码')
+            return;
+        };
+        let { success } = await client_isReg(isRegText.val());
+        if (success) {
+            dialog({
+                title: '温馨提醒',
+                content: '该手机号码已经注册,请换另外一个手机号码进行注册',
+                btns: ['去登录', '取消'],
+                btnsCallback: function(btns) {
+                    until.setItem('mobile', isRegText.val());
+                    console.log($(btns).get(0));
+                    $(btns[0]).on('click', e => {
+                        until.jumpPage('login');
+                    })
+                    $(btns[1]).on('click', e => {
+                        isRegText.val('');
+                    })
+                }
+            })
+        } else {
+            initDraftBox(isRegText.val());
+            $(this).parent().hide();
+            $('#msform').show();
+        }
+    })
 
-    if (until.getItem('mobile')) {
-        initDraftBox(until.getItem('mobile'))
-    }
 
 
 })

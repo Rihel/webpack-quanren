@@ -3,6 +3,18 @@ body {
     overflow-x: hidden;
 }
 
+.isreg {
+    width: 80%;
+    margin: 0 auto;
+    .logo {
+        text-align: center;
+        span {
+            font-size: rem(500);
+            text-shadow: 1px 1px 1px $primary-color;
+        }
+    }
+}
+
 #msform {
     width: 80%;
     margin: rem(50) auto;

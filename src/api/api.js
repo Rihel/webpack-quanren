@@ -153,8 +153,28 @@ export const client_user_Status = mobile => {
                 if (data.success) {
                     resolve(data.data);
                 } else {
-                    reject(data);
+                    reject(data.errorDetail.meg);
                 };
+            }
+        })
+    })
+}
+
+
+
+/**
+ * 判断是否注册
+ * @param {String} 手机号码
+ */
+export const client_isReg = mobile => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.userStatus,
+            data: {
+                mobile: mobile
+            },
+            success: function(data) {
+                resolve(data);
             }
         })
     })
@@ -320,7 +340,9 @@ export const server_login = (mobile, passowrd) => {
     });
 }
 
-
+/**
+ * 获得服务商的个人信息
+ */
 export const server_myInfo = () => {
     return new Promise((resolve, reject) => {
         base({
@@ -329,7 +351,7 @@ export const server_myInfo = () => {
                 if (!data.success) {
                     alert(data.errorDetail.msg);
                 } else {
-                    resolve(data)
+                    resolve(data.data)
                 };
             }
         })

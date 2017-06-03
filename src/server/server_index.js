@@ -8,12 +8,31 @@ import {
     server_osummary,
     server_ysummary
 } from '../api/api';
+import until from '../modules/until';
 
 
-// (async() => {
-//     let myInfo = await server_myInfo();
-//     let ysummary = await server_ysummary();
-//     let osummary = await server_osummary();
+(async() => {
+    let { providerId } = await server_myInfo();
+    until.setItem('providerId', providerId);
 
-//     console.log(myInfo, ysummary, osummary)
-// })()
+    let {
+        unconfirmNum,
+        confirmedNum,
+        forServiceNum,
+        forPriceSheepNum,
+        lockedNum,
+    } = await server_ysummary();
+    let {
+        servicingNum
+    } = await server_osummary();
+    until.renderTem('ysummary', 'ysummary-tem', {
+        unconfirmNum,
+        confirmedNum,
+        forServiceNum,
+        forPriceSheepNum,
+        lockedNum,
+        servicingNum
+    })
+
+
+})()

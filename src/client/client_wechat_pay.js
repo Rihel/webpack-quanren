@@ -15,6 +15,8 @@ $(async function() {
         sure = $('.sure'),
         don1 = $('.don1');
     if (until.isWechat()) {
+        $('.noWechatBrowser').hide();
+        don1.show();
         let wxbingd = await client_wxbingd();
         // alert(wxbingd);
         don1.on('click', async function() {
@@ -66,8 +68,7 @@ $(async function() {
         });
 
     } else {
-        /**
-         * 如有不是微信的分支
-         */
+
+
     }
 })
