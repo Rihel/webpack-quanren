@@ -320,7 +320,50 @@ export const client_register = arg => {
     });
 }
 
+export const client_wxbingd = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.wxbingd,
+            success: data => {
+                if (!data.success) {
+                    dialog({
+                        title: '错误',
+                        content: data.errorDetail.msg,
+                        btns: ['确定'],
+                        btnsCallback: btns => {
+                            $(btns).click(e => {
+                                until.jumpPage('login');
+                            })
+                        }
+                    })
+                } else {
+                    resolve(data)
+                };
+            }
+        })
+    });
+}
 
+/**
+ * 创建支付事务订单，由客户端在调用微信支付接口之前调用。
+ * 用户必须是在【待支付】情况才能调用此接口
+ */
+
+
+export const client_unifiedorder = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.unifiedorder,
+            success: data => {
+                if (!data.success) {
+                    alert(data.errorDetail.msg);
+                } else {
+                    resolve(data.data)
+                };
+            }
+        })
+    });
+}
 export const server_login = (mobile, passowrd) => {
     return new Promise((resolve, reject) => {
         base({
@@ -390,39 +433,15 @@ export const server_ysummary = () => {
     });
 }
 
-
-export const client_wxbingd = () => {
-    return new Promise((resolve, reject) => {
-        base({
-            url: clientApi.wxbingd,
-            success: data => {
-                if (!data.success) {
-                    dialog({
-                        title: '错误',
-                        content: data.errorDetail.msg,
-                        btns: ['确定'],
-                        btnsCallback: btns => {
-                            $(btns).click(e => {
-                                until.jumpPage('login');
-                            })
-                        }
-                    })
-                } else {
-                    resolve(data)
-                };
-            }
-        })
-    });
-}
-
 /**
- * 创建支付事务订单，由客户端在调用微信支付接口之前调用。
- * 用户必须是在【待支付】情况才能调用此接口
+ * 获取订单列表
+ * @param {Object} arg 参数
  */
-export const client_unifiedorder = () => {
+export const server_ypage = arg => {
     return new Promise((resolve, reject) => {
         base({
-            url: clientApi.unifiedorder,
+            url: serverApi.ypage,
+            data: arg,
             success: data => {
                 if (!data.success) {
                     alert(data.errorDetail.msg);

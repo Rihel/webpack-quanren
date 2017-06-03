@@ -36,7 +36,7 @@
                         </li>
                         <li>
 
-                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a>                            </li>
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
                         <li>
 
                             <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
@@ -67,20 +67,19 @@
                         <span class="padding-large-right pull-left"><a href="#">维修</a></span>
                     </div>
                     <div class="info-center-title">
-
-
-                        <span class="padding-large-right pull-left"><a href="#">待确认订单</a></span>
-
-                        <span class="padding-large-right pull-left"><a href="#">已经确认订单</a></span>
-
-                        <span class="padding-large-right pull-left"><a href="#">待服务的订单</a></span>
-
-                        <span class="padding-large-right pull-left"><a href="#">等待维修报价单</a></span>
-
-                        <span class="padding-large-right pull-left"><a href="#">被冻结订单</a></span>
-
-                        <span class="padding-large-right pull-left"><a href="#">正在服务订单</a></span>
-
+                        <div class="form-item">
+                            <div class="drop" id="CarBrandList">
+                                <h3 class="sex" id="carBrandCode">待确认订单</h3>
+                                <ul class="drop-menu">
+                                    <li code="1">待确认订单</li>
+                                    <li code="2">已经确认订单</li>
+                                    <li code="4">待服务的订单</li>
+                                    <li code="5">等待维修报价单</li>
+                                    <li code="9">被冻结订单</li>
+                                    <li code="10">正在服务订单</li>
+                                </ul>
+                            </div>
+                        </div>
 
                     </div>
                     <div class="clearfix"></div>
@@ -99,21 +98,23 @@
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="order">
 
 
-                                <tr>
-                                    <td>2</td>
+
+                            </tbody>
+                            <script type="text/html" id="order-tem">
+                                {{each orders item index}}
+                                <tr orderId="{{item.orderId}}" orderTypeCode="{{item.orderTypeCode}}">
+                                    <td>{{item.orderId}}</td>
                                     <td>维修</td>
-
-                                    <td>粤A12345</td>
+                                    <td>{{item.licensePlateNumber}}</td>
                                     <td>2017-05-03 09:00:00</td>
-
                                     <td> 一汽奥迪Q7</td>
                                     <td>预约已确认</td>
                                 </tr>
-
-                            </tbody>
+                                {{/each}}
+                            </script>
                         </table>
                     </div>
                 </div>

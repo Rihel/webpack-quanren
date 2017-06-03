@@ -2,6 +2,7 @@
 @import './dialog.scss';
 
 /*左侧导航栏*/
+
 input,
 button {
     -webkit-appearance: none;
@@ -22,6 +23,7 @@ input[type="file"]:active,
 button:active {
     background: #a4112b;
 }
+
 .logo {
     padding-top: rem(10);
     font-size: 3rem;
@@ -85,6 +87,11 @@ button:active {
 
 
 /*.left-main{ bottom: 0px; top:0px; position:absolute; background-color:#293038;}*/
+
+ul,
+ol {
+    list-style: none;
+}
 
 .left-main {
     bottom: 0px;
@@ -515,139 +522,143 @@ tfoot .pagination {
         }
     }
 }
- .form-item {
-        position: relative;
-        width: 100%;
+
+.form-item {
+    position: relative;
+    width: 100%;
+    height: rem(88);
+    margin-top: rem(22);
+    i {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: rem(130);
         height: rem(88);
-        margin-top: rem(22);
-        i {
-            display: block;
+        line-height: rem(88);
+        color: #1c1c1c;
+        font-size: rem(30);
+        font-style: normal;
+        text-align: center;
+    }
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: rem(2) solid #abaaaa;
+        @include radius(rem(6));
+        text-indent: rem(132);
+        font-size: rem(30);
+    }
+    .drop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: rem(2) solid #abaaaa;
+        @include radius(rem(6));
+        background: #fff;
+        h3 {
             position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 2;
-            width: rem(130);
-            height: rem(88);
-            line-height: rem(88);
-            color: #1c1c1c;
-            font-size: rem(30);
-            font-style: normal;
-            text-align: center;
-        }
-        input {
-            position: absolute;
-            top: 0;
+            top: -1px;
             left: 0;
             width: 100%;
             height: 100%;
-            border: rem(2) solid #abaaaa;
-            @include radius(rem(6));
+            font-size: rem(30);
+            text-align: left;
             text-indent: rem(132);
-            font-size: rem(30);
-        }
-        .drop {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: rem(2) solid #abaaaa;
-            @include radius(rem(6));
-            h3 {
+            line-height: rem(88);
+            margin: 0;
+            &:after {
+                content: '';
                 position: absolute;
-                top: -1px;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                font-size: rem(30);
-                text-align: left;
-                text-indent: rem(132);
-                line-height: rem(88);
+                top: 50%;
+                right: rem(40);
+                width: rem(34);
+                height: rem(20);
+                margin-top: rem(-20/2);
+                background: url('../img/arrow-down.png') no-repeat;
+                background-size: contain;
+                transition: all 0.5s;
+            }
+            &.active {
                 &:after {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    right: rem(40);
-                    width: rem(34);
-                    height: rem(20);
-                    margin-top: rem(-20/2);
-                    background: url('../img/arrow-down.png') no-repeat;
-                    background-size: contain;
-                    transition: all 0.5s;
-                }
-                &.active {
-                    &:after {
-                        transform: rotate(180deg);
-                    }
-                }
-            }
-            .drop-menu {
-                display: none;
-                position: absolute;
-                top: 99%;
-                left: -1px;
-                z-index: 99999;
-                width: 100%;
-                padding: rem(30);
-                border: 1px solid #abaaaa;
-                box-shadow: 0 0 5px $primary-color;
-                border-top: none;
-                @include radius(0 0 rem(8) rem(8));
-                background: #fff;
-                @include boxSizing;
-                li {
-                    float: left;
-                    margin: 0 rem(5) rem(10) 0;
-                    padding: rem(10) rem(20);
-                    background: #dcdddd;
-                    border-radius: rem(8);
-                    cursor: pointer;
-                    // @include boxShadow(1px 1px 1px #1c1c1c);
-                    color: #000;
-                    &:nth-last-of-type(1) {
-                        border-bottom: none;
-                    }
-                    &:nth-last-of-type(2) {
-                        border-bottom: none;
-                    }
-                    &:nth-last-of-type(3) {
-                        border-bottom: none;
-                    }
+                    transform: rotate(180deg);
                 }
             }
         }
-        .password-strong {
+        .drop-menu {
             display: none;
             position: absolute;
-            bottom: rem(-30);
-            width: 60%;
-            height: rem(20);
+            top: 99%;
+            left: -1px;
+            z-index: 99999;
+            width: 100%;
+            padding: rem(30);
+            border: 1px solid #abaaaa;
+            box-shadow: 0 0 5px $primary-color;
+            border-top: none;
+            @include radius(0 0 rem(8) rem(8));
+            background: #fff;
+            @include boxSizing;
             li {
                 float: left;
-                width: 28%;
-                height: 100%;
-                background: $default-color;
-                &.error {
-                    background: $primary-color;
-                }
-                &.warring {
-                    background: #f2841b;
-                }
-                &.success {
-                    background: #7bc144;
-                }
-                &+li {
-                    margin-left: rem(1);
-                }
-                &:nth-of-type(1) {
-                    @include radius(rem(10) 0 0 rem(10));
-                }
+                margin: 0 rem(5) rem(10) 0;
+                padding: rem(10) rem(20);
+                background: #dcdddd;
+                border-radius: rem(8);
+                cursor: pointer;
+                // @include boxShadow(1px 1px 1px #1c1c1c);
+                color: #000;
                 &:nth-last-of-type(1) {
-                    @include radius(0 rem(10) rem(10) 0);
+                    border-bottom: none;
+                }
+                &:nth-last-of-type(2) {
+                    border-bottom: none;
+                }
+                &:nth-last-of-type(3) {
+                    border-bottom: none;
                 }
             }
         }
     }
+    .password-strong {
+        display: none;
+        position: absolute;
+        bottom: rem(-30);
+        width: 60%;
+        height: rem(20);
+        li {
+            float: left;
+            width: 28%;
+            height: 100%;
+            background: $default-color;
+            &.error {
+                background: $primary-color;
+            }
+            &.warring {
+                background: #f2841b;
+            }
+            &.success {
+                background: #7bc144;
+            }
+            &+li {
+                margin-left: rem(1);
+            }
+            &:nth-of-type(1) {
+                @include radius(rem(10) 0 0 rem(10));
+            }
+            &:nth-last-of-type(1) {
+                @include radius(0 rem(10) rem(10) 0);
+            }
+        }
+    }
+}
+
 .btn {
     display: block;
     width: 100%;
@@ -675,78 +686,79 @@ tfoot .pagination {
 }
 
 .image-warpper {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: rem(18);
-        .image-file {
-            position: relative;
-            width: 49%;
-            height: rem(170);
-            @include radius(rem(6));
-            @include boxSizing;
-            padding: rem(50) rem(61);
-            margin-bottom: rem(20);
-            background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
-            background-size: contain;
-            .moxie-shim {
-                display: none;
-            }
-            .file {
-                z-index: 9999999;
-                position: absolute;
-                opacity: 0;
-                top: 0;
-                left: 0;
-                width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: rem(18);
+    .image-file {
+        position: relative;
+        width: 49%;
+        height: rem(170);
+        @include radius(rem(6));
+        @include boxSizing;
+        padding: rem(50) rem(61);
+        margin-bottom: rem(20);
+        background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
+        background-size: contain;
+        .moxie-shim {
+            display: none;
+        }
+        .file {
+            z-index: 9999999;
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            line-height: rem(170);
+            font-size: rem(30);
+            color: #828282;
+        }
+        .progress-warpper {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: rem(25);
+            @include radius(rem(12));
+            background: $default-color;
+            overflow: hidden;
+            .progress {
+                width: 50%;
                 height: 100%;
+                background: $primary-color; // transition: all 0.6s;
             }
-            img {
+            .progress-text {
                 position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-            span {
-                position: absolute;
-                left: 0;
                 top: 0;
                 bottom: 0;
+                left: 0;
                 right: 0;
                 text-align: center;
-                line-height: rem(170);
-                font-size: rem(30);
-                color: #828282;
-            }
-            .progress-warpper {
-                display: none;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: rem(25);
-                @include radius(rem(12));
-                background: $default-color;
-                overflow: hidden;
-                .progress {
-                    width: 50%;
-                    height: 100%;
-                    background: $primary-color; // transition: all 0.6s;
-                }
-                .progress-text {
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    text-align: center;
-                    line-height: rem(25);
-                    font-size: rem(12);
-                }
+                line-height: rem(25);
+                font-size: rem(12);
             }
         }
     }
+}
+
 @include media(xs) {
     .upload {
         width: 80%;

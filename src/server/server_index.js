@@ -23,15 +23,17 @@ import until from '../modules/until';
         lockedNum,
     } = await server_ysummary();
     let {
-        servicingNum
+        servicingNum,
+        submittedNum
     } = await server_osummary();
-    until.renderTem('ysummary', 'ysummary-tem', {
+    until.renderTem('init', 'init-tem', {
         unconfirmNum,
         confirmedNum,
         forServiceNum,
         forPriceSheepNum,
         lockedNum,
-        servicingNum
+        servicingNum,
+        submittedNum
     })
 
 
