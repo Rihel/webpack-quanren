@@ -58,6 +58,8 @@
             }
         }
         .dialog-content {
+            max-height: rem(500);
+            overflow-y: scroll;
             position: relative;
             padding: rem(10) rem(70);
             line-height: rem(40);

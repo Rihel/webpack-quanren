@@ -23,8 +23,8 @@ const base = opt => {
                     title: '请求超时',
                     content: '网络情况不是很好哟，刷新一下吧~~',
                     btns: ['确定刷新', '取消'],
-                    btnsCallback: btns => {
-                        $(btns).get(0).click(function() {
+                    btnsCallback: function(btns) {
+                        $(btns).get(0).on('click', function() {
                             window.location.reload();
                         })
                     }
@@ -408,7 +408,16 @@ export const server_osummary = () => {
             url: serverApi.osummary,
             success: data => {
                 if (!data.success) {
-                    alert(data.errorDetail.msg);
+                    dialog({
+                        title: '温馨提醒',
+                        content: data.errorDetail.msg,
+                        btns: ['确定'],
+                        btnsCallback: function(btns) {
+                            $(btns).get(0).on('click', e => {
+                                until.jumpPage('login')
+                            })
+                        }
+                    })
                 } else {
                     resolve(data.data)
                 };
@@ -424,7 +433,20 @@ export const server_ysummary = () => {
             url: serverApi.ysummary,
             success: data => {
                 if (!data.success) {
-                    alert(data.errorDetail.msg);
+                    if (data.errorDetail.code == -1) {
+                        dialog({
+                            title: '温馨提醒',
+                            content: data.errorDetail.msg,
+                            btns: ['确定'],
+                            btnsCallback: function(btns) {
+                                $(btns).on('click', e => {
+                                    until.jumpPage('login')
+                                })
+                            }
+                        })
+                    } else {
+                        alert(data.errorDetail.msg);
+                    }
                 } else {
                     resolve(data.data)
                 };
@@ -444,10 +466,88 @@ export const server_ypage = arg => {
             data: arg,
             success: data => {
                 if (!data.success) {
-                    alert(data.errorDetail.msg);
+                    if (data.errorDetail.code == -1) {
+                        dialog({
+                            title: '温馨提醒',
+                            content: data.errorDetail.msg,
+                            btns: ['确定'],
+                            btnsCallback: function(btns) {
+                                $(btns).on('click', e => {
+                                    until.jumpPage('login')
+                                })
+                            }
+                        })
+                    } else {
+                        alert(data.errorDetail.msg);
+                    }
                 } else {
                     resolve(data.data)
                 };
+            }
+        })
+    });
+}
+
+/**
+ * 获取订单详情   
+ * @param {Number} orderId 订单ID
+ */
+export const server_OrderDetail = orderId => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.detail,
+            data: {
+                orderId,
+            },
+            success: data => {
+                if (!data.success) {
+                    if (data.errorDetail.code == -1) {
+                        dialog({
+                            title: '温馨提醒',
+                            content: data.errorDetail.msg,
+                            btns: ['确定'],
+                            btnsCallback: function(btns) {
+                                $(btns).on('click', e => {
+                                    until.jumpPage('login')
+                                })
+                            }
+                        })
+                    } else {
+                        alert(data.errorDetail.msg);
+                    }
+                } else {
+                    resolve(data.data)
+                }
+            }
+        })
+    });
+}
+
+
+export const server_confirm = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.confirm,
+            data: arg,
+            success: data => {
+                if (!data.success) {
+                    if (data.errorDetail.code == -1) {
+                        dialog({
+                            title: '温馨提醒',
+                            content: data.errorDetail.msg,
+                            btns: ['确定'],
+                            btnsCallback: function(btns) {
+                                $(btns).on('click', e => {
+                                    until.jumpPage('login')
+                                })
+                            }
+                        })
+                    } else {
+                        alert(data.errorDetail.msg);
+                    }
+                } else {
+                    resolve(data.data)
+                }
             }
         })
     });

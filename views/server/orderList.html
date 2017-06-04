@@ -69,14 +69,16 @@
                     <div class="info-center-title">
                         <div class="form-item">
                             <div class="drop" id="CarBrandList">
-                                <h3 class="sex" id="carBrandCode">待确认订单</h3>
-                                <ul class="drop-menu">
-                                    <li code="1">待确认订单</li>
-                                    <li code="2">已经确认订单</li>
-                                    <li code="4">待服务的订单</li>
-                                    <li code="5">等待维修报价单</li>
-                                    <li code="9">被冻结订单</li>
-                                    <li code="10">正在服务订单</li>
+                                <h3 class="sex" id="carBrandCode">等待确认</h3>
+                                <ul class="drop-menu status-slider">
+                                    <li code="1">等待确认</li>
+                                    <li code="2">预约已确认</li>
+                                    <li code="4">等待服务</li>
+                                    <li code="5">等待报价单</li>
+                                    <li code="7">报价通过</li>
+                                    <li code="8">报价不通过</li>
+                                    <li code="9">超时锁定</li>
+                                    <li code="11">服务完成</li>
                                 </ul>
                             </div>
                         </div>
@@ -95,7 +97,7 @@
                                     <td>预约时间</td>
                                     <td>车型</td>
                                     <td>状态</td>
-
+                                    <td>操作</td>
                                 </tr>
                             </thead>
                             <tbody id="order">
@@ -104,16 +106,22 @@
 
                             </tbody>
                             <script type="text/html" id="order-tem">
-                                {{each orders item index}}
-                                <tr orderId="{{item.orderId}}" orderTypeCode="{{item.orderTypeCode}}">
+                                {{if orders.length===0}}
+                                <td colspan="7">暂时没有数据</td>
+                                {{else}} {{each orders item index}}
+                                <tr orderId="{{item.orderId}}" createdTime="{{item.createdTime}}" statusCode="{{item.statusCode}}" orderTypeCode="{{item.orderTypeCode}}">
                                     <td>{{item.orderId}}</td>
-                                    <td>维修</td>
+                                    <td>{{item|washServiceLabel}}</td>
                                     <td>{{item.licensePlateNumber}}</td>
-                                    <td>2017-05-03 09:00:00</td>
-                                    <td> 一汽奥迪Q7</td>
-                                    <td>预约已确认</td>
+                                    <td>{{item.createdTime}}</td>
+                                    <td> {{item.carModelTitle}}</td>
+                                    <td>{{item.statusCode|OrderStatus}}</td>
+                                    <td>
+
+                                        <button class="btn btn-primary" style="margin:0;line-height:1;padding:0;">查看详情</button>
+                                    </td>
                                 </tr>
-                                {{/each}}
+                                {{/each}} {{/if}}
                             </script>
                         </table>
                     </div>
@@ -125,7 +133,55 @@
             </div>
         </div>
     </div>
+    <script type="text/html" id="dialog-tem-default">
+        <div class="list-group">
 
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单号:{{detail.orderId}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单状态:{{detail.statusCode|OrderStatus}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车牌:{{detail.licensePlateNumber}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车型:{{detail.carModelTitle}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">预约服务:{{detail|washServiceLabel}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">到店时间:{{detail.confirmedTime}} </p>
+            </a>
+        </div>
+    </script>
+    <script type="text/html" id="dialog-tem-1">
+        <div class="list-group">
+
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单号:{{detail.orderId}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单状态:{{detail.statusCode|OrderStatus}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车牌:{{detail.licensePlateNumber}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车型:{{detail.carModelTitle}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">预约服务:{{detail|washServiceLabel}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">预约时间:{{detail.createdTime}} </p>
+            </a>
+        </div>
+    </script>
 </body>
 
 </html>
+
+
+订单号: 2 订单状态: 预约已确认 客户车牌: 粤A12345 客户车型: 一汽奥迪Q7 预约服务: 维修 到店时间: 2017-05-03 09:00:00

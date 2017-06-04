@@ -99,6 +99,7 @@ $(function() {
             })
         } else {
             initDraftBox(isRegText.val());
+            until.setItem('mobile', isRegText.val());
             $(this).parent().hide();
             $('#msform').show();
         }
