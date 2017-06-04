@@ -113,7 +113,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        host: '192.168.0.101',
+        // host: '192.168.0.101',
 
     },
     externals: {
