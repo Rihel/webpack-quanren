@@ -6,6 +6,7 @@ $keylist:-webkit-,
 "";
 $primary-color:#f73859;
 $default-color:#efefef;
+$success-color:#7bc144;
 $halfBlack:rgba(0, 0, 0, .5);
 @function opaColor($num) {
     @return rgba(0, 0, 0, $num);

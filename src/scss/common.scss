@@ -61,32 +61,6 @@ button:active {
     }
 }
 
-.nav-tab {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    list-style: none;
-    width: 100%;
-    margin: 0;
-    padding: rem(10) 0;
-    border-top: 1px solid #eee;
-    li {
-        width: 33.333333333%;
-        text-align: center;
-        a {
-            display: flex;
-            flex-direction: column;
-            font-size: rem(14);
-        }
-        &.active {
-            a {
-                color: #3cb2ff;
-            }
-        }
-    }
-}
-
 .loading {
     display: flex;
     justify-content: center;
@@ -111,6 +85,39 @@ button:active {
     border-radius: rem(8);
     border: none;
     font-size: rem(30);
+}
+
+.nav-tab {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    list-style: none;
+    width: 100%;
+    height: rem(130);
+    margin: 0;
+    background: linear-gradient(to bottom, #574335, #271609);
+    li {
+        width: 33.333333333%;
+        text-align: center;
+        @include boxSizing;
+        padding-top: rem(25);
+        i {
+            font-size: 2em;
+            margin-bottom: rem(6);
+        }
+        a {
+            display: flex;
+            flex-direction: column;
+            font-size: rem(30);
+            color: #fff;
+        }
+        &.active {
+            a {
+                color: $primary-color;
+            }
+        }
+    }
 }
 
 .btn:disabled {

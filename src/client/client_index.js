@@ -1,8 +1,10 @@
 import '../scss/common.scss';
-import '../scss/register.scss';
+import '../scss/font.scss'
+import '../scss/client.scss';
 
 
 import tem from '../modules/template-web';
+
 
 
 
