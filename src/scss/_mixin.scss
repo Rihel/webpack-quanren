@@ -169,3 +169,9 @@ $halfBlack:rgba(0, 0, 0, .5);
     white-space: nowrap;
     /*设置不断行*/
 }
+
+@mixin colCenter {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -56,6 +56,14 @@ body {}
             &:nth-of-type(3):before {
                 background: $primary-color;
             }
+            i {
+                position: absolute;
+                right: 10%;
+                color: #fff;
+                font-size: 2em;
+                top: 50%;
+                transform: translateY(-50%);
+            }
         }
     }
     .lately-order {
@@ -96,4 +104,71 @@ body {}
             }
         }
     }
+}
+
+.order-warpper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 1);
+    .order-time {
+        position: absolute;
+        @include colCenter;
+        width: 80%;
+        input[disabled="disabled"] {
+            text-indent: 0;
+            text-align: center;
+            color: #000;
+        }
+        input[type="button"] {
+            margin-top: rem(30);
+        }
+    }
+    .order-pro {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 1);
+        display: flex;
+        flex-direction: column;
+        .top {
+            display: flex;
+            justify-content: space-around;
+            .item {
+                position: relative;
+                height: rem(50);
+                background: #eeeffe;
+            }
+            .city {
+                width: 20%;
+                span {
+                    text-indent: rem(39);
+                    font-size: rem(28);
+                    position: absolute;
+                    line-height: rem(50);
+                }
+                .drop {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: rem(50);
+                    h3 {
+                        color: $primary-color;
+                    }
+                }
+            }
+            .search {
+                width: 70%;
+            }
+        }
+    }
+}
+
+::-webkit-input-placeholder {
+    color: #000;
 }

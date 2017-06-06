@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'icomoon';
-    src: url('fonts/icomoon.eot');
-    src: url('fonts/icomoon.eot') format('embedded-opentype'), url('fonts/icomoon.ttf') format('truetype'), url('fonts/icomoon.woff') format('woff'), url('fonts/icomoon.svg') format('svg');
+    src: url('fonts/icomoon.eot?30d0f1');
+    src: url('fonts/icomoon.eot?30d0f1#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?30d0f1') format('truetype'), url('fonts/icomoon.woff?30d0f1') format('woff'), url('fonts/icomoon.svg?30d0f1#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -21,78 +21,90 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-logo:before {
-    content: "\e912";
-}
-
-.icon-coffee:before {
-    content: "\e911";
-}
-
-.icon-pwd:before {
-    content: "\e910";
-}
-
-.icon-close:before {
+.icon-bingo:before {
     content: "\e900";
 }
 
-.icon-carbrand:before {
-    content: "\e901";
-}
-
-.icon-urgency:before {
+.icon-coffee:before {
     content: "\e902";
 }
 
-.icon-position:before {
+.icon-arrow-down:before {
     content: "\e903";
 }
 
-.icon-search:before {
+.icon-king:before {
     content: "\e904";
 }
 
-.icon-tracker:before {
+.icon-order:before {
     content: "\e905";
 }
 
-.icon-bingo:before {
+.icon-idcard:before {
     content: "\e906";
 }
 
-.icon-king:before {
+.icon-project:before {
     content: "\e907";
 }
 
-.icon-merchant:before {
+.icon-smile:before {
     content: "\e908";
 }
 
-.icon-setting:before {
+.icon-close:before {
     content: "\e909";
 }
 
-.icon-time:before {
+.icon-carbrand:before {
     content: "\e90a";
 }
 
-.icon-mobile:before {
+.icon-emergency-project:before {
     content: "\e90b";
 }
 
-.icon-project:before {
+.icon-position:before {
     content: "\e90c";
 }
 
-.icon-smile:before {
+.icon-search:before {
     content: "\e90d";
 }
 
-.icon-order:before {
+.icon-tracker:before {
     content: "\e90e";
 }
 
-.icon-idcrad:before {
+.icon-my-center:before {
     content: "\e90f";
+}
+
+.icon-logo:before {
+    content: "\e910";
+}
+
+.icon-merchant:before {
+    content: "\e911";
+}
+
+.icon-setting:before {
+    content: "\e912";
+}
+
+.icon-time:before {
+    content: "\e913";
+}
+
+.icon-mobile:before {
+    content: "\e914";
+}
+
+.icon-pwd:before {
+    content: "\e915";
+}
+
+.icon-arrow-right:before {
+    content: "\e901";
 }
