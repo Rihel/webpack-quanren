@@ -9,6 +9,8 @@
     <title>Document</title>
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script>
+
 </head>
 
 <body>
@@ -26,25 +28,22 @@
             <li> <a href="#">维修&nbsp;(预约)</a>
                 <i class="icon-arrow-right"></i></li>
         </ul>
-        <div class="lately-order">
-            <h2>最近预约</h2>
-            <a class="lately-order-item">
-                <i class="icon-position"></i>
-                <div class="caption">
-                    <h3>汽车美容服务商1号</h3>
-                    <p>时间：2017.6.1</p>
-                    <p>地址:XXXXXXXXXXXXXX</p>
-                </div>
-            </a>
-            <a class="lately-order-item">
-                <i class="icon-position"></i>
-                <div class="caption">
-                    <h3>汽车美容服务商1号</h3>
-                    <p>时间：2017.6.1</p>
-                    <p>地址:XXXXXXXXXXXXXX</p>
-                </div>
-            </a>
+        <div class="lately-order" id="lately-warpper">
+
         </div>
+        <script id="lately-tem" type="text/html">
+            <h2>最近预约</h2>
+            {{each latelys item index}}
+            <a class="lately-order-item" orderId="{{item.orderId}}" server="{{item|washServiceLabel}}">
+                <i class="icon-position"></i>
+                <div class="caption">
+                    <h3>{{item.shopName}}</h3>
+                    <p>时间：{{item.reservedTime}}</p>
+                    <p>地址:{{item.detailAddr}}</p>
+                </div>
+            </a>
+            {{/each}}
+        </script>
     </div>
 
     <ul class="nav-tab">
@@ -79,36 +78,77 @@
                 <div class="form-item">
                     <input class="pwd" type="text" disabled="disabled" placeholder="即时服务">
                 </div>
-                <input class="btn btn-primary " type="button" value="确定预约">
+                <input class="btn btn-primary ordernext" type="button" value="下一步">
                 <input class="btn btn-default goback" type="button" value="返回上一步">
             </div>
         </div>
         <div class="order-pro">
+            <script type="text/html" id="order-pro-tem">
 
+            </script>
             <div class="form-box top ">
                 <div class="item  city">
                     <span class="icon-position"></span>
                     <div class="drop">
-                        <h3 code="1" id="genderCode">先生</h3>
-                        <ul class="drop-menu">
-                            <li code="1">先生</li>
-                            <li code="2">女士</li>
+                        <h3 code="1" id="city">广州</h3>
+                        <ul class="drop-menu" id="citys-list-warpper">
+
                         </ul>
+                        <script id="city-tem" type="text/html">
+                            {{each citys item index}}
+                            <li code="{{item.code}}">{{item.title}}</li>
+                            {{/each}}
+                        </script>
                     </div>
                 </div>
                 <div class="item search">
-                    <input type="text">
+
+                    <input type="text" placeholder="输入地址搜索周边的店">
+                    <i class="icon-search"></i>
                 </div>
             </div>
 
             <div class="main">
-                <ul class="district-list">
-                    111111w
-                </ul>
-                <ul class="shop-list">
-                    11111111111
-                </ul>
+                <div class="district-list">
+                    <ul id="district-warpper">
+
+                    </ul>
+                </div>
+                <script id="district-tem" type="text/html">
+                    {{each districts item index}}
+                    <li code="{{item.code}}" {{if index==0}}class="active" {{/if}} cityCode="{{item.cityCode}}">{{item.title}}</li>
+                    {{/each}}
+                </script>
+                <div class="shop-list" id="shop-list">
+                    <div id="shop-list-warpper">
+
+
+                    </div>
+                </div>
+                <script type="text/html" id="shop-list-tem">
+                    {{each providers item index}}
+                    <div class="list-item" providerId="{{item.providerId}}">
+                        <!--<h2>天河区</h2>-->
+                        <ul class="list-warpper">
+                            <li>
+                                <div class="shop-title">
+                                    <h4>{{item.shopName}}</h4>
+                                    <!--<span class="distance">0.67KM</span>-->
+                                </div>
+                                <div class="phone">
+                                    <i class="icon-mobile"></i> 135xxxxxxxx
+                                </div>
+                                <address>
+                                    地址：{{item.detailAddr}}
+                                </address>
+                            </li>
+                        </ul>
+                    </div>
+                    {{/each}}
+                </script>
             </div>
+            <input class="btn btn-primary next" type="button" value="下一步">
+            <input class="btn btn-default backTime" type="button" value="返回">
         </div>
     </div>
 </body>

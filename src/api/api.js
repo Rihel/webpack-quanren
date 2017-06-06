@@ -5,10 +5,12 @@ import {
 } from './apiUrls';
 import until from '../modules/until';
 import { alert, dialog } from '../modules/dialog';
+import '../modules/vconsole.min'
 
-/**
- * 底层函数
- */
+$('head').append('<link src="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"/>')
+    /**
+     * 底层函数
+     */
 const base = opt => {
     let option = $.extend({}, {
         xhrFields: {
@@ -280,6 +282,76 @@ export const client_getLpprefixList = () => {
     });
 }
 
+/**
+ * 获得城市列表
+ */
+export const client_cityList = () => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.city,
+            success: data => {
+                if (data.success) {
+                    resolve(data.data);
+                }
+            }
+        })
+    });
+}
+
+
+/**
+ * 获取城区列表
+ * @param {Number} 城市代码
+ */
+export const client_districtsList = cityCode => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.district,
+            data: {
+                cityCode,
+            },
+            success: data => {
+                if (data.success) {
+                    resolve(data.data);
+                }
+            }
+        })
+    });
+}
+
+
+/**
+ * 获取服务商列表
+ * @param {Number} 城市代码
+ */
+export const client_providerList = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.providerList,
+            success: data => {
+                if (!data.success) {
+                    if (data.errorDetail.code == 2) {
+                        // alert(data.errorDetail.code);
+                        dialog({
+                            title: '温馨提醒',
+                            content: data.errorDetail.msg,
+                            btns: ['确定'],
+                            btnsCallback: function(btns) {
+                                $(btns).on('click', e => {
+                                    until.jumpPage('login')
+                                })
+                            }
+                        })
+                    } else {
+                        alert(data.errorDetail.msg);
+                    }
+                } else {
+                    resolve(data.data)
+                }
+            }
+        })
+    });
+}
 
 /**
  * 发送验证码

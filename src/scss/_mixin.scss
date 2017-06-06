@@ -175,3 +175,8 @@ $halfBlack:rgba(0, 0, 0, .5);
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+@mixin visCenter {
+    top: 50%;
+    transform: translateY(-50%);
+}
