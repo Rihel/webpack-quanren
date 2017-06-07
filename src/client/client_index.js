@@ -51,7 +51,7 @@ async function renderCity() {
     until.renderTem('citys-list-warpper', 'city-tem', {
         citys
     })
-    $('#citys-list-warpper').find('li').on('click', function() {
+    $('#citys-list-warpper').find('li').on('click', function () {
         renderDistrict($(this).attr('code'));
     })
 }
@@ -60,11 +60,13 @@ async function renderDistrict(code) {
     let districts = await client_districtsList(code);
 
     until.renderTem('district-warpper', 'district-tem', {
-        districts: districts !== undefined ? districts : [{ title: '暂时没有数据' }],
+        districts: districts !== undefined ? districts : [{
+            title: '暂时没有数据'
+        }],
     });
     renderProviders(code, districts[0].districtCode);
     console.log(districts[0])
-    $('#district-warpper').find('li').on('click', function() {
+    $('#district-warpper').find('li').on('click', function () {
         $('#district-warpper').find('li').removeClass('active');
         renderProviders(code, $(this).attr('code'));
         $(this).addClass('active')
@@ -80,12 +82,12 @@ async function renderProviders(cityCode = 1, districtCode = 1) {
     });
 }
 
-(async function() {
-    until.loading('正在加载中...')
+(async function () {
+    // until.loading('正在加载中...')
     let latelys = await client_orderPage({
         statusCode: 2
     });
-    until.closeLoading('正在加载中...')
+    // until.closeLoading('正在加载中...')
     console.log(latelys.dataLst)
     until.renderTem('lately-warpper', 'lately-tem', {
         latelys: latelys.dataLst
@@ -94,20 +96,25 @@ async function renderProviders(cityCode = 1, districtCode = 1) {
     renderDistrict(1);
     renderProviders();
 
-    $('.servers li').click(function() {
+    $('.servers li').click(function () {
         $('.order-warpper').fadeIn();
+        if ($(this).attr('type') === 'wash') {
+            $('.washType').show();
+
+        }
     });
-    $('.goback').click(function() {
+    $('.goback').click(function () {
         $('.order-warpper').fadeOut();
+        $('.washType').hide();
     })
-    $('.ordernext').click(function() {
-        $('.order-time').fadeOut(function() {
+    $('.ordernext').click(function () {
+        $('.order-time').fadeOut(function () {
             $('.order-pro').fadeIn();
         });
 
     });
-    $('.backTime').click(function() {
-        $('.order-pro').fadeOut(function() {
+    $('.backTime').click(function () {
+        $('.order-pro').fadeOut(function () {
             $('.order-time').fadeIn();
         });
     })

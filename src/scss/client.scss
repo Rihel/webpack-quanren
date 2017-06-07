@@ -116,9 +116,28 @@ body {}
     bottom: 0;
     background: rgba(255, 255, 255, 1);
     .order-time {
+        
         position: absolute;
         @include colCenter;
         width: 80%;
+        .washType{
+            display: none;
+            text-align: center;
+            font-size: 0;
+            li{
+                // float: left;
+                display: inline-block;
+                background: #efefef;
+                padding: rem(10) rem(20);
+                @include radius(rem(15));
+                color: #000;
+                font-size: rem(20);
+                &.active{
+                    background: $primary-color;
+                    color: #fff;
+                }
+            }
+        }
         input[disabled="disabled"] {
             text-indent: 0;
             text-align: center;

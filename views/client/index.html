@@ -19,8 +19,8 @@
             <i class="icon-logo"></i>
         </div>
         <ul class="servers">
-            <li>
-                <a href="#">普通洗车&nbsp;(预约) </a>
+            <li type="wash">
+                <a href="#">洗车&nbsp;(预约) </a>
                 <i class="icon-arrow-right"></i>
             </li>
             <li> <a href="#">美容保养&nbsp;(预约)</a>
@@ -41,8 +41,7 @@
                     <p>时间：{{item.reservedTime}}</p>
                     <p>地址:{{item.detailAddr}}</p>
                 </div>
-            </a>
-            {{/each}}
+            </a> {{/each}}
         </script>
     </div>
 
@@ -69,6 +68,10 @@
 
     <div class="order-warpper">
         <div class="order-time">
+            <ul class="washType">
+                <li class="active">普洗</li>
+                <li>精洗</li>
+            </ul>
             <div class="form-box">
                 <div class="form-item">
                     <i>预约时间</i>
