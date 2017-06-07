@@ -75,10 +75,46 @@ export const client_orderPage = arg => {
     return new Promise((resolve, reject) => {
         base({
             url: clientApi.orderPage,
+            type: 'post',
             data: arg,
             success: function(data) {
                 if (data.success) {
                     resolve(data.data);
+                }
+            }
+        });
+
+    })
+}
+
+
+export const client_orderSubmit = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.orderSubmit,
+            data: arg,
+            success: function(data) {
+                if (data.success) {
+                    resolve(data);
+                }
+            }
+        });
+
+    })
+}
+
+
+export const client_orderCancel = (orderId, reason) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.orderCancel,
+            data: {
+                orderId,
+                reason
+            },
+            success: function(data) {
+                if (data.success) {
+                    resolve(data);
                 }
             }
         });

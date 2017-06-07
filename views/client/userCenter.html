@@ -12,41 +12,106 @@
 </head>
 
 <body>
-    <div class="index-box container">
-        <div class="logo ">
-            <i class="icon-logo"></i>
+    <div class="userCenter">
+        <div class="user-little-info">
+            <div class="user-warp">
+                <div class="user-face"></div>
+                <div class="user-name">张晨</div>
+            </div>
         </div>
-        <ul class="servers">
-            <li>
-                <a href="#">普通洗车&nbsp;(预约) </a>
-                <i class="icon-right"></i>
+        <ul class="user-controls">
+            <li show="my-order">
+                <i class="icon-order"></i>
+                <h4>我的预约</h4>
+                <span class="icon-arrow-right"></span>
             </li>
-            <li> <a href="#">美容保养&nbsp;(预约)</a>
-                <i class="icon-right"></i></li>
-            <li> <a href="#">维修&nbsp;(预约)</a>
-                <i class="icon-right"></i></li>
+            <li>
+                <i class="icon-tracker"></i>
+                <h4>消费记录</h4>
+                <span class="icon-arrow-right"></span>
+            </li>
+            <li show="user-info">
+                <i class="icon-setting"></i>
+                <h4>个人信息</h4>
+                <span class="icon-arrow-right"></span>
+            </li>
         </ul>
-        <div class="lately-order">
-            <h2>最近预约</h2>
-            <a class="lately-order-item">
-                <i class="icon-position"></i>
+    </div>
+    <div class="user-info message">
+        <h2>我的信息</h2>
+        <ul id="user-info">
+
+        </ul>
+        <script type="text/html" id="user-info-tem">
+            <li>
+                <i class="icon-my-center"></i>
                 <div class="caption">
-                    <h3>汽车美容服务商1号</h3>
-                    <p>时间：2017.6.1</p>
-                    <p>地址:XXXXXXXXXXXXXX</p>
+                    <h4>车主姓名</h4>
+                    <p>{{userInfo.name}}</p>
                 </div>
-            </a>
-            <a class="lately-order-item">
-                <i class="icon-position"></i>
+            </li>
+            <li>
+                <i class="icon-carbrand"></i>
                 <div class="caption">
-                    <h3>汽车美容服务商1号</h3>
-                    <p>时间：2017.6.1</p>
-                    <p>地址:XXXXXXXXXXXXXX</p>
+                    <h4>车牌号</h4>
+                    <p>{{userInfo.licensePlateNumber}}</p>
                 </div>
-            </a>
+            </li>
+            <li>
+                <i class="icon-idcard"></i>
+                <div class="caption">
+                    <h4>行驶证件号</h4>
+                    <p>{{userInfo.drivingLicenseNumber}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-project"></i>
+                <div class="caption">
+                    <h4>套餐类型</h4>
+                    <p>{{userInfo.vipLevelCode}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-king"></i>
+                <div class="caption">
+                    <h4>VIP服务次数</h4>
+                    <p>{{userInfo.washNum}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-time"></i>
+                <div class="caption">
+                    <h4>续保保单日期</h4>
+                    <p>{{userInfo.baodanDate}}</p>
+                </div>
+            </li>
+
+        </script>
+
+        <div class="btn-warpper">
+            <div class="form-box">
+                <div class="form-item">
+                    <i>行驶里程</i>
+                    <input class="carMileage" id="carMileage" type="phone">
+                </div>
+                <p style="margin-top:11px;">注：里程数只能增加不能减少</p>
+            </div>
+            <input type="button" class="btn btn-primary updateCarMileage" disabled="disabled" value="更新里程数">
+            <input type="button" class="btn btn-default closeUserInfo" value="返回">
+
         </div>
     </div>
+    <div class="my-order">
+        <div class="warp">
+            <h3>最近预约</h3>
+            <ul class="order-list-warpper" id="my-order-warpper">
 
+            </ul>
+        </div>
+    </div>
+    <div class="trans" id="trans">
+
+    </div>
     <ul class="nav-tab">
         <li>
             <a href="index.html">
@@ -56,17 +121,77 @@
         </li>
         <li>
             <a href="#">
-                <i class="icon-urgency"></i>
+                <i class="icon-emergency-project"></i>
                 <span>救援</span>
             </a>
         </li>
         <li class="active">
-            <a href="userCenter.html">
-                <i class="fa fa-user"></i>
+            <a href="#">
+                <i class="icon-my-center"></i>
                 <span>我</span>
             </a>
         </li>
     </ul>
+    <script id="order-tem" type="text/html">
+        {{each orders item index}}
+        <li orderId="{{item.orderId}}" shopName="{{item.shopName}}" reservedTime="{{item.reservedTime}}" detailAddr="{{item.detailAddr}}">
+            <div class="order-detail">
+                <div class="shopName">{{item.shopName}}</div>
+                <div class="order-time">时间:{{item.reservedTime}}</div>
+                <div class="order-addrees">地址:{{item.detailAddr}}</div>
+            </div>
+            <i class="order-status">{{item.statusCode|OrderStatus}}</i>
+        </li>
+        {{/each}}
+
+        <input class="btn btn-default goUserCenter" type="button" value="返回">
+
+    </script>
+    <script type="text/html" id="order-detail-tem">
+        <div class="message">
+            <h2>订单详情</h2>
+            <ul>
+                <li>
+                    <i class="icon-merchant"></i>
+                    <div class="caption">
+                        <h4>门店</h4>
+                        <p>{{order.shopName}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-position"></i>
+                    <div class="caption">
+                        <h4>地址</h4>
+                        <p>{{order.detailAddr}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-time"></i>
+                    <div class="caption">
+                        <h4>时间</h4>
+                        <p>{{order.reservedTime}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-project"></i>
+                    <div class="caption">
+                        <h4>预约项目</h4>
+                        <p>{{order|washServiceLabel}}</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="btn-warpper">
+                {{if order.statusCode
+                <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}" type="button" value="我已到店">
+                    <input class="btn btn-primary serviceno" style="display:none;" type="button" value="获取服务码">
+                    <input class="btn btn-primary cancel" type="button" value="取消订单"> {{/if}}
+
+
+                    <input class="btn btn-default goBack" type="button" value="返回">
+
+            </div>
+        </div>
+    </script>
 </body>
 
 </html>

@@ -20,13 +20,17 @@
         </div>
         <ul class="servers">
             <li type="wash">
-                <a href="#">洗车&nbsp;(预约) </a>
+                <a href="#">洗车 </a>
                 <i class="icon-arrow-right"></i>
             </li>
-            <li> <a href="#">美容保养&nbsp;(预约)</a>
-                <i class="icon-arrow-right"></i></li>
-            <li> <a href="#">维修&nbsp;(预约)</a>
-                <i class="icon-arrow-right"></i></li>
+            <li type="needMaintenance">
+                <a href="#">美容保养</a>
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li type="needRepair">
+                <a href="#">维修</a>
+                <i class="icon-arrow-right"></i>
+            </li>
         </ul>
         <div class="lately-order" id="lately-warpper">
 
@@ -45,7 +49,7 @@
         </script>
     </div>
 
-    <ul class="nav-tab">
+    <ul class="nav-tab home">
         <li class="active">
             <a href="index.html">
                 <i class="icon-smile"></i>
@@ -59,7 +63,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="userCenter.html">
                 <i class="icon-my-center"></i>
                 <span>我</span>
             </a>
@@ -67,25 +71,39 @@
     </ul>
 
     <div class="order-warpper">
-        <div class="order-time">
+        <div class="order-time order-item">
             <ul class="washType">
-                <li class="active">普洗</li>
-                <li>精洗</li>
+                <li class="active" washCode="1">普洗</li>
+                <li washCode="2">精洗</li>
             </ul>
             <div class="form-box">
                 <div class="form-item">
-                    <i>预约时间</i>
-                    <input class="pwd" type="datetime-local" placeholder="请输入行驶证号">
+                    <i>预约日期</i>
+                    <input class="orderDate" orderTypeCode="1" type="date">
+                </div>
+                <div class="form-item">
+                    <i>时间</i>
+                    <div class="drop" id="times">
+
+                    </div>
+                    <script type="text/html" id="times-tem">
+                        <h3 class="time" code="{{now}}">{{now}}</h3>
+                        <ul class="drop-menu times">
+                            {{each times item index}}
+                            <li code="{{item}}" orderTypeCode="1">{{item}}</li>
+                            {{/each}}
+                        </ul>
+                    </script>
                 </div>
 
-                <div class="form-item">
-                    <input class="pwd" type="text" disabled="disabled" placeholder="即时服务">
-                </div>
+
+                <input class="instant-services btn btn-default" type="button" orderTypeCode="2" style="text-indent:0;margin-bottom:5px;" value="即时服务">
+
                 <input class="btn btn-primary ordernext" type="button" value="下一步">
                 <input class="btn btn-default goback" type="button" value="返回上一步">
             </div>
         </div>
-        <div class="order-pro">
+        <div class="order-pro  order-item">
             <script type="text/html" id="order-pro-tem">
 
             </script>
@@ -104,11 +122,11 @@
                         </script>
                     </div>
                 </div>
-                <div class="item search">
+                <!--<div class="item search">
 
                     <input type="text" placeholder="输入地址搜索周边的店">
                     <i class="icon-search"></i>
-                </div>
+                </div>-->
             </div>
 
             <div class="main">
@@ -130,7 +148,7 @@
                 </div>
                 <script type="text/html" id="shop-list-tem">
                     {{each providers item index}}
-                    <div class="list-item" providerId="{{item.providerId}}">
+                    <div class="list-item" providerId="{{item.providerId}}" shopName="{{item.shopName}}" detailAddr="{{item.detailAddr}}">
                         <!--<h2>天河区</h2>-->
                         <ul class="list-warpper">
                             <li>
@@ -152,6 +170,49 @@
             </div>
             <input class="btn btn-primary next" type="button" value="下一步">
             <input class="btn btn-default backTime" type="button" value="返回">
+        </div>
+        <div class="order-sure  order-item message">
+            <h2>请确认预约信息</h2>
+            <ul id="sure">
+
+            </ul>
+            <script type="text/html" id="sure-tem">
+                <li>
+                    <i class="icon-merchant"></i>
+                    <div class="caption">
+                        <h4>门店</h4>
+                        <p>{{orderJson.shopName}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-merchant"></i>
+                    <div class="caption">
+                        <h4>地址</h4>
+                        <p>{{orderJson.detailAddr}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-merchant"></i>
+                    <div class="caption">
+                        <h4>预约时间</h4>
+                        <p>{{orderJson.orderTime}}</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="icon-merchant"></i>
+                    <div class="caption">
+                        <h4>预约项目</h4>
+                        <p>{{orderJson|washServiceLabel}}</p>
+                    </div>
+                </li>
+            </script>
+            <div class="btn-warpper">
+                <input type="button" class="btn btn-primary submit-order" value="确定预约">
+                <div class="btn-bottom">
+                    <input type="button" class="btn btn-default backOrderPro" value="修改">
+                    <input type="button" class="btn btn-default sure-goback" value="返回">
+                </div>
+            </div>
         </div>
     </div>
 </body>

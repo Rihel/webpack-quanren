@@ -180,3 +180,8 @@ $halfBlack:rgba(0, 0, 0, .5);
     top: 50%;
     transform: translateY(-50%);
 }
+
+@mixin rowCenter {
+    left: 50%;
+    transform: translateX(-50%);
+}

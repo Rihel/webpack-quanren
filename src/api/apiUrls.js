@@ -3,6 +3,8 @@ const serverHostName = 'http://m.qren163.cn:8083/v1/api/'
 export const clientApi = {
     userLogin: clientHostName + 'auth/login', //登录
     orderPage: clientHostName + 'order/page', //预约列表
+    orderSubmit: clientHostName + 'order/submit', //预约提交
+    orderCancel: clientHostName + 'order/cancel', //预约取消
     userGet: clientHostName + 'user/get', //获取用户信息
     userStatus: clientHostName + 'user/status', //获取用户状态
 
