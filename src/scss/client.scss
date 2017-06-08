@@ -133,6 +133,7 @@ body {
                 display: inline-block;
                 background: #efefef;
                 padding: rem(10) rem(20);
+                margin: 0 rem(20);
                 @include radius(rem(15));
                 color: #000;
                 font-size: rem(20);
@@ -493,4 +494,37 @@ body {
 
 ::-webkit-input-placeholder {
     color: #abaaaa;
+}
+.urgency{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    figure{
+        
+        .bg{
+            display: inline-block;
+            width: rem(298);
+            height: rem(298);
+            background: url('../img/urgency.png') no-repeat center;
+            background-size: cover;
+        }
+        figcaption{
+            margin-top: rem(38);
+            h2{
+                margin-bottom: rem(18);
+                color: $primary-color;
+                font-size: rem(40);
+            }
+            p{
+                font-size: rem(28);
+                color: #9fa0a0;
+            }
+        }
+    }
 }

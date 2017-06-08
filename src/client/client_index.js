@@ -219,6 +219,10 @@ function chageOrderTime(date, time) {
                 alert('请输入日期')
                 return;
             } else {
+                if(Date.parse(orderJson.orderTime)<Date.now()){
+                    alert('亲~，你选的时间已经过去啦~重新选择下吧');
+                    return;
+                }
                 $('.order-time').fadeOut(function () {
                     $('.order-pro').fadeIn();
                 });

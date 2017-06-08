@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>个人中心</title>
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 </head>
@@ -21,7 +21,7 @@
         </div>
         <ul class="user-controls">
             <li show="my-order" class="layter">
-                <i class="icon-order" ></i>
+                <i class="icon-order"></i>
                 <h4>我的预约</h4>
                 <span class="icon-arrow-right"></span>
             </li>
@@ -115,12 +115,12 @@
     <ul class="nav-tab">
         <li>
             <a href="index.html">
-                <i class="icon-smile"></i>
+                <i class="icon-home"></i>
                 <span>首页</span>
             </a>
         </li>
         <li>
-            <a href="javascript:void(0)">
+            <a href="urgency.html">
                 <i class="icon-emergency-project"></i>
                 <span>救援</span>
             </a>
@@ -133,18 +133,21 @@
         </li>
     </ul>
     <script id="order-tem" type="text/html">
-        {{each orders item index}}
+        {{if orders.length>0}} {{each orders item index}}
         <li orderId="{{item.orderId}}" shopName="{{item.shopName}}" reservedTime="{{item.reservedTime}}" detailAddr="{{item.detailAddr}}">
             <div class="order-detail">
                 <div class="shopName">{{item.shopName}}</div>
                 <div class="order-time">时间:{{item.reservedTime}}</div>
                 <div class="order-addrees">地址:{{item.detailAddr}}</div>
-               
+
             </div>
             <i class="order-status">{{item.statusCode|OrderStatus}}</i>
         </li>
-        {{/each}}
-
+        {{/each}} {{else}}
+        <li>
+            暂无数据
+        </li>
+        {{/if}}
         <input class="btn btn-default goUserCenter" type="button" value="返回">
 
     </script>
@@ -183,9 +186,10 @@
             </ul>
             <div class="btn-warpper">
                 {{if order.statusCode
-                <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}" type="button" value="我已到店">
+                <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}"
+                    type="button" value="我已到店">
                     <input class="btn btn-primary serviceno" style="display:none;" type="button" value="获取服务码">
-               
+
                     <input class="btn btn-primary cancel" type="button" value="取消订单"> {{/if}}
 
 

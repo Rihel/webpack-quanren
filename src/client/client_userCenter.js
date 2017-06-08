@@ -25,22 +25,25 @@ tem.defaults.imports.washServiceLabel = OrderData => {
 }
 async function initOrderList(type) {
     let orders = await client_orderPage();
-     let finishOrders ;
-    if (type=='layter') {
-       finishOrders= orders.dataLst.filter(item => {
-            let code=item.statusCode;
-            return code<=10;
-        })
-        console.log(orders)
-    }else if(type=='jilu'){
-        finishOrders= orders.dataLst.filter(item => {
-            let code=item.statusCode;
-            return code ==11||code==9;
-        }) 
+    let finishOrders=[];
+    console.log(orders.dataLst)
+    if (orders.dataLst) {
+        if (type == 'layter') {
+            finishOrders = orders.dataLst.filter(item => {
+                let code = item.statusCode;
+                return code <= 10;
+            })
+            console.log(orders)
+        } else if (type == 'jilu') {
+            finishOrders = orders.dataLst.filter(item => {
+                let code = item.statusCode;
+                return code == 11 || code == 9;
+            })
+        }
     }
- until.renderTem('my-order-warpper', 'order-tem', {
-            orders:finishOrders
-        });
+    until.renderTem('my-order-warpper', 'order-tem', {
+        orders: finishOrders
+    });
     $('.goUserCenter').on('click', function (params) {
         $('.my-order').fadeOut();
     })

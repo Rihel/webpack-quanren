@@ -35,6 +35,8 @@ $(function() {
         if (tagname === 'h3') {
             // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
             $(e.target).toggleClass('active');
+            $('.drop-menu').hide();
+            
             $(e.target).next().slideToggle();
 
         }

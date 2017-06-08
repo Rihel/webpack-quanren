@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>首页</title>
 
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script>
@@ -37,7 +37,7 @@
         </div>
         <script id="lately-tem" type="text/html">
             <h2>最近预约</h2>
-            {{each latelys item index}}
+            {{each latelys item index}} {{if index==0}}
             <a class="lately-order-item" orderId="{{item.orderId}}" server="{{item|washServiceLabel}}">
                 <i class="icon-position"></i>
                 <div class="caption">
@@ -45,19 +45,19 @@
                     <p>时间：{{item.reservedTime}}</p>
                     <p>地址:{{item.detailAddr}}</p>
                 </div>
-            </a> {{/each}}
+            </a> {{/if}} {{/each}}
         </script>
     </div>
 
     <ul class="nav-tab home">
         <li class="active">
             <a href="index.html">
-                <i class="icon-smile"></i>
+                <i class="icon-home"></i>
                 <span>首页</span>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="urgency.html">
                 <i class="icon-emergency-project"></i>
                 <span>救援</span>
             </a>
