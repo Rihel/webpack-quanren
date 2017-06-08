@@ -4,7 +4,11 @@ import '../scss/client.scss';
 
 import until from '../modules/until';
 import tem from '../modules/template-web';
-import { dialog ,alert,jumpPage} from '../modules/dialog';
+import {
+    dialog,
+    alert,
+    jumpPage
+} from '../modules/dialog';
 import {
     client_userGet,
     client_orderPage,
@@ -19,33 +23,47 @@ tem.defaults.imports.OrderStatus = statusCode => {
 tem.defaults.imports.washServiceLabel = OrderData => {
     return until.GetOrderServiceLabel(OrderData)
 }
-async function initOrderList() {
+async function initOrderList(type) {
     let orders = await client_orderPage();
-
-    until.renderTem('my-order-warpper', 'order-tem', {
-        orders: orders.dataLst
-    });
-    $('.goUserCenter').on('click', function(params) {
+     let finishOrders ;
+    if (type=='layter') {
+       finishOrders= orders.dataLst.filter(item => {
+            let code=item.statusCode;
+            return code<=10;
+        })
+        console.log(orders)
+    }else if(type=='jilu'){
+        finishOrders= orders.dataLst.filter(item => {
+            let code=item.statusCode;
+            return code ==11||code==9;
+        }) 
+    }
+ until.renderTem('my-order-warpper', 'order-tem', {
+            orders:finishOrders
+        });
+    $('.goUserCenter').on('click', function (params) {
         $('.my-order').fadeOut();
     })
-    $('.order-list-warpper li').on('click', function() {
+    $('.order-list-warpper li').on('click', function () {
         // console.log($(this).attr('orderId'))
         let order = orders.dataLst.filter(item => {
             return item.orderId == $(this).attr('orderId');
         })
+
+
         console.log(order);
         until.renderTem('trans', 'order-detail-tem', {
             order: order[0]
         });
         $('.trans').fadeIn();
-        $('.goBack').on('click', function() {
+        $('.goBack').on('click', function () {
             $('#trans').fadeOut();
         });
-        $('.daodian').on('click', function() {
+        $('.daodian').on('click', function () {
             $(this).hide();
             $('.serviceno').show();
         });
-        $('.cancel').on('click', function() {
+        $('.cancel').on('click', function () {
             dialog({
                 content: `
                     <p>确定取消预约吗？</p>
@@ -56,12 +74,12 @@ async function initOrderList() {
                     </select>
                 `,
                 btns: ['确定取消', '返回'],
-                btnsCallback: function(btns) {
-                    $(btns[0]).on('click', async function() {
+                btnsCallback: function (btns) {
+                    $(btns[0]).on('click', async function () {
                         console.log(order.orderId)
                         let result = await client_orderCancel(order[0].orderId, $('#reason').val());
-                        if(result.success){
-                            jumpPage('取消成功！','userCenter');
+                        if (result.success) {
+                            jumpPage('取消成功！', 'userCenter');
                         }
                     })
                 }
@@ -69,9 +87,9 @@ async function initOrderList() {
         });
 
 
-        $('.serviceno').on('click',async function(){
-            let result=await client_orderGetServiceno(order[0].orderId)
-            jumpPage(`服务码为${result.data.serviceNo}`,'userCenter')
+        $('.serviceno').on('click', async function () {
+            let result = await client_orderGetServiceno(order[0].orderId)
+            jumpPage(`服务码为${result.data.serviceNo}`, 'userCenter')
         })
     })
 
@@ -85,20 +103,26 @@ async function initUserInfo() {
     });
 
     $('#carMileage').val(userData.data.carMileage);
-    $('#carMileage').on('change', function() {
+    $('#carMileage').on('change', function () {
 
         $('.updateCarMileage').removeAttr('disabled');
 
     })
-    $('.closeUserInfo').on('click', function() {
+    $('.closeUserInfo').on('click', function () {
         $('.user-info').fadeOut();
     })
 }
 
-$(function() {
-    $('.user-controls li').on('click', function(e) {
+$(function () {
+    $('.user-controls li').on('click', function (e) {
         $(`.${$(this).attr('show')}`).fadeIn();
+        if ($(this).hasClass('layter')) {
+            initOrderList('layter');
+        }
+        if ($(this).hasClass('jilu')) {
+            initOrderList('jilu');
+        }
     })
     initUserInfo();
-    initOrderList();
+    // initOrderList();
 })

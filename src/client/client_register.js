@@ -553,7 +553,7 @@ async function reg() {
          * 后去验证码
          */
         let verifyCode = await client_getVcode(until.getItem('mobile'));
-
+        console.log(verifyCode,'验证码')
         if (verifyCode.success) {
             vcodeBtn.prop('disabled', 'disabled');
             registerbtn.removeAttr('disabled');

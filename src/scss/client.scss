@@ -117,10 +117,12 @@ body {
     right: 0;
     left: 0;
     bottom: 0;
+    z-index: 1000;
     background: rgba(255, 255, 255, 1);
     .order-time {
         position: absolute;
         @include colCenter;
+        z-index: 1000;
         width: 80%;
         .washType {
             display: none;
@@ -152,6 +154,7 @@ body {
     .order-pro {
         display: none;
         position: absolute;
+        z-index: 1000;
         top: 0;
         right: 0;
         left: 0;
@@ -370,7 +373,7 @@ body {
     }
     .user-controls {
         width: 90%;
-        margin: rem(111) auto;
+        margin: rem(150) auto;
         li {
             display: flex;
             align-items: center;
@@ -423,10 +426,10 @@ body {
     top: 0;
     right: 0;
     left: 0;
-    bottom: rem(130);
+    bottom: 0;
     background: #fff;
     overflow-y: scroll;
-    // z-index: 99999999999;
+    z-index: 1000;
     h3 {
         margin: rem(40) 0 rem(20);
         text-align: center;
@@ -439,9 +442,10 @@ body {
     top: 0;
     right: 0;
     left: 0;
-    bottom: rem(130);
+    bottom:0;
     background: #fff;
     overflow-y: scroll;
+    z-index: 1001;
     .btn{
         margin-bottom: 10px;
     }
@@ -452,14 +456,15 @@ body {
     margin: 0 auto;
     li {
         display: flex;
-        height: rem(155);
+        // height: rem(155);
+        
         @include radius(rem(11));
         background-color: #eeefee;
         justify-content: space-between;
         align-items: center;
         margin-bottom: rem(16);
         @include boxSizing;
-        padding: 0 rem(37);
+        padding: rem(20) rem(37);
         .order-detail {
             width: 70%;
             .shopName {
@@ -473,8 +478,9 @@ body {
             }
             .order-addrees {
                 font-size: rem(20);
+                height: rem(21);
                 color: #9fa0a0;
-                @include textOver;
+                // @include textOver;
             }
         }
         i {

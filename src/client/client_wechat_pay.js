@@ -17,7 +17,7 @@ $(async function() {
     if (until.isWechat()) {
         $('.noWechatBrowser').hide();
         don1.show();
-        let wxbingd = await client_wxbingd();
+        // let wxbingd = await client_wxbingd();
         // alert(wxbingd);
         don1.on('click', async function() {
             $(this).hide();
