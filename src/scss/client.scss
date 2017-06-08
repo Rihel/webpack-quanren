@@ -442,6 +442,9 @@ body {
     bottom: rem(130);
     background: #fff;
     overflow-y: scroll;
+    .btn{
+        margin-bottom: 10px;
+    }
 }
 
 .order-list-warpper {

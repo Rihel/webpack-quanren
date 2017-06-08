@@ -139,6 +139,7 @@
                 <div class="shopName">{{item.shopName}}</div>
                 <div class="order-time">时间:{{item.reservedTime}}</div>
                 <div class="order-addrees">地址:{{item.detailAddr}}</div>
+               
             </div>
             <i class="order-status">{{item.statusCode|OrderStatus}}</i>
         </li>
@@ -184,6 +185,7 @@
                 {{if order.statusCode
                 <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}" type="button" value="我已到店">
                     <input class="btn btn-primary serviceno" style="display:none;" type="button" value="获取服务码">
+               
                     <input class="btn btn-primary cancel" type="button" value="取消订单"> {{/if}}
 
 

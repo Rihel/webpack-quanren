@@ -87,7 +87,10 @@ export const client_orderPage = arg => {
     })
 }
 
-
+/**
+ * 提交订单
+ * @param {Object} arg 参数
+ */
 export const client_orderSubmit = arg => {
     return new Promise((resolve, reject) => {
         base({
@@ -103,7 +106,11 @@ export const client_orderSubmit = arg => {
     })
 }
 
-
+/**
+ * 取消订单
+ * @param {Number} orderId 订单id
+ * @param {String} reason 取消原因
+ */
 export const client_orderCancel = (orderId, reason) => {
     return new Promise((resolve, reject) => {
         base({
@@ -122,6 +129,26 @@ export const client_orderCancel = (orderId, reason) => {
     })
 }
 
+/**
+ * 获取服务吗
+ * @param {Number} orderId 预约ID
+ */
+export const client_orderGetServiceno = (orderId) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.serviceno,
+            data: {
+                orderId
+            },
+            success: function(data) {
+                if (data.success) {
+                    resolve(data);
+                }
+            }
+        });
+
+    })
+}
 
 /**
  * 获取C端客户类型列表

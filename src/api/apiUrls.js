@@ -5,6 +5,7 @@ export const clientApi = {
     orderPage: clientHostName + 'order/page', //预约列表
     orderSubmit: clientHostName + 'order/submit', //预约提交
     orderCancel: clientHostName + 'order/cancel', //预约取消
+    serviceno: clientHostName + 'order/serviceno', //获取服务吗
     userGet: clientHostName + 'user/get', //获取用户信息
     userStatus: clientHostName + 'user/status', //获取用户状态
 

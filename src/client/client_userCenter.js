@@ -4,11 +4,12 @@ import '../scss/client.scss';
 
 import until from '../modules/until';
 import tem from '../modules/template-web';
-import { dialog } from '../modules/dialog';
+import { dialog ,alert,jumpPage} from '../modules/dialog';
 import {
     client_userGet,
     client_orderPage,
-    client_orderCancel
+    client_orderCancel,
+    client_orderGetServiceno
 } from '../api/api.js'
 
 
@@ -54,15 +55,23 @@ async function initOrderList() {
                         <option value="其他原因">其他原因</option>
                     </select>
                 `,
-                btns: ['重新预约', '确定取消'],
+                btns: ['确定取消', '返回'],
                 btnsCallback: function(btns) {
-                    $(btns[1]).on('click', async function() {
+                    $(btns[0]).on('click', async function() {
                         console.log(order.orderId)
                         let result = await client_orderCancel(order[0].orderId, $('#reason').val());
-                        console.log(result);
+                        if(result.success){
+                            jumpPage('取消成功！','userCenter');
+                        }
                     })
                 }
             })
+        });
+
+
+        $('.serviceno').on('click',async function(){
+            let result=await client_orderGetServiceno(order[0].orderId)
+            jumpPage(`服务码为${result.data.serviceNo}`,'userCenter')
         })
     })
 

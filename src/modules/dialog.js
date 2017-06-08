@@ -3,6 +3,7 @@
  * @constructor Dialog
  * @class Dialog
  */
+import until from '../modules/until';
 class Dialog {
     constructor(opt) {
         let defaults = {
@@ -83,4 +84,19 @@ export const alert = content => {
  */
 export const dialog = opt => {
     return new Dialog(opt);
+}
+
+
+
+export const jumpPage=(content,page)=>{
+    return new Dialog({
+        title:'温馨提醒',
+        content,
+        btns:['确定'],
+        btnsCallback:function(btns){
+            $(btns).on('click',function(){
+                until.jumpPage(page);
+            })
+        }
+    })
 }

@@ -115,7 +115,7 @@ module.exports = {
         inline: true,
         // host: '192.168.1.114',
         // host: '192.168.0.104'
-        host: '192.168.0.109'
+        // host: '192.168.0.109'
 
     },
     externals: {
