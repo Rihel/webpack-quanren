@@ -261,7 +261,7 @@ async function initOssAll(draftBoxData) {
     $('.file').on('change', function(e) {
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
-        if (!/\.(png|gif|jpg|svg)/.test(postfix[0])) {
+        if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
             alert('这个不是图片哟,重新上传吧');
             return;
         }
@@ -300,6 +300,7 @@ async function initOssAll(draftBoxData) {
         }
         if (!until.isVehicleNumber(vehicleNumber)) {
             alert('请输入正确的车牌号码');
+            return;
         }
         if (until.isEmpty(drivingLicenseNumber.val())) {
             alert('行驶证号码不能为空');
