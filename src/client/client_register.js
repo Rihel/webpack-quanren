@@ -36,7 +36,7 @@ $(function() {
             // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
             $(e.target).toggleClass('active');
             $('.drop-menu').hide();
-            
+
             $(e.target).next().slideToggle();
 
         }
@@ -216,7 +216,7 @@ async function initDraftBox(mobile) {
  * 初始化Oss相关模块
  */
 async function initOssAll(draftBoxData) {
-
+    console.log(draftBoxData);
     /*************相关节点的数据初始化开始*******************/
     idCardNumber.val(draftBoxData.idCardNumber);
     id_card_front_image.attr('src', draftBoxData.idCardFrontImg || '');
@@ -259,6 +259,7 @@ async function initOssAll(draftBoxData) {
      * 会让对应的uploader添加文件
      */
     $('.file').on('change', function(e) {
+        console.log(11)
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
         if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
@@ -267,12 +268,16 @@ async function initOssAll(draftBoxData) {
         }
         console.log(postfix);
         let dataUrl = window.URL.createObjectURL(file);
+
+
+        console.log(`图片的URL${dataUrl}`)
+
         let key = $(this).attr('uploadType');
         $(this).prev().attr('src', dataUrl);
         uploaders[key].addFile(file);
 
         // uploadTypes['upload' + key](uploaders[key]);
-        console.log(`dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`, '添加上传名称');
+        // console.log(`dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`, '添加上传名称');
         $.extend(uploadImgKey, {
             [key]: `dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`
         });
@@ -280,7 +285,7 @@ async function initOssAll(draftBoxData) {
 
     });
 
-
+    console.log(uploaders, '上传类型')
     $('#papers').on('click', async function(e) {
         let vehicleNumber = lpprefix.attr('code') + licensePlateNumber.val();
 
@@ -319,7 +324,7 @@ async function initOssAll(draftBoxData) {
             let key = types[query];
             if (query < types.length) {
                 console.log(`上传${key}中`);
-                uploadTypes['upload' + key](uploaders[key])
+                uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'))
                 query++;
             } else {
                 clearTimeout(timer);
@@ -556,7 +561,7 @@ async function reg() {
          * 后去验证码
          */
         let verifyCode = await client_getVcode(until.getItem('mobile'));
-        console.log(verifyCode,'验证码')
+        console.log(verifyCode, '验证码')
         if (verifyCode.success) {
             vcodeBtn.prop('disabled', 'disabled');
             registerbtn.removeAttr('disabled');

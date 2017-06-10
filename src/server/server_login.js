@@ -15,11 +15,11 @@ $(function() {
     let name = $('#mobile').val(until.getItem('serverMobile')),
         pwd = $('#pwd');
     $('.login-btn').click(async function() {
-        if (until.isEmpty(name.val())) {
+        if (until.isEmpty(name.val().trim())) {
             alert('用户名不能为空!');
             return;
         }
-        if (!until.isPhone(name.val())) {
+        if (!until.isPhone(name.val().trim())) {
             alert('请输入正确的用户名');
             return;
         }

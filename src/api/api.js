@@ -34,8 +34,32 @@ const base = opt => {
             }
         }
     }, opt);
+
     $.ajax(option)
 }
+
+function resultHandled(resolve, data, returnData) {
+    console.log(data);
+    if (!data.success) {
+        if (data.errorCode == 2) {
+            dialog({
+                title: '温馨提醒',
+                content: data.errorDetail.msg,
+                btns: ['确定'],
+                btnsCallback: function(btns) {
+                    $(btns).on('click', e => {
+                        until.jumpPage('login')
+                    })
+                }
+            })
+        } else {
+            alert(data.errorDetail.msg);
+        }
+    } else {
+        resolve(returnData);
+    };
+}
+
 
 /**
  * 用户登录
@@ -55,16 +79,13 @@ export const client_login = (mobile, passowrd) => {
                 until.loading('正在加载中...');
             },
             success: data => {
-                // until.closeLoading();
-                if (data.success) {
-                    resolve(data);
-                } else {
-                    reject(data);
-                }
+                resultHandled(resolve, data, data);
             }
         })
     })
 }
+
+
 
 /**
  * 订单列表请求
@@ -78,9 +99,7 @@ export const client_orderPage = arg => {
             type: 'post',
             data: arg,
             success: function(data) {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         });
 
@@ -97,9 +116,7 @@ export const client_orderSubmit = arg => {
             url: clientApi.orderSubmit,
             data: arg,
             success: function(data) {
-                if (data.success) {
-                    resolve(data);
-                }
+                resultHandled(resolve, data, data);
             }
         });
 
@@ -120,9 +137,8 @@ export const client_orderCancel = (orderId, reason) => {
                 reason
             },
             success: function(data) {
-                if (data.success) {
-                    resolve(data);
-                }
+
+                resultHandled(resolve, data, data);
             }
         });
 
@@ -141,9 +157,7 @@ export const client_orderGetServiceno = (orderId) => {
                 orderId
             },
             success: function(data) {
-                if (data.success) {
-                    resolve(data);
-                }
+                resultHandled(resolve, data, data);
             }
         });
 
@@ -163,12 +177,7 @@ export const client_clitypes = statusCode => {
                 statusCode: statusCode || 1
             },
             success: function(data) {
-
-                if (data.success) {
-                    resolve(data.data);
-                } else {
-                    reject(data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -191,11 +200,7 @@ export const client_userGet = () => {
             },
             success: function(data) {
                 until.closeLoading();
-                if (data.success) {
-                    resolve(data);
-                } else {
-                    reject(data);
-                }
+                resultHandled(resolve, data, data);
             }
         });
 
@@ -215,11 +220,7 @@ export const client_user_Status = mobile => {
                 mobile: mobile
             },
             success: function(data) {
-                if (data.success) {
-                    resolve(data.data);
-                } else {
-                    reject(data.errorDetail.meg);
-                };
+                resultHandled(resolve, data, data.data);
             }
         })
     })
@@ -258,9 +259,7 @@ export const client_getDraftBox = mobile => {
                 mobile,
             },
             success: function(data) {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         });
     });
@@ -283,9 +282,7 @@ export const client_saveDraftBox = (mobile, arg) => {
             url: clientApi.saveDraftBox,
             data: opts,
             success: function(data) {
-                if (data.success) {
-                    resolve(data);
-                }
+                resultHandled(resolve, data, data);
             }
         });
     });
@@ -300,9 +297,7 @@ export const client_getCarBrandList = function() {
         base({
             url: clientApi.carbrand,
             success: data => {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         });
     });
@@ -320,9 +315,7 @@ export const client_getCarModelList = (brandCode) => {
                 brandCode: brandCode,
             },
             success: data => {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         });
     });
@@ -337,9 +330,7 @@ export const client_getLpprefixList = () => {
         base({
             url: clientApi.lpprefix,
             success: data => {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         });
     });
@@ -353,9 +344,7 @@ export const client_cityList = () => {
         base({
             url: clientApi.city,
             success: data => {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -374,9 +363,7 @@ export const client_districtsList = cityCode => {
                 cityCode,
             },
             success: data => {
-                if (data.success) {
-                    resolve(data.data);
-                }
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -392,25 +379,7 @@ export const client_providerList = arg => {
         base({
             url: clientApi.providerList,
             success: data => {
-                if (!data.success) {
-                    if (data.errorDetail.code == 2) {
-                        // alert(data.errorDetail.code);
-                        dialog({
-                            title: '温馨提醒',
-                            content: data.errorDetail.msg,
-                            btns: ['确定'],
-                            btnsCallback: function(btns) {
-                                $(btns).on('click', e => {
-                                    until.jumpPage('login')
-                                })
-                            }
-                        })
-                    } else {
-                        alert(data.errorDetail.msg);
-                    }
-                } else {
-                    resolve(data.data)
-                }
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -429,8 +398,7 @@ export const client_getVcode = mobile => {
             },
             success: data => {
 
-                resolve(data);
-
+                resultHandled(resolve, data, data);
             }
         })
     });
@@ -447,9 +415,7 @@ export const client_register = arg => {
             url: clientApi.register,
             data: arg,
             success: data => {
-
-                resolve(data);
-
+                resultHandled(resolve, data, data);
             }
         })
     });
@@ -460,20 +426,7 @@ export const client_wxbingd = () => {
         base({
             url: clientApi.wxbingd,
             success: data => {
-                if (!data.success) {
-                    dialog({
-                        title: '错误',
-                        content: data.errorDetail.msg,
-                        btns: ['确定'],
-                        btnsCallback: btns => {
-                            $(btns).click(e => {
-                                until.jumpPage('login');
-                            })
-                        }
-                    })
-                } else {
-                    resolve(data)
-                };
+                resultHandled(resolve, data, data);
             }
         })
     });
@@ -490,11 +443,7 @@ export const client_unifiedorder = () => {
         base({
             url: clientApi.unifiedorder,
             success: data => {
-                if (!data.success) {
-                    alert(data.errorDetail.msg);
-                } else {
-                    resolve(data.data)
-                };
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -508,11 +457,7 @@ export const server_login = (mobile, passowrd) => {
                 pwd: passowrd
             },
             success: data => {
-                if (!data.success) {
-                    alert(data.errorDetail.msg);
-                } else {
-                    resolve(data)
-                };
+                resultHandled(resolve, data, data);
             }
         })
     });
@@ -526,11 +471,8 @@ export const server_myInfo = () => {
         base({
             url: serverApi.myInfo,
             success: data => {
-                if (!data.success) {
-                    alert(data.errorDetail.msg);
-                } else {
-                    resolve(data.data)
-                };
+                console.log('获得服务商的个人信息')
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -542,20 +484,7 @@ export const server_osummary = () => {
         base({
             url: serverApi.osummary,
             success: data => {
-                if (!data.success) {
-                    dialog({
-                        title: '温馨提醒',
-                        content: data.errorDetail.msg,
-                        btns: ['确定'],
-                        btnsCallback: function(btns) {
-                            $(btns).get(0).on('click', e => {
-                                until.jumpPage('login')
-                            })
-                        }
-                    })
-                } else {
-                    resolve(data.data)
-                };
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -567,24 +496,7 @@ export const server_ysummary = () => {
         base({
             url: serverApi.ysummary,
             success: data => {
-                if (!data.success) {
-                    if (data.errorDetail.code == -1) {
-                        dialog({
-                            title: '温馨提醒',
-                            content: data.errorDetail.msg,
-                            btns: ['确定'],
-                            btnsCallback: function(btns) {
-                                $(btns).on('click', e => {
-                                    until.jumpPage('login')
-                                })
-                            }
-                        })
-                    } else {
-                        alert(data.errorDetail.msg);
-                    }
-                } else {
-                    resolve(data.data)
-                };
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -600,24 +512,26 @@ export const server_ypage = arg => {
             url: serverApi.ypage,
             data: arg,
             success: data => {
-                if (!data.success) {
-                    if (data.errorDetail.code == -1) {
-                        dialog({
-                            title: '温馨提醒',
-                            content: data.errorDetail.msg,
-                            btns: ['确定'],
-                            btnsCallback: function(btns) {
-                                $(btns).on('click', e => {
-                                    until.jumpPage('login')
-                                })
-                            }
-                        })
-                    } else {
-                        alert(data.errorDetail.msg);
-                    }
-                } else {
-                    resolve(data.data)
-                };
+                resultHandled(resolve, data, data.data);
+            }
+        })
+    });
+}
+
+
+/**
+ * 获取订单列表  opage只是查订单状态
+ * 10 = 服务中
+ * 11 = 服务完成
+ * @param {Object} arg 参数
+ */
+export const server_opage = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.opage,
+            data: arg,
+            success: data => {
+                resultHandled(resolve, data, data.data);
             }
         })
     });
@@ -635,54 +549,77 @@ export const server_OrderDetail = orderId => {
                 orderId,
             },
             success: data => {
-                if (!data.success) {
-                    if (data.errorDetail.code == -1) {
-                        dialog({
-                            title: '温馨提醒',
-                            content: data.errorDetail.msg,
-                            btns: ['确定'],
-                            btnsCallback: function(btns) {
-                                $(btns).on('click', e => {
-                                    until.jumpPage('login')
-                                })
-                            }
-                        })
-                    } else {
-                        alert(data.errorDetail.msg);
-                    }
-                } else {
-                    resolve(data.data)
-                }
+                resultHandled(resolve, data, data.data);
             }
         })
     });
 }
 
 
+/**
+ * 订单操作，确认或者拒绝
+ * @param {Object} arg 订单操作
+ */
 export const server_confirm = arg => {
     return new Promise((resolve, reject) => {
         base({
             url: serverApi.confirm,
             data: arg,
             success: data => {
-                if (!data.success) {
-                    if (data.errorDetail.code == -1) {
-                        dialog({
-                            title: '温馨提醒',
-                            content: data.errorDetail.msg,
-                            btns: ['确定'],
-                            btnsCallback: function(btns) {
-                                $(btns).on('click', e => {
-                                    until.jumpPage('login')
-                                })
-                            }
-                        })
-                    } else {
-                        alert(data.errorDetail.msg);
-                    }
-                } else {
-                    resolve(data.data)
-                }
+                resultHandled(resolve, data, data);
+            }
+        })
+    });
+}
+
+
+/**
+ * 提交服务码
+ * @param {Object} arg 参数
+ */
+export const server_servicing = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.servicing,
+            data: arg,
+            type: 'post',
+            success: data => {
+                resultHandled(resolve, data, data);
+            }
+        })
+    });
+}
+
+/**
+ * 提交报价单
+ * @param {Object} arg 参数
+ */
+export const server_pricesheet = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.pricesheet,
+            data: arg,
+            type: 'post',
+            success: data => {
+                resultHandled(resolve, data, data);
+            }
+        })
+    });
+}
+
+
+/**
+ * 服务完成
+ * @param {Object} arg 参数
+ */
+export const server_finish = arg => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: serverApi.finish,
+            data: arg,
+            type: 'post',
+            success: data => {
+                resultHandled(resolve, data, data);
             }
         })
     });

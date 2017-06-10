@@ -61,12 +61,16 @@ button:active {
     left: 48px;
 }
 
+body {
+    background-color: #eceff3;
+}
+
 .right-product {
     position: absolute;
     top: 0px;
     right: 0px;
-    bottom: 0;
-    background: #FFF;
+    // bottom: 0;
+    // background: #FFF;
     transition: all 0.5s;
 }
 
@@ -805,6 +809,91 @@ tfoot .pagination {
     }
 }
 
+.moxie-shim {
+    transform: translateX(-999999999999px);
+}
+
+.btn-primary {
+    border: none!important;
+}
+
+.btn-primary:active {
+    background: $primary-color;
+}
+
+.btn {
+    line-height: 1!important;
+    height: 2.6rem!important;
+}
+
+.select-item {
+    @include clearfix;
+    width: 100%;
+    // background: red;
+    font-size: rem(30);
+    line-height: rem(40);
+    margin: 15px 0;
+    .select-title {
+        float: left;
+    }
+    .select-tab {
+        float: right;
+        margin-right: 20px;
+        position: relative;
+        width: rem(150);
+        height: rem(40);
+        border-radius: rem(20);
+        overflow: hidden;
+        input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            -webkit-appearance: checkbox;
+        }
+        .ball {
+            position: absolute;
+            @include visCenter;
+            right: 10px;
+            width: rem(30);
+            height: rem(30);
+            background: #fff;
+            @include radius(100%);
+            transition: all 0.5s;
+            z-index: 8
+        }
+        .text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            color: #fff;
+            line-height: rem(40);
+        }
+        .true {
+            text-indent: 1em;
+            background: $success-color;
+        }
+        .false {
+            display: none;
+            text-indent: 2.5em;
+            background: $primary-color;
+        }
+        input:checked {
+            &~.ball {
+                left: 10px;
+            }
+            &~.false {
+                display: block;
+            }
+        }
+    }
+}
+
 @include media(sm) {
     .upload {
         width: 80%;
@@ -813,7 +902,7 @@ tfoot .pagination {
             display: flex;
             justify-content: space-between;
             .warpper {
-                width: 49%;
+                width: 30%;
                 h3 {
                     margin-bottom: 10px;
                     font-size: rem(30);

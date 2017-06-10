@@ -1,4 +1,5 @@
 import until from './until';
+
 let tokenUrl = 'http://m.qren163.cn:8080/v1/api/auth/upload/token';
 
 let imgTypes = {
@@ -8,12 +9,16 @@ let imgTypes = {
         drivingLicenseBackUrl: '_car_license_back',
         baodanUrl1: '_bao_dan_page_01',
         baodanUrl2: '_bao_dan_page_02',
-        baodanUrl3: '_bao_dan_page_03'
+        baodanUrl3: '_bao_dan_page_03',
+        carMileageUrl: '_carMileageUrl',
+        carAcceptedUrl: '_111_carAcceptedUrl',
+        carMxpjdUrl: ' _111_carMxpjdUrl',
+        repair_price_sheet: '_repair_price_sheet'
     }
     // console.log(plupload)
 
-function getInputFileName(fileinputDOM, cname) {
-    console.log(fileinputDOM, cname);
+function getInputFileName(fileinputDOM, cname, initname) {
+
     return new Promise((resolve, reject) => {
         let postfix = /.+\.(jpg|png|gif)$/.exec(fileinputDOM);
         if (postfix == undefined || postfix == null) {
@@ -21,7 +26,7 @@ function getInputFileName(fileinputDOM, cname) {
         }
 
         let fileSuffix = postfix[1].toString().toLowerCase();
-        resolve(until.getItem('mobile') + cname + '.' + fileSuffix);
+        resolve(initname + cname + '.' + fileSuffix);
     });
 }
 
@@ -65,7 +70,7 @@ function uploadImagesToAliOSS(fileInputName, progress) {
     return uploader;
 }
 
-function upload(uploader, imgType) {
+function upload(uploader, imgType, initname) {
 
     $.post(tokenUrl)
         .then(function(result) {
@@ -73,9 +78,10 @@ function upload(uploader, imgType) {
 
             let tokenData = result.data;
             if (uploader.files.length > 0) {
-                getInputFileName(uploader.files[0].name, imgType)
+                getInputFileName(uploader.files[0].name, imgType, initname)
                     .then(function(file_name) {
                         let ossObjKey = tokenData.dir + file_name;
+                        console.log(ossObjKey, '上传中的。。。。');
 
                         let uploadParams = {
                             'key': ossObjKey,
@@ -97,8 +103,8 @@ function upload(uploader, imgType) {
 
 let uploadType = {};
 for (let key in imgTypes) {
-    uploadType['upload' + key] = function(uploader) {
-        upload(uploader, imgTypes[key]);
+    uploadType['upload' + key] = function(uploader, initname) {
+        upload(uploader, imgTypes[key], initname);
     }
 }
 
@@ -108,5 +114,5 @@ export const uploadImages = function(inputDom, progress) {
 }
 export const uploadTypes = uploadType;
 
-
+console.log(uploadTypes);
 export const alias = imgTypes;

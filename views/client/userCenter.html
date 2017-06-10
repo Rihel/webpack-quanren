@@ -156,6 +156,13 @@
             <h2>订单详情</h2>
             <ul>
                 <li>
+                    <i class="icon-project"></i>
+                    <div class="caption">
+                        <h4>订单ID</h4>
+                        <p>{{order.orderId}}</p>
+                    </div>
+                </li>
+                <li>
                     <i class="icon-merchant"></i>
                     <div class="caption">
                         <h4>门店</h4>
@@ -177,7 +184,7 @@
                     </div>
                 </li>
                 <li>
-                    <i class="icon-project"></i>
+                    <i class="icon-order"></i>
                     <div class="caption">
                         <h4>预约项目</h4>
                         <p>{{order|washServiceLabel}}</p>
@@ -186,8 +193,7 @@
             </ul>
             <div class="btn-warpper">
                 {{if order.statusCode
-                <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}"
-                    type="button" value="我已到店">
+                <10&&order.statusCode!==9}} <input class="btn btn-primary daodian" style="display:{{if order.statusCode==2}}block;{{else}}none;{{/if}}" type="button" value="我已到店">
                     <input class="btn btn-primary serviceno" style="display:none;" type="button" value="获取服务码">
 
                     <input class="btn btn-primary cancel" type="button" value="取消订单"> {{/if}}

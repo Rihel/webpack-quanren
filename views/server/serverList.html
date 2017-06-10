@@ -5,19 +5,24 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
     <title>订单管理</title>
+
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <style>
+        .btn {
+            line-height: 1!important;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="down-main">
+
         <div class="left-main left-off">
             <div class="logo">
                 <span class="icon-logo"></span>
-
             </div>
             <div class="sidebar-fold"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="subNavBox">
@@ -50,40 +55,33 @@
                 <div class="info-center">
                     <div class="page-header">
                         <div class="pull-left">
-                            <h4>服务单列表</h4>
+                            <h4>订单列表</h4>
                         </div>
                     </div>
                     <div class="info-center-title clearfix">
-                        <span class="padding-large-right manage-title pull-left">
-                           <a  class="active" href="#">全部消息</a>
-                        </span>
-                        <span class="padding-large-right manage-title pull-left">
-                           <a href="#">普洗</a>
-                        </span>
-                        <span class="padding-large-right pull-left"><a href="#">精洗</a></span>
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input type="text" class="form-control search" placeholder="搜索车牌号...">
 
-                        <span class="padding-large-right pull-left"><a href="#">保养</a></span>
+                            </div>
+                            <div class="form-group">
 
-                        <span class="padding-large-right pull-left"><a href="#">维修</a></span>
+                                <input type="button" class="btn btn-primary searchBtn" style="height:auto;" value="搜索">
+                            </div>
+                        </form>
                     </div>
                     <div class="info-center-title">
-
                         <div class="form-item">
                             <div class="drop" id="CarBrandList">
                                 <h3 class="sex" id="carBrandCode">等待确认</h3>
                                 <ul class="drop-menu status-slider">
-                                    <li code="1">等待确认</li>
-                                    <li code="2">预约已确认</li>
-                                    <li code="4">等待服务</li>
-                                    <li code="5">等待报价单</li>
-                                    <li code="7">报价通过</li>
-                                    <li code="8">报价不通过</li>
-                                    <li code="9">超时锁定</li>
-                                    <li code="11">服务完成</li>
+                                    <li code="1">待审核</li>
+                                    <li code="6">服务中</li>
+                                    <li code="0">其他</li>
+                                    <!--<li code="0">其他(默认)</li>-->
                                 </ul>
                             </div>
                         </div>
-
 
                     </div>
                     <div class="clearfix"></div>
@@ -94,31 +92,37 @@
 
                                     <td>编号</td>
                                     <td>服务</td>
-                                    <td>状态</td>
-                                    <td>车牌</td>
-                                    <td>车型</td>
-                                    <td>预约时间</td>
 
+                                    <td>车牌</td>
+                                    <td>预约时间</td>
+                                    <td>车型</td>
+                                    <td>状态</td>
+                                    <td>操作</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="order">
 
 
-                                <tr>
-                                    <td>2</td>
-                                    <td>维修</td>
-                                    <td>预约已确认</td>
-                                    <td>粤A12345</td>
-                                    <td> 一汽奥迪Q7</td>
-                                    <td>
-                                        <span>2017-05-03 09:00:00</span>
-                                        <a href="#" class="btn btn-primary seeDetail">查看详情</a>
-                                    </td>
-
-
-                                </tr>
 
                             </tbody>
+                            <script type="text/html" id="order-tem">
+                                {{if orders.length===0}}
+                                <td colspan="7">暂时没有数据</td>
+                                {{else}} {{each orders item index}}
+                                <tr orderId="{{item.orderId}}" createdTime="{{item.createdTime}}" statusCode="{{item.statusCode}}" orderTypeCode="{{item.orderTypeCode}}">
+                                    <td>{{item.orderId}}</td>
+                                    <td>{{item|washServiceLabel}}</td>
+                                    <td>{{item.licensePlateNumber}}</td>
+                                    <td>{{item.createdTime|time}}</td>
+                                    <td> {{item.carModelTitle}}</td>
+                                    <td>{{item.statusCode|OrderStatus}}</td>
+                                    <td>
+
+                                        <button class="btn btn-primary" style="margin:0;line-height:1;padding:0;height:2.6rem;">查看详情</button>
+                                    </td>
+                                </tr>
+                                {{/each}} {{/if}}
+                            </script>
                         </table>
                     </div>
                 </div>
@@ -129,6 +133,29 @@
             </div>
         </div>
     </div>
+    <script type="text/html" id="dialog-tem-default">
+        <div class="list-group">
+
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单号:{{detail.orderId}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">订单状态:{{detail.statusCode|OrderStatus}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车牌:{{detail.licensePlateNumber}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">客户车型:{{detail.carModelTitle}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">预约服务:{{detail|washServiceLabel}} </p>
+            </a>
+            <a href="#" class="list-group-item">
+                <p class="list-group-item-text">到店时间:{{detail.confirmedTime}} </p>
+            </a>
+        </div>
+    </script>
 
 </body>
 

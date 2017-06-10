@@ -17,7 +17,7 @@ class Dialog {
         this.box = $('<div class="dialog-box modal-content">');
         this.title = $('<div class="dialog-title modal-header">');
         this.titleText = $('<h4 class="modal-title"></h4>').html(this.setting.title)
-        this.closeButton = $('<button type="button" class="close" ><span class="icon-close"></span></button>')
+        this.closeButton = $('<button type="button" class="close" ></button>')
         this.title.append(this.closeButton).append(this.titleText);
 
         this.closeButton.click(() => {
@@ -33,7 +33,11 @@ class Dialog {
         this.init();
         $('body').append(this.container);
         this.mark.fadeIn(300, function() {
-            self.box.fadeIn();
+            self.box.fadeIn(300, function() {
+                console.log('初始化')
+                self.setting.init && self.setting.init(self.controls.find('input'));
+            });
+
         })
     }
     init() {
@@ -88,14 +92,28 @@ export const dialog = opt => {
 
 
 
-export const jumpPage=(content,page)=>{
+export const jumpPage = (content, page) => {
     return new Dialog({
-        title:'温馨提醒',
+        title: '温馨提醒',
         content,
-        btns:['确定'],
-        btnsCallback:function(btns){
-            $(btns).on('click',function(){
+        btns: ['确定'],
+        btnsCallback: function(btns) {
+            $(btns).on('click', function() {
                 until.jumpPage(page);
+            })
+        }
+    })
+}
+
+
+export const reloadDialog = content => {
+    dialog({
+        title: '温馨提醒',
+        content: content,
+        btns: ['确定'],
+        btnsCallback: function(btns) {
+            $(btns).on('click', function() {
+                window.location.reload();
             })
         }
     })

@@ -41,8 +41,13 @@ export const serverApi = {
     ysummary: `${serverHostName}order/ysummary`,
     osummary: `${serverHostName}order/osummary`,
     ypage: `${serverHostName}order/ypage`,
+    opage: `${serverHostName}order/opage`,
     detail: `${serverHostName}order/detail`,
-    confirm: `${serverHostName}order/confirm`
+    confirm: `${serverHostName}order/confirm`,
+    finish: `${serverHostName}order/finish`,
+
+    servicing: `${serverHostName}order/servicing`,
+    pricesheet: `${serverHostName}order/pricesheet`
 }
 export const userStatus = {
     preForVal01: "0", //等待1审
