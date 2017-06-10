@@ -11,6 +11,8 @@ import {
     dialog
 } from '../modules/dialog';
 
+import datePicker from '../modules/datePicker';
+
 
 import {
     client_userGet,
@@ -67,7 +69,7 @@ async function renderCity() {
     until.renderTem('citys-list-warpper', 'city-tem', {
         citys
     })
-    $('#citys-list-warpper').find('li').on('click', function () {
+    $('#citys-list-warpper').find('li').on('click', function() {
         renderDistrict($(this).attr('code'));
     })
 }
@@ -82,8 +84,8 @@ async function renderDistrict(code) {
     });
     renderProviders(code, districts[0].districtCode);
     console.log(districts[0])
-    // var districtWarpper = new IScroll(document.querySelector('.district-list'));
-    $('#district-warpper').find('li').on('click', function () {
+        // var districtWarpper = new IScroll(document.querySelector('.district-list'));
+    $('#district-warpper').find('li').on('click', function() {
         $('#district-warpper').find('li').removeClass('active');
         renderProviders(code, $(this).attr('code'));
         $(this).addClass('active')
@@ -98,7 +100,7 @@ async function renderProviders(cityCode = 1, districtCode = 1) {
         }),
     });
     // var shopList = new IScroll('#shop-list');
-    $('#shop-list-warpper .list-item').on('click', function () {
+    $('#shop-list-warpper .list-item').on('click', function() {
         $('#shop-list-warpper .list-item').removeClass('active');
         orderJson['providerId'] = Number($(this).attr('providerId'));
         orderJson['shopName'] = $(this).attr('shopName')
@@ -109,18 +111,35 @@ async function renderProviders(cityCode = 1, districtCode = 1) {
 }
 
 function chageOrderTime(date, time) {
+    console.log(date);
     orderJson.orderTime = `${date} ${time}`;
 }
-(async function () {
+(async function() {
 
 
     let latelys = await client_orderPage({
         statusCode: 2
     });
-    let date = until.format('yyyy-MM-dd');
-    let time = `${new Date().getHours() > 19 ? 9 : new Date().getHours()}:00`;
+    let date = until.format('yyyy-MM-dd', 1);
+    let time = `${new Date().getHours() > 19 ||new Date().getHours() < 19? 9 : new Date().getHours()}:00`;
     $('.orderDate').val(date)
-    // console.log(latelys.dataLst)
+    datePicker.init({
+            trigger: '#orderDate',
+            /*选择器，触发弹出插件*/
+            'type': 'date',
+            /*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
+            'minDate': until.format('yyyy-MM-dd', 1),
+            /*最小日期*/
+            'maxDate': until.format('yyyy-MM-dd', 15),
+            /*最大日期*/
+            'onSubmit': function() { /*确认时触发事件*/
+                var theSelectData = datePicker.value;
+                date = theSelectData;
+                chageOrderTime(theSelectData, time)
+            },
+            'onClose': function() { /*取消时触发事件*/ }
+        })
+        // console.log(latelys.dataLst)
     until.renderTem('lately-warpper', 'lately-tem', {
         latelys: latelys.dataLst
     })
@@ -148,34 +167,38 @@ function chageOrderTime(date, time) {
 
 
 
-    $('.times li').on('click', function () {
+    $('.times li').on('click', function() {
         time = $(this).attr('code');
         orderJson['orderTypeCode'] = Number($(this).attr('orderTypeCode'))
         chageOrderTime(date, time);
         console.log(orderJson);
     });
 
-    $('.orderDate').on('change', function () {
+    $('.orderDate').on('change', function() {
         date = $(this).val();
         orderJson['orderTypeCode'] = Number($(this).attr('orderTypeCode'))
         chageOrderTime(date, time);
         console.log(orderJson);
     })
 
-    $('.instant-services').click(function () {
+
+    /**
+     * 切换时预约还是即时服务
+     */
+    $('.instant-services').click(function() {
         if ($(this).hasClass('btn-default')) {
             $(this).removeClass('btn-default').addClass('btn-primary');
             orderJson['orderTypeCode'] = Number($(this).attr('orderTypeCode'))
-            $('.orderDate').attr('disabled', 'disabled').val('');
-            $('#times').unbind('click', changesTime).css('background', '#ebebe4');
+            $('.orderDate').parent().hide();
+            $('#times').parent().hide();
 
 
             orderJson['orderTime'] = '即时服务'
         } else {
             $(this).removeClass('btn-primary').addClass('btn-default');
             orderJson['orderTypeCode'] = 1
-            $('#times').on('click', changesTime).css('background', '#fff');
-            $('.orderDate').removeAttr('disabled').val(time);
+            $('#times').parent().show();
+            $('.orderDate').parent().show();
             chageOrderTime(date, time)
         }
     })
@@ -183,7 +206,7 @@ function chageOrderTime(date, time) {
     /**
      * 选择服务，改变json
      */
-    $('.servers li').on('click', function () {
+    $('.servers li').on('click', function() {
         $('.order-warpper').fadeIn();
         let type = $(this).attr('type');
 
@@ -207,11 +230,11 @@ function chageOrderTime(date, time) {
 
 
 
-    $('.ordernext').click(function () {
+    $('.ordernext').click(function() {
         console.log($('.orderDate').val())
         if ($('.instant-services').hasClass('btn-primary')) {
 
-            $('.order-time').fadeOut(function () {
+            $('.order-time').fadeOut(function() {
                 $('.order-pro').fadeIn();
             });
         } else {
@@ -219,11 +242,11 @@ function chageOrderTime(date, time) {
                 alert('请输入日期')
                 return;
             } else {
-                if(Date.parse(orderJson.orderTime)<Date.now()){
+                if (Date.parse(orderJson.orderTime) < Date.now()) {
                     alert('亲~，你选的时间已经过去啦~重新选择下吧');
                     return;
                 }
-                $('.order-time').fadeOut(function () {
+                $('.order-time').fadeOut(function() {
                     $('.order-pro').fadeIn();
                 });
             }
@@ -232,16 +255,16 @@ function chageOrderTime(date, time) {
     });
 
 
-    $('.next').click(function () {
+    $('.next').click(function() {
         if (until.isEmpty(orderJson['providerId'])) {
             alert('请选择门店');
             return;
         }
 
-        $('.order-pro').fadeOut(function () {
+        $('.order-pro').fadeOut(function() {
             $('.order-warpper').css('zIndex', 998);
             $('.nav-tab').removeClass('home');
-            $('.order-sure').fadeIn(function () {
+            $('.order-sure').fadeIn(function() {
                 until.renderTem('sure', 'sure-tem', {
                     orderJson
                 })
@@ -250,7 +273,7 @@ function chageOrderTime(date, time) {
     });
 
 
-    $('.washType li').on('click', function (e) {
+    $('.washType li').on('click', function(e) {
         $('.washType li').removeClass('active');
         $(this).addClass('active');
         orderJson.washCode = Number($(this).attr('washCode'));
@@ -262,7 +285,7 @@ function chageOrderTime(date, time) {
      * 返回首页，清除预约数据
      */
 
-    $('.goback').click(function () {
+    $('.goback').click(function() {
         $('.order-warpper').fadeOut();
         $('.washType').hide();
         orderJson = {};
@@ -270,14 +293,14 @@ function chageOrderTime(date, time) {
         $('.instant-services').show();
         orderDateIsInput()
     });
-    $('.backTime').click(function () {
-        $('.order-pro').fadeOut(function () {
+    $('.backTime').click(function() {
+        $('.order-pro').fadeOut(function() {
             $('.order-time').fadeIn();
         });
         $('.list-item').removeClass('active');
         orderDateIsInput()
     })
-    $('.backOrderPro').on('click', function (e) {
+    $('.backOrderPro').on('click', function(e) {
         $('.order-sure ').hide().prev().hide().prev().show();
         $('.list-item').removeClass('active');
         $('.order-warpper').css('zIndex', 1000).addClass('home');
@@ -289,7 +312,7 @@ function chageOrderTime(date, time) {
         orderDateIsInput()
     });
 
-    $('.sure-goback').on('click', function () {
+    $('.sure-goback').on('click', function() {
         $('.order-item').fadeOut().parent().fadeOut().find('.order-time').fadeIn();
         $('.order-warpper').css('zIndex', 1000).addClass('home');
         $('.list-item').removeClass('active');
@@ -302,7 +325,7 @@ function chageOrderTime(date, time) {
         // orderDateIsInput()
     });
 
-    $('.submit-order').on('click', async function (e) {
+    $('.submit-order').on('click', async function(e) {
         let isOrder = false;
         let orders = await client_orderPage({
             startTime: date,
@@ -331,8 +354,8 @@ function chageOrderTime(date, time) {
                     title: '温馨提醒',
                     content: '预约成功，返回首页',
                     btns: ['确定'],
-                    btnsCallback: function (btns) {
-                        $(btns).on('click', function () {
+                    btnsCallback: function(btns) {
+                        $(btns).on('click', function() {
                             until.jumpPage('index');
                         })
                     }
@@ -343,8 +366,8 @@ function chageOrderTime(date, time) {
                 title: '温馨提醒',
                 content: '今天已有预约,返回首页',
                 btns: ['确定'],
-                btnsCallback: function (btns) {
-                    $(btns).on('click', function () {
+                btnsCallback: function(btns) {
+                    $(btns).on('click', function() {
                         until.jumpPage('index');
                     })
                 }

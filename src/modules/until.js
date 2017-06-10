@@ -150,11 +150,11 @@ class Until {
             return false;
         }
     }
-    format(fmt) { //author: meizz 
+    format(fmt, day = 0) { //author: meizz 
         var date = new Date();
         var o = {
             "M+": date.getMonth() + 1, //月份 
-            "d+": date.getDate(), //日 
+            "d+": date.getDate() + day, //日 
             "h+": date.getHours(), //小时 
             "m+": date.getMinutes(), //分 
             "s+": date.getSeconds(), //秒 

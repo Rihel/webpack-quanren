@@ -35,7 +35,7 @@ $(function() {
         if (tagname === 'h3') {
             // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
             $(e.target).toggleClass('active');
-            $('.drop-menu').hide();
+            // $('.drop-menu').hide();
 
             $(e.target).next().slideToggle();
 
@@ -320,27 +320,22 @@ async function initOssAll(draftBoxData) {
             return;
         }
         let query = 0;
-        let timer = setInterval(async() => {
-            let key = types[query];
-            if (query < types.length) {
-                console.log(`上传${key}中`);
-                uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'))
-                query++;
-            } else {
-                clearTimeout(timer);
-                let result = await client_saveDraftBox(draftBoxData.mobile, $.extend({}, {
-                    idCardNumber: idCardNumber.val(),
-                    licensePlateNumber: vehicleNumber,
-                    drivingLicenseNumber: drivingLicenseNumber.val(),
-                    drivingLicenseRegDate: drivingLicenseRegTime.val(),
-                    baodanDate: baodanDate.val()
-                }, uploadImgKey));
-                if (result.success) {
-                    pageNext.call(this);
-                }
-            }
+        until.loading('正在上传数据....')
+        types.forEach(key => {
+            uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'))
+        })
+        let result = await client_saveDraftBox(draftBoxData.mobile, $.extend({}, {
+            idCardNumber: idCardNumber.val(),
+            licensePlateNumber: vehicleNumber,
+            drivingLicenseNumber: drivingLicenseNumber.val(),
+            drivingLicenseRegDate: drivingLicenseRegTime.val(),
+            baodanDate: baodanDate.val()
+        }, uploadImgKey));
+        if (result.success) {
 
-        }, 1000);
+            pageNext.call(this);
+            until.closeLoading();
+        }
 
         console.log(`
         /**********证件上传部分开始保存草稿箱*************/

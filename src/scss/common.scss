@@ -121,8 +121,8 @@ button:active {
     bottom: 0;
     z-index: 9999999;
     padding: 2rem;
-    background: rgba(255, 255, 255, 1);
-    color: #000;
+    background: rgba(0, 0, 0, .5);
+    color: #fff;
     text-align: center;
     font-size: 1.5rem;
 }
@@ -180,7 +180,7 @@ button:active {
 
 .btn:disabled {
     background: $default-color!important;
-    color: #fff!important;
+    color: #000!important;
 }
 
 .btn-primary {
