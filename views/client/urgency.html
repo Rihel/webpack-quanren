@@ -13,18 +13,86 @@
 
 </head>
 
-<body>
+<body style="overflow:auto;">
 
-    <section class="urgency">
-        <figure>
-            <div class="bg"></div>
-            <figcaption>
-                <h2>功能建设中敬请期待...</h2>
-                <p>UNDER&nbsp;CONSTRUCTION</p>
-            </figcaption>
-        </figure>
+    <section class="form-box urgency">
+        <h3>紧急联系人</h3>
+        <div class="form-item">
+            <i>姓名</i>
+            <input type="text" value="" id="name">
+        </div>
+        <div class="form-item">
+            <i>电话</i>
+            <input type="text" value="" id="phone">
+        </div>
+        <textarea placeholder="事故描述...."></textarea>
+        <h3>照片上传（至少上传一张照片）</h3>
+        <div class="image-warpper">
+            <div class="image-file">
+                <img id="car_license_front_image" src="" alt="">
+                <input class="file" id="car_license_front_input" uploadType="drivingLicenseFrontUrl" type="file">
+                <div class="progress-warpper">
+                    <div class="progress"></div>
+                    <div class="progress-text">
+                        正在上传中...
+                    </div>
+                </div>
+                <span>上传正面</span>
+            </div>
+            <div class="image-file">
+                <img id="car_license_back_image" src="" alt="">
+                <input class="file" id="car_license_back_input" uploadType="drivingLicenseBackUrl" type="file">
+                <div class="progress-warpper">
+                    <div class="progress"></div>
+                    <div class="progress-text">
+                        正在上传中...
+                    </div>
+                </div>
+                <span>上传反面</span>
+            </div>
+            <div class="image-file">
+                <img id="car_license_back_image" src="" alt="">
+                <input class="file" id="car_license_back_input" uploadType="drivingLicenseBackUrl" type="file">
+                <div class="progress-warpper">
+                    <div class="progress"></div>
+                    <div class="progress-text">
+                        正在上传中...
+                    </div>
+                </div>
+                <span>上传反面</span>
+            </div>
+            <div class="image-file">
+                <img id="car_license_back_image" src="" alt="">
+                <input class="file" id="car_license_back_input" uploadType="drivingLicenseBackUrl" type="file">
+                <div class="progress-warpper">
+                    <div class="progress"></div>
+                    <div class="progress-text">
+                        正在上传中...
+                    </div>
+                </div>
+                <span>上传反面</span>
+            </div>
+            <div class="image-file">
+                <img id="car_license_back_image" src="" alt="">
+                <input class="file" id="car_license_back_input" uploadType="drivingLicenseBackUrl" type="file">
+                <div class="progress-warpper">
+                    <div class="progress"></div>
+                    <div class="progress-text">
+                        正在上传中...
+                    </div>
+                </div>
+                <span>上传反面</span>
+            </div>
+            <div class="image-file">
+
+            </div>
+        </div>
+        <input type="button" class="btn btn-primary" value="提交">
+        <input type="button" class="btn btn-default" value="返回">
     </section>
-    <ul class="nav-tab">
+
+
+    <ul class="nav-tab" style="background:#fff;">
         <li>
             <a href="index.html">
                 <i class="icon-home"></i>
@@ -37,7 +105,7 @@
                 <span>救援</span>
             </a>
         </li>
-        <li >
+        <li>
             <a href="userCenter.html">
                 <i class="icon-my-center"></i>
                 <span>我</span>

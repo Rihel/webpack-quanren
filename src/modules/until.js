@@ -228,6 +228,48 @@ class Until {
         }
         return service_label;
     }
+
+    getClitype(clitypeCode) {
+        let option = [{
+                "code": 1,
+                "title": "普通套餐 2088",
+            },
+            {
+                "code": 2,
+                "title": "普通套餐 2688",
+
+            },
+            {
+                "code": 3,
+                "title": "普通套餐 3088",
+
+            },
+            {
+                "code": 4,
+                "title": "普通套餐 3888",
+
+            },
+            {
+                "code": 5,
+                "title": "豪华套餐 38888",
+
+            },
+            {
+                "code": 6,
+                "title": "豪华套餐 58888",
+
+            },
+            {
+                "code": 7,
+                "title": "豪华套餐 88888",
+            }
+        ]
+        let result = option.filter(item => {
+            return item.code === Number(clitypeCode);
+        })
+        console.log(`result`, result, result.title);
+        return result[0].title;
+    }
 }
 
 export default new Until();

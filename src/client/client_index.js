@@ -292,6 +292,8 @@ function chageOrderTime(date, time) {
         console.log(orderJson);
         $('.instant-services').show();
         orderDateIsInput()
+        $('#times').parent().show();
+        $('.orderDate').parent().show();
     });
     $('.backTime').click(function() {
         $('.order-pro').fadeOut(function() {
@@ -299,6 +301,8 @@ function chageOrderTime(date, time) {
         });
         $('.list-item').removeClass('active');
         orderDateIsInput()
+        $('#times').parent().show();
+        $('.orderDate').parent().show();
     })
     $('.backOrderPro').on('click', function(e) {
         $('.order-sure ').hide().prev().hide().prev().show();
@@ -310,6 +314,8 @@ function chageOrderTime(date, time) {
 
         }
         orderDateIsInput()
+        $('#times').parent().show();
+        $('.orderDate').parent().show();
     });
 
     $('.sure-goback').on('click', function() {
@@ -321,7 +327,8 @@ function chageOrderTime(date, time) {
         console.log('修改数据', orderJson, orderJson['needRepair'])
         $('.instant-services').show();
 
-
+        $('#times').parent().show();
+        $('.orderDate').parent().show();
         // orderDateIsInput()
     });
 

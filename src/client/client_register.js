@@ -72,6 +72,7 @@ $(function() {
     // });
 
     let isRegBtn = $('.isreg-btn'),
+        urlMobile = until.urlParams().mobile,
         isRegText = $('.isreg-text');
     isRegBtn.click(async function(e) {
         if (until.isEmpty(isRegText.val())) {
@@ -106,6 +107,18 @@ $(function() {
             $('#msform').show();
         }
     })
+
+
+    if (urlMobile) {
+        /**
+         * 审核驳回处理
+         */
+        initDraftBox(urlMobile);
+        until.setItem('mobile', urlMobile);
+        isRegBtn.parent().hide();
+        $('#msform').show();
+    }
+
 
 
 

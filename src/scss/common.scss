@@ -13,8 +13,10 @@ button {
 
 input:focus,
 button:focus,
+textarea:focus,
 input[type="text"].active,
 input[type="password"].active {
+    outline: none;
     border: rem(1) solid $primary-color!important;
     box-shadow: 0 0 rem(10) $primary-color;
 }
@@ -193,6 +195,16 @@ button:active {
     @extend .btn;
     background: $default-color;
     color: $primary-color;
+}
+
+textarea {
+    @include boxSizing;
+    @include radius(rem(8));
+    width: 100%;
+    height: rem(245);
+    padding: rem(10);
+    margin: rem(22) 0;
+    font-size: rem(28);
 }
 
 .form-box {

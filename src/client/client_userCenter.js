@@ -23,6 +23,10 @@ tem.defaults.imports.OrderStatus = statusCode => {
 tem.defaults.imports.washServiceLabel = OrderData => {
     return until.GetOrderServiceLabel(OrderData)
 }
+tem.defaults.imports.getClitypeLabel = vipLevelCode => {
+    console.log(vipLevelCode);
+    return until.getClitype(vipLevelCode)
+}
 async function initOrderList(type) {
     let orders = await client_orderPage();
 

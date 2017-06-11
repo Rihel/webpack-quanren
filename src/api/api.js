@@ -427,7 +427,7 @@ export const client_wxbingd = () => {
         base({
             url: clientApi.wxbingd,
             success: data => {
-                resultHandled(resolve, data, data);
+                resolve(data);
             }
         })
     });

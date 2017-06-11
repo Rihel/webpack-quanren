@@ -58,34 +58,48 @@
                 </div>
             </li>
             <li>
-                <i class="icon-idcard"></i>
-                <div class="caption">
-                    <h4>行驶证件号</h4>
-                    <p>{{userInfo.drivingLicenseNumber}}</p>
-                </div>
-            </li>
-            <li>
-                <i class="icon-project"></i>
-                <div class="caption">
-                    <h4>套餐类型</h4>
-                    <p>{{userInfo.vipLevelCode}}</p>
-                </div>
-            </li>
-            <li>
-                <i class="icon-king"></i>
-                <div class="caption">
-                    <h4>VIP服务次数</h4>
-                    <p>{{userInfo.washNum}}</p>
-                </div>
-            </li>
-            <li>
                 <i class="icon-time"></i>
                 <div class="caption">
                     <h4>续保保单日期</h4>
                     <p>{{userInfo.baodanDate}}</p>
                 </div>
             </li>
+            <li>
+                <i class="icon-project"></i>
+                <div class="caption">
+                    <h4>套餐类型</h4>
+                    <p>{{userInfo.vipLevelCode|getClitypeLabel}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-king"></i>
+                <div class="caption">
+                    <h4>积分</h4>
+                    <p>{{userInfo.virMoney}}</p>
+                </div>
+            </li>
 
+            <li>
+                <i class="icon-tracker"></i>
+                <div class="caption">
+                    <h4>精洗点数</h4>
+                    <p>{{userInfo.fineWashNum}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-tracker"></i>
+                <div class="caption">
+                    <h4>普洗点数</h4>
+                    <p>{{userInfo.washNum}}</p>
+                </div>
+            </li>
+            <li>
+                <i class="icon-tracker"></i>
+                <div class="caption">
+                    <h4>保养点数</h4>
+                    <p>{{userInfo.maintenanceNum}}</p>
+                </div>
+            </li>
         </script>
 
         <div class="btn-warpper">
