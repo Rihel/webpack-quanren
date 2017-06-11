@@ -1,0 +1,53 @@
+svn://112.74.32.199:9988/QuanRen/Web/FrontEnd
+
+client
+
+clientdev123123
+
+
+c端
+
+13533797833 123
+
+b\a端 13826078735 123456
+
+
+
+https://github.com/Rihel/quanren.git
+
+ https://github.com/Rihel/webpack-quanren.git
+
+
+
+c API:  http://m.qren163.cn:8080
+
+b API:  http://m.qren163.cn:8083
+
+a Api:  http://m.qren163.cn:8082
+
+
+
+FTP：112.74.32.199 : 2121 
+
+账号：WebDev
+
+密码：WebDev123
+
+
+服务器  112.74.32.199 WebDev
+ QRWebdev0123!
+
+
+IP : 119.23.15.238
+
+
+用户名:WebDev
+
+密码 WebDev1234
+
+
+这个是管理员的用户来的，
+ 可以delete update select create
+
+
+
