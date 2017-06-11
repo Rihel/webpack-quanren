@@ -59,7 +59,7 @@ $('.login-btn').on('click', function() {
         console.log(status);
         until.setItem('mobile', name);
         if (status <= 6) {
-            statusHander(status);
+            statusHander(status, name);
         } else {
             try {
                 let data = await client_login(name, pwd);
@@ -93,7 +93,7 @@ $('.login-btn').on('click', function() {
  */
 
 
-function statusHander(status) {
+function statusHander(status, name) {
     console.log(`用户状态编码为${status}`)
     let message = [];
     message[0] = message[1] = message[2] = message[3] = '您的资料已经提交审核，请耐心等候. <p class="phone">24小时服务热线：<a href="tel:020-82455421" style="color:#f73859;">020-82455421</a></p>';
@@ -111,6 +111,7 @@ function statusHander(status) {
             btnsCallback: btns => {
                 if (arg.length > 1) {
                     $(btns).click(() => {
+                        console.log(data, '参数')
                         until.jumpPage(jumpPage, data);
                     })
                 }
@@ -131,7 +132,7 @@ function statusHander(status) {
             tips(message[status], 'wait_pay')
         },
         4() {
-            tips(message[status], 'register')
+            tips(message[status], 'register', { mobile: name })
         },
         5() {
             tips(message[status], 'wechat_pay', {

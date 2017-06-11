@@ -415,10 +415,11 @@ button:active {
             background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
             background-size: contain;
             .moxie-shim {
-                display: none;
+                z-index: 1999;
+                opacity: 0;
             }
             .file {
-                z-index: 9999999;
+                z-index: 999;
                 position: absolute;
                 opacity: 0;
                 top: 0;
@@ -483,6 +484,12 @@ button:active {
             text-indent: 0;
             text-align: center;
         }
+    }
+    .mess {
+        text-align: left;
+        color: $primary-color;
+        margin: 10px 0;
+        font-size: rem(20);
     }
 }
 

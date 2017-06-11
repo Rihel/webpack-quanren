@@ -17,7 +17,7 @@ import {
     client_register,
     client_isReg,
 } from '../api/api';
-import { uploadImages, uploadTypes, alias } from '../modules/uploadOssAll';
+import { uploadImages, uploadTypes, alias, previewImage } from '../modules/uploadOssAll';
 
 
 
@@ -118,7 +118,7 @@ $(function() {
 let current_fs, next_fs, previous_fs,
     left, opacity, scale,
     animating,
-
+    recommendClientMobileText = '',
     /**
      * 身份证信息相关节点
      */
@@ -160,20 +160,20 @@ let current_fs, next_fs, previous_fs,
  * 初始化oss的上传Uploader
  */
 let uploaders = {
-    idCardFrontUrl: uploadImages(id_card_front_input[0], progress),
-    idCardBackUrl: uploadImages(id_card_back_input[0], progress),
-    drivingLicenseFrontUrl: uploadImages(car_license_front_input[0], progress),
-    drivingLicenseBackUrl: uploadImages(car_license_back_input[0], progress),
-    baodanUrl1: uploadImages(bao_dan_page_01_input[0], progress),
-    baodanUrl2: uploadImages(bao_dan_page_02_input[0], progress),
-    baodanUrl3: uploadImages(bao_dan_page_03_input[0], progress)
+    idCardFrontUrl: uploadImages(id_card_front_input[0], progress, alias['idCardFrontUrl'].substr(1)),
+    idCardBackUrl: uploadImages(id_card_back_input[0], progress, alias['idCardBackUrl'].substr(1)),
+    drivingLicenseFrontUrl: uploadImages(car_license_front_input[0], progress, alias['drivingLicenseFrontUrl'].substr(1)),
+    drivingLicenseBackUrl: uploadImages(car_license_back_input[0], progress, alias['drivingLicenseBackUrl'].substr(1)),
+    baodanUrl1: uploadImages(bao_dan_page_01_input[0], progress, alias['baodanUrl1'].substr(1)),
+    baodanUrl2: uploadImages(bao_dan_page_02_input[0], progress, alias['baodanUrl2'].substr(1)),
+    baodanUrl3: uploadImages(bao_dan_page_03_input[0], progress, alias['baodanUrl3'].substr(1))
 };
-
-/**
- * 上传进度制作
- * @param {Element} fileInputDom 上传input节点
- * @param {Number} percent  上传进度
- */
+console.log(uploaders)
+    /**
+     * 上传进度制作
+     * @param {Element} fileInputDom 上传input节点
+     * @param {Number} percent  上传进度
+     */
 function progress(fileInputDom, percent) {
     let progressWarpper = $(fileInputDom).next(),
         progresser = progressWarpper.find('.progress'),
@@ -259,7 +259,7 @@ async function initOssAll(draftBoxData) {
      * 会让对应的uploader添加文件
      */
     $('.file').on('change', function(e) {
-        console.log(11)
+        console.log($(this), '事件源')
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
         if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
@@ -284,6 +284,22 @@ async function initOssAll(draftBoxData) {
         types.push(key);
 
     });
+    $('input[id^="html5"]').on('change', function(e) {
+        let key = $(this).parent().prevAll('.file').attr('uploadType');
+        let file = uploaders[key].files[0];
+        let postfix = /\.[^\.]+$/.exec(file.name);
+        if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
+            alert('这个不是图片哟,重新上传吧');
+            return;
+        }
+
+
+        $.extend(uploadImgKey, {
+            [key]: `dev/${until.getItem('mobile')}${alias[key]}${postfix[0]}`
+        });
+        types.push(key);
+        console.log(uploadImgKey, types);
+    })
 
     console.log(uploaders, '上传类型')
     $('#papers').on('click', async function(e) {
@@ -320,22 +336,47 @@ async function initOssAll(draftBoxData) {
             return;
         }
         let query = 0;
-        until.loading('正在上传数据....')
-        types.forEach(key => {
-            uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'))
-        })
-        let result = await client_saveDraftBox(draftBoxData.mobile, $.extend({}, {
-            idCardNumber: idCardNumber.val(),
-            licensePlateNumber: vehicleNumber,
-            drivingLicenseNumber: drivingLicenseNumber.val(),
-            drivingLicenseRegDate: drivingLicenseRegTime.val(),
-            baodanDate: baodanDate.val()
-        }, uploadImgKey));
-        if (result.success) {
 
-            pageNext.call(this);
-            until.closeLoading();
+        console.log(types);
+
+        let self = this;
+        async function UPLOAD() {
+            let key = types[query];
+            // let arg = arguments;
+            if (query < types.length) {
+                uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'));
+                uploaders[key].bind('BeforeUpload', function() {
+                    until.loading('正在上传数据....')
+                })
+
+                uploaders[key].bind('UploadComplete', function() {
+
+                    query++;
+                    UPLOAD()
+                    console.log('UploadComplete', key);
+                })
+
+            } else {
+
+                let result = await client_saveDraftBox(draftBoxData.mobile, $.extend({}, {
+                    idCardNumber: idCardNumber.val(),
+                    licensePlateNumber: vehicleNumber,
+                    drivingLicenseNumber: drivingLicenseNumber.val(),
+                    drivingLicenseRegDate: drivingLicenseRegTime.val(),
+                    baodanDate: baodanDate.val()
+                }, uploadImgKey));
+                if (result.success) {
+                    until.closeLoading();
+                    pageNext.call(self);
+
+                }
+
+            }
         }
+
+        UPLOAD();
+
+
 
         console.log(`
         /**********证件上传部分开始保存草稿箱*************/
@@ -376,7 +417,24 @@ async function initPersonInfo(draftBoxData) {
     carPrice.val(draftBoxData.carPrice);
     carMileage.val(draftBoxData.carMileage);
 
-
+    recommendClientMobile.on('input', async function(e) {
+        let val = $(this).val();
+        let mess;
+        console.log(`推荐人手机号码为${val}`)
+        if (!until.isPhone(val)) {
+            mess = '您输入的推荐人手机号不是手机号码';
+        } else {
+            let data = await client_isReg(val);
+            if (data.success) {
+                mess = '';
+                recommendClientMobileText = val;
+            } else {
+                mess = '您输入的推荐人手机号并不是有效的全仁会员手机号码'
+                recommendClientMobileText = '';
+            }
+        }
+        $('.mess').html(mess);
+    })
     $('#CarBrandList').on('click', e => {
         let target = e.target;
         let tagname = target.nodeName.toLowerCase();
@@ -416,7 +474,7 @@ async function initPersonInfo(draftBoxData) {
             汽车车型代码：${$('#carModelCode').attr('code')}，\n
             汽车价格：${carPrice.val()}\n
             汽车里程：${carMileage.val()}\n
-            推荐人手机号码：${recommendClientMobile.val()}\n
+            推荐人手机号码：${recommendClientMobileText}\n
         /**********个人信息部分结束保存草稿箱*************/
         `)
         let result = await client_saveDraftBox(mobile.val(), {
@@ -426,7 +484,7 @@ async function initPersonInfo(draftBoxData) {
             carModelCode: $('#carModelCode').attr('code'),
             carPrice: carPrice.val(),
             carMileage: carMileage.val(),
-            recommendClientMobile: recommendClientMobile.val() || ''
+            recommendClientMobile: recommendClientMobileText
         });
         if (result.success) {
             pageNext.call(this);

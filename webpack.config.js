@@ -20,7 +20,11 @@ for (chunk in map.client) {
         alwaysWriteToDisk: true,
         filename: ROOT + '/dist/client/' + map.client[chunk].tpl,
         template: ROOT + '/views/client/' + map.client[chunk].tpl,
-        chunks: ['common', chunk]
+        chunks: ['common', chunk],
+        // minify: { //压缩HTML文件
+        //     removeComments: true, //移除HTML中的注释
+        //     collapseWhitespace: true //删除空白符与换行符
+        // }
     }))
 }
 for (chunk in map.server) {
@@ -29,7 +33,11 @@ for (chunk in map.server) {
         alwaysWriteToDisk: true,
         filename: ROOT + '/dist/server/' + map.server[chunk].tpl,
         template: ROOT + '/views/server/' + map.server[chunk].tpl,
-        chunks: ['common', chunk]
+        chunks: ['common', chunk],
+        // minify: { //压缩HTML文件
+        //     removeComments: true, //移除HTML中的注释
+        //     collapseWhitespace: true //删除空白符与换行符
+        // }
     }))
 }
 
@@ -41,7 +49,7 @@ module.exports = {
     context: path.resolve(__dirname, './src'),
     entry: Object.assign(cliententry, serverentry),
     output: {
-        filename: 'js/[name].js',
+        filename: 'js/[name].[hash:8].js',
         path: path.resolve(__dirname, './dist/'),
 
     },
@@ -113,17 +121,18 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        host: '192.168.0.102'
+        host: '172.20.10.5'
     },
     externals: {
         'jquery': 'window.jQuery',
     },
     plugins: htmlPlugin.concat([
-        // new webpack.optimize.UglifyJsPlugin({
-        //     compress: {
-        //         warnings: false
-        //     }
-        // }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            except: ['$super', '$', 'exports', 'require']
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -132,11 +141,11 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            filename: 'js/[name].js',
+            filename: 'js/[name].[hash:8].js',
             minchuck: 2
         }),
         new ExtractTextPlugin({
-            filename: '[name].css',
+            filename: '[name].[hash:8].css',
             allChunks: true
         }),
 

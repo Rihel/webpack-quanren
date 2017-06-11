@@ -8,7 +8,8 @@
     <title>注册</title>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="https://cdn.bootcss.com/plupload/3.1.0/plupload.min.js"></script>
+    <script src="https://cdn.bootcss.com/plupload/2.1.9/moxie.min.js"></script>
+    <script src="https://cdn.bootcss.com/plupload/2.1.9/plupload.min.js"></script>
 
 </head>
 
@@ -19,7 +20,7 @@
             <h3 class="fs-title">请输入手机号码</h3>
             <div class="form-item">
                 <i>电话</i>
-                <input class="isreg-text" type="phone" parent="" placeholder="请输入手机号码">
+                <input class="isreg-text" type="number" pattern="[0-9]*" placeholder="请输入手机号码">
             </div>
 
         </div>
@@ -40,7 +41,7 @@
                 <h2 class="fs-title">个人信息</h2>
                 <div class="form-item">
                     <i>电话</i>
-                    <input class="mobile" id="mobile" type="phone" placeholder="请输入手机号码">
+                    <input class="mobile" id="mobile" type="number" pattern="[0-9]*" placeholder="请输入手机号码">
                 </div>
                 <div class="form-item">
                     <i>姓名</i>
@@ -58,8 +59,9 @@
                 </div>
                 <div class="form-item">
                     <i>推荐人</i>
-                    <input class="pwd" id="recommendClientMobile" type="phone" placeholder="推荐人手机号码（选填）">
+                    <input class="pwd" id="recommendClientMobile" type="number" pattern="[0-9]*" placeholder="推荐人手机号码（选填）">
                 </div>
+                <p class="mess"></p>
             </div>
 
             <div class="form-box">
@@ -96,11 +98,11 @@
                 </div>
                 <div class="form-item">
                     <i>购入价</i>
-                    <input class="pwd" id="carPrice" type="phone" placeholder="您的爱车购入价">
+                    <input class="pwd" id="carPrice" type="number" pattern="[0-9]*" placeholder="您的爱车购入价">
                 </div>
                 <div class="form-item">
                     <i>里程</i>
-                    <input class="pwd" id="carMileage" type="phone" placeholder="已行驶里程">
+                    <input class="pwd" id="carMileage" type="number" pattern="[0-9]*" placeholder="已行驶里程">
                 </div>
 
             </div>
@@ -295,7 +297,8 @@
             </div>
             <div class="cliter-text">
                 <p><span>{{if item.washNum===999}}无限{{else}}{{item.washNum}}{{/if}}</span>次普通洗车</p>
-                <p><span>{{if item.washNum===999}}无限{{else}}{{item.washNum}}{{/if}}</span>次精洗打蜡</p>
+                <p><span>{{if item.fineWashNum===999}}无限{{else}}{{item.fineWashNum}}{{/if}}</span>次精洗打蜡</p>
+                <p><span>{{if item.maintenanceNum===999}}无限{{else}}{{item.maintenanceNum}}{{/if}}</span>次保养</p>
                 <p>{{item.remark | timestamp }}</p>
             </div>
         </div>

@@ -414,6 +414,7 @@ export const client_register = arg => {
         base({
             url: clientApi.register,
             data: arg,
+            type: 'post',
             success: data => {
                 resultHandled(resolve, data, data);
             }
