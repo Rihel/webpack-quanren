@@ -2,7 +2,12 @@ import '../scss/server.scss';
 import '../scss/font.scss';
 import './menu_toggle';
 
-import { alert, dialog, reloadDialog, jumpPage } from '../modules/dialog';
+import {
+    alert,
+    dialog,
+    reloadDialog,
+    jumpPage
+} from '../modules/dialog';
 import tem from '../modules/template-web'
 import {
     server_ypage,
@@ -12,7 +17,11 @@ import {
     server_opage,
     server_pricesheet
 } from '../api/api';
-import { uploadImages, uploadTypes, alias } from '../modules/uploadOssAll';
+import {
+    uploadImages,
+    uploadTypes,
+    alias
+} from '../modules/uploadOssAll';
 
 import until from '../modules/until';
 let statu = Number(window.location.hash.substr(1)) || 1;
@@ -27,7 +36,7 @@ $('#carBrandCode').attr('code', statu).html(until.getStatusCodeString(statu))
 renderOrder(statu);
 
 // setInterval(function() { renderOrder(statu) }, 5000);
-$('.searchBtn').on('click', function() {
+$('.searchBtn').on('click', function () {
     let text = $('.search').val();
     if (until.isEmpty(text)) {
         alert('搜索内容不能为空');
@@ -36,7 +45,7 @@ $('.searchBtn').on('click', function() {
     renderOrder(0, text);
 })
 
-$('.status-slider li').on('click', function() {
+$('.status-slider li').on('click', function () {
     console.log(`查询的状态码为${Number($(this).attr('code'))}`)
     statu = Number($(this).attr('code'))
     renderOrder(statu)
@@ -85,8 +94,8 @@ $('#order').on('click', async e => {
             btns.unshift('拒绝预约');
             btns.unshift('确认预约');
 
-            btnsCallback = function(btns) {
-                $(btns[0]).on('click', async function() {
+            btnsCallback = function (btns) {
+                $(btns[0]).on('click', async function () {
                     let data = await server_confirm({
                         orderId: orderId
                     });
@@ -94,32 +103,34 @@ $('#order').on('click', async e => {
                         reloadDialog('预约成功')
                     }
                 })
-                $(btns[1]).on('click', function() {
+                $(btns[1]).on('click', function () {
                     reject(orderId);
                 })
             }
         }
         if (statusCode === 4) {
             btns.unshift('输入服务码');
-            btnsCallback = function(btns) {
-                $(btns).on('click', function() {
+            btnsCallback = function (btns) {
+                $(btns).on('click', function () {
                     inputServiceNo(orderId);
                 })
             }
         }
         if (statusCode === 5) {
             btns.unshift('上传维修报价单');
-            btnsCallback = function(btns) {
-                $(btns).on('click', function() {
+            btnsCallback = function (btns) {
+                $(btns).on('click', function () {
                     pricesheet(orderId, detail);
                 })
             }
         }
         if (statusCode === 10) {
             btns.unshift('服务完成，上传结算单');
-            btnsCallback = function(btns) {
-                $(btns[0]).on('click', function() {
-                    until.jumpPage('upload', { orderId });
+            btnsCallback = function (btns) {
+                $(btns[0]).on('click', function () {
+                    until.jumpPage('upload', {
+                        orderId
+                    });
                 })
             }
         }
@@ -155,8 +166,8 @@ function reject(orderId) {
                         title: '温馨提醒',
                         content: '拒绝成功',
                         btns: ['确定'],
-                        btnsCallback: function(btns) {
-                            $(btns).on('click', function() {
+                        btnsCallback: function (btns) {
+                            $(btns).on('click', function () {
                                 window.location.reload();
                             })
                         }
@@ -180,7 +191,7 @@ function inputServiceNo(orderId) {
         btnsCallback: btns => {
 
 
-            $(btns[0]).on('click', async function() {
+            $(btns[0]).on('click', async function () {
 
                 console.log($('#serviceNo'), '提交服务码按钮');
                 if (until.isEmpty($('#serviceNo').val())) {
@@ -222,8 +233,8 @@ function pricesheet(orderId, order) {
                             <div class="warpper" style="width:100%;">
                                 <h5>请对维修报价单拍照</h5>
                                 <div class="image-file" style="width:100%;">
-                                    <img src="" alt="">
-                                    <input class="file" id="repair_price_sheet" type="file">
+                                    <img src="" id="repair_price_sheet_image" alt="">
+                                    <input class="file" id="repair_price_sheet" uploadType="repair_price_sheet" type="file">
                                     <div class="progress-warpper">
                                         <div class="progress"></div>
                                         <div class="progress-text">
@@ -239,42 +250,51 @@ function pricesheet(orderId, order) {
                             `,
         btns: ['提交报价单', '返回'],
 
-        init: function(btns) {
+        init: function (btns) {
             let submitJson = {};
             submitJson.orderId = orderId;
-            let repair_price_sheet = uploadImages($('#repair_price_sheet')[0]);
-            console.log($('#repair_price_sheet'));
-            $('input[type="file"]').on('change', function(e) {
-                let file = e.target.files[0];
-                let postfix = /\.[^\.]+$/.exec(file.name);
-                if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
-                    alert('这个不是图片哟,重新上传吧');
-                    return;
-                }
-                console.log(postfix);
-                let dataUrl = window.URL.createObjectURL(file);
+            let repair_price_sheet = uploadImages($('#repair_price_sheet')[0], null, 'repair_price_sheet');
+            repair_price_sheet.bind('PostInit', function () {
+               
 
+                $('#repair_price_sheet').on('change', function (e) {
+                    let file = e.target.files[0];
+                    let postfix = /\.[^\.]+$/.exec(file.name);
+                    if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
+                        alert('这个不是图片哟,重新上传吧');
+                        return;
+                    }
+                    let dataUrl = window.URL.createObjectURL(file);
+                    let key = $(this).attr('uploadType');
+                    $(this).prev().attr('src', dataUrl);
+                    repair_price_sheet.addFile(file);
+                    submitJson.priceSheetUrl = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
+                    console.log(submitJson, 'file');
+                });
+                $('input[id^="html5"]').on('change', function (e) {
+                    let key = $(this).parent().prevAll('.file').attr('uploadType');
+                    let file = repair_price_sheet.files[0];
+                    let postfix = /\.[^\.]+$/.exec(file.name);
+                    if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
+                        alert('这个不是图片哟,重新上传吧');
+                        return;
+                    }
+                    submitJson.priceSheetUrl = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
+                    console.log(submitJson, 'html5');
+                })
 
-                console.log(`图片的URL${dataUrl}`)
+            })
 
-                let key = $(this).attr('id');
-                $(this).prev().attr('src', dataUrl);
-                repair_price_sheet.addFile(file);
-
-                // uploadTypes['upload' + key](uploaders[key]);
-                console.log(`dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`, '添加上传名称');
-
-                submitJson.priceSheetUrl = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
-
-                console.log(repair_price_sheet);
-
-            });
-            $('#pricesheetremark').on('change', function() {
+            $('#pricesheetremark').on('input', function () {
                 submitJson.remark = $(this).val();
                 console.log(submitJson);
             })
-            $(btns[0]).on('click', async function() {
+
+
+
+            $(btns[0]).on('click', async function () {
                 uploadTypes['uploadrepair_price_sheet'](repair_price_sheet, `${until.getItem('providerId')}_${order.orderId}`)
+                console.log(submitJson)
                 let data = await server_pricesheet(submitJson);
                 if (data.success) {
                     jumpPage('提交成功！', 'index');
@@ -290,9 +310,13 @@ async function renderOrder(statusCode, text) {
     let data;
     if (Number(statusCode) === 10 || Number(statusCode) === 11 || Number(statusCode) === 6) {
         // console.log(statusCode);
-        data = await server_opage({ queryType: statusCode });
+        data = await server_opage({
+            queryType: statusCode
+        });
     } else {
-        data = await server_ypage({ queryType: statusCode });
+        data = await server_ypage({
+            queryType: statusCode
+        });
     }
     let orders = data.dataLst ? data.dataLst : [];
 

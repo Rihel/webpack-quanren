@@ -704,9 +704,7 @@ tfoot .pagination {
         margin-bottom: rem(20);
         background: #e2e2e2 url('../img/card-bg.png') no-repeat center;
         background-size: contain;
-        .moxie-shim {
-            display: none;
-        }
+        
         .file {
             z-index: 9999999;
             position: absolute;
@@ -809,9 +807,7 @@ tfoot .pagination {
     }
 }
 
-.moxie-shim {
-    transform: translateX(-999999999999px);
-}
+
 
 .btn-primary {
     border: none!important;

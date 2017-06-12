@@ -151,7 +151,7 @@ function uploadImagesToAliOSS(fileInputName, progress, imgIdKey, fileses) {
 
     //绑定文件添加进队列事件
     uploader.bind('FilesAdded', function(uploader, files) {
-        console.log(imgIdKey);
+       
         previewImage(files[0], function(imgsrc) {
             $(`#${imgIdKey}_image`).attr('src', imgsrc);
             if (fileses) {

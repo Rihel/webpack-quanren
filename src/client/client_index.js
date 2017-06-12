@@ -163,7 +163,8 @@ function chageOrderTime(date, time) {
         'onSubmit': function () { /*确认时触发事件*/
             var theSelectData = datePicker.value;
             date = theSelectData;
-            chageOrderTime(theSelectData, time)
+            chageOrderTime(theSelectData, time);
+             orderJson['orderTypeCode'] = 1;
         },
         'onClose': function () { /*取消时触发事件*/ }
     })

@@ -12,7 +12,7 @@ import until from '../modules/until';
 
 
 (async() => {
-    let { providerId } = await server_myInfo();
+    let { providerId ,providerInfo} = await server_myInfo();
     until.setItem('providerId', providerId);
 
     let {
@@ -33,7 +33,8 @@ import until from '../modules/until';
         forPriceSheepNum,
         lockedNum,
         servicingNum,
-        submittedNum
+        submittedNum,
+        providerInfo
     })
 
 

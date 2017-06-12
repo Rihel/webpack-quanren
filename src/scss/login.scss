@@ -27,25 +27,28 @@ body {
 .login {
     width: 70%;
     .login-title {
-        margin-bottom: rem(56);
         text-align: center;
         font-size: rem(48);
         font-weight: bold;
         color: #fff;
-        small {
-            padding-left: rem(57);
-            position: relative;
-            &:before {
-                position: absolute;
-                top: rem(29);
-                left: rem(12);
-                content: '';
-                display: block;
-                background: $primary-color;
-                width: rem(10);
-                height: rem(10);
-            }
+        position: relative;
+        &:after {
+            transform: translate(3px, 3px);
+            content: '';
+            display: inline-block;
+            background: $primary-color;
+            width: rem(10);
+            height: rem(10);
         }
+    }
+    small {
+        display: block;
+        text-align: center;
+        color: #fff;
+        margin-top: 10px;
+        margin-bottom: rem(56);
+        font-size: rem(48);
+
     }
     .form-item {
         position: relative;
@@ -116,8 +119,7 @@ body {
     }
 }
 
-
-.server-login{
+.server-login {
     background: url('../img/server-lobin-bg.jpg') no-repeat center;
     background-size: 100% 100%;
 }
