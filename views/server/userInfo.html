@@ -35,7 +35,7 @@
                         </li>
                         <li>
 
-                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单管理</span></a> </li>
+                            <a href="serverList.html"><span class="sublist-icon glyphicon glyphicon-list"></span><span class="sub-title">服务单列表</span></a> </li>
                         <li class="active">
 
                             <a href="userInfo.html"><span class="sublist-icon glyphicon glyphicon-user"></span><span class="sub-title">店铺信息</span></a></li>
@@ -53,25 +53,28 @@
                             <h4>店铺信息</h4>
                         </div>
                     </div>
-                    <div class="list-group">
+                    <div class="list-group" id="userInfo">
+
+                    </div>
+                    <script type="text/html" id="userInfo-tem">
                         <a href="#" class="list-group-item ">
                             <h4 class="list-group-item-heading"><i class="icon-merchant"></i>店铺名称</h4>
-                            <p class="list-group-item-text">车道汽车维修服务有限公司</p>
+                            <p class="list-group-item-text">{{providerInfo.shopName}}</p>
                         </a>
                         <a href="#" class="list-group-item ">
                             <h4 class="list-group-item-heading"><i class="icon-position"></i>店铺地址</h4>
-                            <p class="list-group-item-text">广州市海珠区瑞宝南洲北路泊岸森邻</p>
+                            <p class="list-group-item-text">{{providerInfo.detailAddr}}</p>
                         </a>
                         <a href="#" class="list-group-item ">
                             <h4 class="list-group-item-heading"><i class="icon-project"></i>可提供服务</h4>
                             <ul class="servers">
-                                <li class="active">普洗</li>
-                                <li class="active">精洗</li>
-                                <li class="active">保养</li>
-                                <li>维修</li>
+                                <li {{if providerInfo.hasWash}}class="active" {{/if}}>普洗</li>
+                                <li {{if providerInfo.hasFineWash}}class="active" {{/if}}>精洗</li>
+                                <li {{if providerInfo.hasFaultRepair}}class="active" {{/if}}>保养</li>
+                                <li {{if providerInfo.hasMaintenance}}class="active" {{/if}}>维修</li>
                             </ul>
                         </a>
-                    </div>
+                    </script>
                 </div>
             </div>
         </div>

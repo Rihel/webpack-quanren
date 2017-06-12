@@ -51,7 +51,7 @@ class Until {
             return;
         }
         if (value.length === 11) {
-            return /^1[358]\d{9}/g.test(value) ? true : false;
+            return /^1[3578]\d{9}/g.test(value) ? true : false;
         } else {
             return false;
         }

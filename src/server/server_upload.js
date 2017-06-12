@@ -29,7 +29,7 @@ tem.defaults.imports.washServiceLabel = OrderData => {
     return until.GetOrderServiceLabel(OrderData)
 }
 console.log(uploaders)
-$(async function () {
+$(async function() {
     let order = await server_OrderDetail(until.urlParams().orderId);
     let submitObj = {
         orderId: order.orderId
@@ -45,7 +45,7 @@ $(async function () {
         return (window.URL) ? window.URL.createObjectURL(object) : window.webkitURL.createObjectURL(object);
     }
 
-    $('.file').on('change', function (e) {
+    $('.file').on('change', function(e) {
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
         if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
@@ -59,7 +59,7 @@ $(async function () {
         submitObj[key] = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
         console.log(submitObj)
     });
-    $('input[id^="html5"]').on('change', function (e) {
+    $('input[id^="html5"]').on('change', function(e) {
         let key = $(this).parent().prevAll('.file').attr('uploadType');
         let file = uploaders[key].files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
@@ -72,12 +72,12 @@ $(async function () {
     })
 
 
-    $('.action-button').on('click', async function () {
+    $('#papers').on('click', async function() {
         if (until.isEmpty($('#carMileage').val().trim())) {
             alert('里程不能为空');
             return;
         }
-        $('.select-tab').find('input').each(function (index, item) {
+        $('.select-tab').find('input').each(function(index, item) {
             /**
              * false 正常  1
              * true  异常   2

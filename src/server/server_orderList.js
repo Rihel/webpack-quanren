@@ -24,32 +24,13 @@ import {
 } from '../modules/uploadOssAll';
 
 import until from '../modules/until';
+import page from '../modules/page';
+
+import {
+    serverApi
+} from '../api/apiUrls';
+
 let statu = Number(window.location.hash.substr(1)) || 1;
-
-// alert(1);
-// async function getData(queryType) {
-//     let data = await server_ypage({ queryType });
-//     console.log(data);
-//     return data.dataLst ? data.dataLst : [];
-// }
-$('#carBrandCode').attr('code', statu).html(until.getStatusCodeString(statu))
-renderOrder(statu);
-
-// setInterval(function() { renderOrder(statu) }, 5000);
-$('.searchBtn').on('click', function () {
-    let text = $('.search').val();
-    if (until.isEmpty(text)) {
-        alert('搜索内容不能为空');
-        return;
-    }
-    renderOrder(0, text);
-})
-
-$('.status-slider li').on('click', function () {
-    console.log(`查询的状态码为${Number($(this).attr('code'))}`)
-    statu = Number($(this).attr('code'))
-    renderOrder(statu)
-})
 tem.defaults.imports.washServiceLabel = OrderData => {
     return until.GetOrderServiceLabel(OrderData)
 }
@@ -73,6 +54,32 @@ tem.defaults.imports.keyName = key => {
     return keyNameObj[key];
 }
 
+// alert(1);
+// async function getData(queryType) {
+//     let data = await server_ypage({ queryType });
+//     console.log(data);
+//     return data.dataLst ? data.dataLst : [];
+// }
+$('#carBrandCode').attr('code', statu).html(until.getStatusCodeString(statu))
+renderOrder(statu);
+
+// setInterval(function() { renderOrder(statu) }, 5000);
+$('.searchBtn').on('click', function() {
+    let text = $('.search').val();
+    if (until.isEmpty(text)) {
+        alert('搜索内容不能为空');
+        return;
+    }
+    renderOrder(0, text);
+})
+
+$('.status-slider li').on('click', function() {
+    console.log(`查询的状态码为${Number($(this).attr('code'))}`)
+    statu = Number($(this).attr('code'))
+    renderOrder(statu)
+})
+
+
 
 $('#order').on('click', async e => {
     let target = e.target;
@@ -94,8 +101,8 @@ $('#order').on('click', async e => {
             btns.unshift('拒绝预约');
             btns.unshift('确认预约');
 
-            btnsCallback = function (btns) {
-                $(btns[0]).on('click', async function () {
+            btnsCallback = function(btns) {
+                $(btns[0]).on('click', async function() {
                     let data = await server_confirm({
                         orderId: orderId
                     });
@@ -103,31 +110,31 @@ $('#order').on('click', async e => {
                         reloadDialog('预约成功')
                     }
                 })
-                $(btns[1]).on('click', function () {
+                $(btns[1]).on('click', function() {
                     reject(orderId);
                 })
             }
         }
         if (statusCode === 4) {
             btns.unshift('输入服务码');
-            btnsCallback = function (btns) {
-                $(btns).on('click', function () {
+            btnsCallback = function(btns) {
+                $(btns).on('click', function() {
                     inputServiceNo(orderId);
                 })
             }
         }
         if (statusCode === 5) {
             btns.unshift('上传维修报价单');
-            btnsCallback = function (btns) {
-                $(btns).on('click', function () {
+            btnsCallback = function(btns) {
+                $(btns).on('click', function() {
                     pricesheet(orderId, detail);
                 })
             }
         }
         if (statusCode === 10) {
             btns.unshift('服务完成，上传结算单');
-            btnsCallback = function (btns) {
-                $(btns[0]).on('click', function () {
+            btnsCallback = function(btns) {
+                $(btns[0]).on('click', function() {
                     until.jumpPage('upload', {
                         orderId
                     });
@@ -166,8 +173,8 @@ function reject(orderId) {
                         title: '温馨提醒',
                         content: '拒绝成功',
                         btns: ['确定'],
-                        btnsCallback: function (btns) {
-                            $(btns).on('click', function () {
+                        btnsCallback: function(btns) {
+                            $(btns).on('click', function() {
                                 window.location.reload();
                             })
                         }
@@ -191,7 +198,7 @@ function inputServiceNo(orderId) {
         btnsCallback: btns => {
 
 
-            $(btns[0]).on('click', async function () {
+            $(btns[0]).on('click', async function() {
 
                 console.log($('#serviceNo'), '提交服务码按钮');
                 if (until.isEmpty($('#serviceNo').val())) {
@@ -250,14 +257,14 @@ function pricesheet(orderId, order) {
                             `,
         btns: ['提交报价单', '返回'],
 
-        init: function (btns) {
+        init: function(btns) {
             let submitJson = {};
             submitJson.orderId = orderId;
             let repair_price_sheet = uploadImages($('#repair_price_sheet')[0], null, 'repair_price_sheet');
-            repair_price_sheet.bind('PostInit', function () {
-               
+            repair_price_sheet.bind('PostInit', function() {
 
-                $('#repair_price_sheet').on('change', function (e) {
+
+                $('#repair_price_sheet').on('change', function(e) {
                     let file = e.target.files[0];
                     let postfix = /\.[^\.]+$/.exec(file.name);
                     if (!/\.(png|gif|jpg|svg)/i.test(postfix[0])) {
@@ -271,7 +278,7 @@ function pricesheet(orderId, order) {
                     submitJson.priceSheetUrl = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
                     console.log(submitJson, 'file');
                 });
-                $('input[id^="html5"]').on('change', function (e) {
+                $('input[id^="html5"]').on('change', function(e) {
                     let key = $(this).parent().prevAll('.file').attr('uploadType');
                     let file = repair_price_sheet.files[0];
                     let postfix = /\.[^\.]+$/.exec(file.name);
@@ -280,21 +287,21 @@ function pricesheet(orderId, order) {
                         return;
                     }
                     submitJson.priceSheetUrl = `dev/${until.getItem('providerId')}_${order.orderId}_${key}${postfix}`;
-                    console.log(submitJson, 'html5');
+
                 })
 
             })
 
-            $('#pricesheetremark').on('input', function () {
+            $('#pricesheetremark').on('input', function() {
                 submitJson.remark = $(this).val();
-                console.log(submitJson);
+
             })
 
 
 
-            $(btns[0]).on('click', async function () {
+            $(btns[0]).on('click', async function() {
                 uploadTypes['uploadrepair_price_sheet'](repair_price_sheet, `${until.getItem('providerId')}_${order.orderId}`)
-                console.log(submitJson)
+
                 let data = await server_pricesheet(submitJson);
                 if (data.success) {
                     jumpPage('提交成功！', 'index');
@@ -307,38 +314,41 @@ function pricesheet(orderId, order) {
 
 
 async function renderOrder(statusCode, text) {
-    let data;
+    let _url;
+    let params = $.extend({
+
+    }, { queryType: statusCode }, {
+        lpNumber: text
+    });
+
     if (Number(statusCode) === 10 || Number(statusCode) === 11 || Number(statusCode) === 6) {
-        // console.log(statusCode);
-        data = await server_opage({
-            queryType: statusCode
-        });
-    } else {
-        data = await server_ypage({
-            queryType: statusCode
-        });
-    }
-    let orders = data.dataLst ? data.dataLst : [];
 
-    if (text) {
-        let reg = new RegExp(text, 'g');
-        console.log(reg);
-        let finish = orders.filter(item => {
-            if (item.licensePlateNumber) {
-                console.log(item.licensePlateNumber, reg.test(tem.licensePlateNumber))
-                return reg.test(item.licensePlateNumber);
-            }
-
-        });
-        console.log(finish)
-        until.renderTem('order', 'order-tem', {
-            orders: finish
-        })
+        _url = serverApi.opage;
     } else {
-        until.renderTem('order', 'order-tem', {
-            orders
-        })
+
+        _url = serverApi.ypage;
     }
+    // console.log(_url, '请求的路径', statusCode)
+    $("#pager").zPager({
+        url: _url,
+
+        btnShow: true,
+        pageData: 30,
+        userData: params,
+        dataRender: function(data) {
+
+            until.renderTem('order', 'order-tem', {
+                orders: data
+            })
+        }
+
+
+    })
+
+
+    // let orders = data.dataLst ? data.dataLst : [];
+
+
 
 
 }

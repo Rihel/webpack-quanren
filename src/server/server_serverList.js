@@ -12,33 +12,12 @@ import {
     server_opage
 } from '../api/api';
 import until from '../modules/until';
-let statu = Number(window.location.hash.substr(1)) || 1;
 
-// alert(1);
-// async function getData(queryType) {
-//     let data = await server_ypage({ queryType });
-//     console.log(data);
-//     return data.dataLst ? data.dataLst : [];
-// }
-$('#carBrandCode').attr('code', statu).html(until.getStatusCodeString(statu))
-renderOrder();
+import page from '../modules/page';
 
-// setInterval(function() { renderOrder(statu) }, 5000);
-$('.searchBtn').on('click', function() {
-    let text = $('.search').val();
-    if (until.isEmpty(text)) {
-        alert('搜索内容不能为空');
-        return;
-    }
-    renderOrder(0, text);
-})
-
-
-$('.status-slider li').on('click', function() {
-    console.log(`查询的状态码为${Number($(this).attr('code'))}`)
-    statu = Number($(this).attr('code'))
-    renderOrder(statu)
-})
+import {
+    serverApi
+} from '../api/apiUrls';
 tem.defaults.imports.washServiceLabel = OrderData => {
     return until.GetOrderServiceLabel(OrderData)
 }
@@ -61,6 +40,34 @@ tem.defaults.imports.keyName = key => {
     }
     return keyNameObj[key];
 }
+let statu = Number(window.location.hash.substr(1)) || 1;
+
+// alert(1);
+// async function getData(queryType) {
+//     let data = await server_ypage({ queryType });
+//     console.log(data);
+//     return data.dataLst ? data.dataLst : [];
+// }
+$('#carBrandCode').attr('code', statu).html(until.getStatusCodeString(statu))
+renderOrder(10);
+
+
+$('.searchBtn').on('click', function() {
+    let text = $('.search').val();
+    if (until.isEmpty(text)) {
+        alert('搜索内容不能为空');
+        return;
+    }
+    renderOrder(0, text);
+})
+
+
+$('.status-slider li').on('click', function() {
+    console.log(`查询的状态码为${Number($(this).attr('code'))}`)
+    statu = Number($(this).attr('code'))
+    renderOrder(statu)
+})
+
 
 
 $('#order').on('click', async e => {
@@ -192,34 +199,34 @@ function inputServiceNo(orderId) {
 
 
 async function renderOrder(statusCode, text) {
-    let data;
+    let _url;
+    let params = $.extend({
+
+    }, { queryType: statusCode }, {
+        lpNumber: text
+    });
+
     if (Number(statusCode) === 10 || Number(statusCode) === 11 || Number(statusCode) === 6) {
-        // console.log(statusCode);
-        data = await server_opage({ queryType: statusCode });
+
+        _url = serverApi.opage;
     } else {
-        data = await server_ypage({ queryType: statusCode });
+
+        _url = serverApi.ypage;
     }
-    let orders = data.dataLst ? data.dataLst : [];
+    console.log(_url, '请求的路径', statusCode)
+    $("#pager").zPager({
+        url: _url,
 
-    if (text) {
-        let reg = new RegExp(text, 'g');
-        console.log(reg);
-        let finish = orders.filter(item => {
-            if (item.licensePlateNumber) {
-                console.log(item.licensePlateNumber, reg.test(tem.licensePlateNumber))
-                return reg.test(item.licensePlateNumber);
-            }
+        btnShow: true,
+        pageData: 30,
+        userData: params,
+        dataRender: function(data) {
 
-        });
-        console.log(finish)
-        until.renderTem('order', 'order-tem', {
-            orders: finish
-        })
-    } else {
-        until.renderTem('order', 'order-tem', {
-            orders
-        })
-    }
+            until.renderTem('order', 'order-tem', {
+                orders: data
+            })
+        }
 
 
+    })
 }

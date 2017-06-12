@@ -76,9 +76,10 @@ export const client_login = (mobile, passowrd) => {
                 pwd: passowrd,
             },
             beforeSend: function() {
-                until.loading('正在加载中...');
+                until.loading('正在登陆中...');
             },
             success: data => {
+                until.closeLoading();
                 resultHandled(resolve, data, data);
             }
         })
