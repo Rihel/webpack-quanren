@@ -9,13 +9,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: rem(30);
 }
 
 .wechat_pay {
     width: 80%;
-    padding-top: rem(150);
+    padding-top: rem(50);
     .smile {
         font-size: 15rem;
         color: $primary-color;

@@ -5,7 +5,7 @@ import {
 } from './apiUrls';
 import until from '../modules/until';
 import { alert, dialog } from '../modules/dialog';
-import '../modules/vconsole.min'
+// import '../modules/vconsole.min'
 
 $('head').append('<link src="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"/>')
     /**
@@ -486,7 +486,7 @@ export const server_osummary = () => {
         base({
             url: serverApi.osummary,
             success: data => {
-                resultHandled(resolve, data, data.data);
+                resultHandled(resolve, data, data);
             }
         })
     });
@@ -498,7 +498,7 @@ export const server_ysummary = () => {
         base({
             url: serverApi.ysummary,
             success: data => {
-                resultHandled(resolve, data, data.data);
+                resultHandled(resolve, data, data);
             }
         })
     });

@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const Browser = require('open-browser-webpack-plugin')
 
 const ROOT = path.resolve(__dirname)
 const map = require('./map');
@@ -14,6 +15,7 @@ let htmlPlugin = [];
 let serverentry = {
 
 };
+
 for (chunk in map.client) {
     cliententry[chunk] = map.client[chunk].src
     htmlPlugin.push(new htmlWebpackPlugin({
@@ -21,10 +23,7 @@ for (chunk in map.client) {
         filename: ROOT + '/dist/client/' + map.client[chunk].tpl,
         template: ROOT + '/views/client/' + map.client[chunk].tpl,
         chunks: ['common', chunk],
-        // minify: { //压缩HTML文件
-        //     removeComments: true, //移除HTML中的注释
-        //     collapseWhitespace: true //删除空白符与换行符
-        // }
+
     }))
 }
 for (chunk in map.server) {
@@ -34,27 +33,18 @@ for (chunk in map.server) {
         filename: ROOT + '/dist/server/' + map.server[chunk].tpl,
         template: ROOT + '/views/server/' + map.server[chunk].tpl,
         chunks: ['common', chunk],
-        // minify: { //压缩HTML文件
-        //     removeComments: true, //移除HTML中的注释
-        //     collapseWhitespace: true //删除空白符与换行符
-        // }
     }))
 }
-
-
-console.log(cliententry, serverentry);
-
-
-module.exports = {
+let baseConfig = {
     context: path.resolve(__dirname, './src'),
     entry: Object.assign(cliententry, serverentry),
     output: {
-        filename: 'js/[name].[hash:8].js',
+        filename: 'js/[name].js',
         path: path.resolve(__dirname, './dist/'),
 
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.js', '.scss'],
     },
     module: {
         rules: [{
@@ -85,7 +75,7 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: function() {
+                                plugins: function () {
                                     return [
                                         require('autoprefixer')
                                     ];
@@ -117,22 +107,11 @@ module.exports = {
 
         ],
     },
-    devServer: {
-        historyApiFallback: true,
-        hot: true,
-        inline: true,
-        // host: '192.168.1.2'
-    },
+
     externals: {
         'jquery': 'window.jQuery',
     },
     plugins: htmlPlugin.concat([
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            except: ['$super', '$', 'exports', 'require']
-        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -141,13 +120,49 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            filename: 'js/[name].[hash:8].js',
+            filename: 'js/[name].js',
             minchuck: 2
         }),
-        new ExtractTextPlugin({
-            filename: '[name].[hash:8].css',
-            allChunks: true
-        }),
 
+        new Browser()
     ])
 }
+
+
+let mode = process.env.NODE_ENV;
+
+if (mode === 'dev') {
+    baseConfig.devtool = 'source-map';
+    baseConfig.devServer = {
+        historyApiFallback: true,
+        hot: true,
+        inline: true,
+        index:'/client/index.html'
+    }
+     baseConfig.plugins.push(
+       new ExtractTextPlugin({
+            filename: '[name].css',
+            allChunks: true
+        })
+    )
+} else if (mode === 'pros') {
+    baseConfig.output = {
+        filename: 'js/[name].[hash:4].js',
+        path: path.resolve(__dirname, './dist/'),
+    }
+    baseConfig.plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            except: ['$super', '$', 'exports', 'require']
+        }), new ExtractTextPlugin({
+            filename: '[name].[hash:8].css',
+            allChunks: true
+        })
+    )
+}
+
+
+
+module.exports = baseConfig

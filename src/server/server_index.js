@@ -15,26 +15,18 @@ import until from '../modules/until';
     let { providerId ,providerInfo} = await server_myInfo();
     until.setItem('providerId', providerId);
 
-    let {
-        unconfirmNum,
-        confirmedNum,
-        forServiceNum,
-        forPriceSheepNum,
-        lockedNum,
-    } = await server_ysummary();
-    let {
-        servicingNum,
-        submittedNum
-    } = await server_osummary();
+    let ysummary = await server_ysummary();
+    console.log(ysummary);
+    let osummary= await server_osummary();
     until.renderTem('init', 'init-tem', {
-        unconfirmNum,
-        confirmedNum,
-        forServiceNum,
-        forPriceSheepNum,
-        lockedNum,
-        servicingNum,
-        submittedNum,
-        providerInfo
+        unconfirmNum:ysummary.unconfirmNum||0,
+        confirmedNum:ysummary.confirmedNum||0,
+        forServiceNum:ysummary.forServiceNum||0,
+        forPriceSheepNum:ysummary.forPriceSheepNum||0,
+        lockedNum:ysummary.lockedNum||0,
+        servicingNum:osummary.servicingNum||0,
+        submittedNum:osummary.submittedNum||0,
+        providerInfo:providerInfo||0
     })
 
 
