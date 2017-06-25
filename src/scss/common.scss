@@ -243,6 +243,7 @@ textarea {
             @include radius(rem(6));
             text-indent: rem(132);
             font-size: rem(30);
+            overflow: hidden;
         }
         .drop {
             position: absolute;
@@ -252,6 +253,19 @@ textarea {
             height: 100%;
             border: rem(2) solid #abaaaa;
             @include radius(rem(6));
+            .close{
+                display: none;
+                position: absolute;
+                top: 50%;
+                right:rem(25);
+                transform: translateY(-50%) ;
+                padding: 13px;
+                // background: red;
+                z-index: 99;
+                font-size: 1.5em;
+                background: #fff;
+                // opacity: 0.5;
+            }
             h3 {
                 position: absolute;
                 top: -1px;
@@ -265,18 +279,20 @@ textarea {
                 &:after {
                     content: '';
                     position: absolute;
+                    background: red;
                     top: 50%;
                     right: rem(40);
                     width: rem(34);
                     height: rem(20);
                     margin-top: rem(-20/2);
+                    
                     background: url('../img/arrow-down.png') no-repeat;
                     background-size: contain;
                     transition: all 0.5s;
                 }
                 &.active {
                     &:after {
-                        transform: rotate(180deg);
+                        // transform: rotate(180deg);
                     }
                 }
             }
@@ -294,8 +310,12 @@ textarea {
                 @include radius(0 0 rem(8) rem(8));
                 background: #fff;
                 @include boxSizing;
+                max-height: rem(300);
+                overflow: scroll;
                 li {
                     float: left;
+                    @include boxSizing;
+                  
                     margin: 0 rem(5) rem(10) 0;
                     padding: rem(10) rem(20);
                     background: #dcdddd;

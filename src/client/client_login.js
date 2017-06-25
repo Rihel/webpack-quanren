@@ -5,18 +5,22 @@ import '../scss/login.scss';
 
 import {
     client_user_Status,
-    client_login
+    client_login,
+    client_getVcode,
+    client_passwdForget
 } from '../api/api';
 import until from '../modules/until';
 import {
     alert,
-    dialog
+    dialog,
+    jumpPage
 } from '../modules/dialog';
 
 
 /**
  * 获得节点
  */
+let { log } = until;
 let loginBox = $('.login');
 let username = loginBox.find('#mobile');
 let password = loginBox.find('#pwd');
@@ -26,7 +30,7 @@ username.val(until.getItem('mobile') || '');
 /**
  * 手机号码校验
  */
-username.on('change', function() {
+username.on('change', function () {
     let name = username.val();
     if (!until.isPhone(name)) {
         $(this).addClass('active');
@@ -41,7 +45,7 @@ username.on('change', function() {
 /**
  * 登录操作
  */
-$('.login-btn').on('click', function() {
+$('.login-btn').on('click', function () {
     let name = username.val();
     let pwd = password.val();
     if (name === '' || pwd === '') {
@@ -49,7 +53,7 @@ $('.login-btn').on('click', function() {
         return;
     }
 
-    (async() => {
+    (async () => {
 
         let {
             status
@@ -84,7 +88,107 @@ $('.login-btn').on('click', function() {
 })
 
 
+/**
+ * 忘记密码操作
+ */
+$('.forget-pwd').on('click', function (e) {
+    e.preventDefault();
+    dialog({
+        title: '忘记密码',
+        content: `
+         <div class="form-box ">
+                <div class="form-item">
+                    <i>手机号码</i>
+                    <input class="mobile" id="forgetMobile" type="number" pattern="[0-9]*" placeholder="请输入手机号码">
+                </div>
+                <div class="form-item">
+                    <i>新密码</i>
+                    <input class="name" id="newPasswd" type="text" placeholder="请输入新密码">
+                </div>
+                 <div class="form-item vcode-wrapper">
+                    <i>验证码</i>
+                    <input class="pwd vcode" id="vcode" type="text" placeholder="请输入验证码">
+                    <input class="btn btn-primary vcode-btn" value="获取验证码" type="button" style="border:none;font-size:0.5rem;">
+                </div>
+            </div>
+        `,
+        close: false,
+        btns: ['确定', '取消'],
+        init: function (btns, self) {
+            $(btns[1]).on('click', function () {
+                self.close();
+            });
+            let forgetMobile = $('#forgetMobile'),
+                newPasswd = $('#newPasswd'),
+                vcode = $('#vcode'),
+                vcodeBtn = $('.vcode-btn');
 
+            const vis1 = () => {
+                if (until.isEmpty(forgetMobile.val())) {
+                    alert('手机号码不能为空');
+                    return;
+                }
+                if (!until.isPhone(forgetMobile.val())) {
+                    alert('请输入正确的手机号码');
+                    return;
+                }
+                if (until.isEmpty(newPasswd.val())) {
+                    alert('密码不能为空');
+                    return;
+                }
+                return true;
+            }
+            vcodeBtn.on('click', async function () {
+
+                /**
+             * 获取验证码
+             */
+                if (vis1()) {
+                    let verifyCode = await client_getVcode(forgetMobile.val());
+                    console.log(verifyCode, '验证码')
+                    if (verifyCode.success) {
+                        vcodeBtn.prop('disabled', 'disabled');
+                    } else {
+                        alert('获取验证码太频繁了，稍等下吧~~');
+                        return;
+                    }
+
+                    /**
+                     * 获取验证码倒计时
+                     */
+                    let min = 30;
+                    let timer = setInterval(function () {
+                        if (min > 0) {
+                            vcodeBtn.val(min + 's');
+                            min--;
+                        } else {
+                            clearInterval(timer);
+                            vcodeBtn.val('获取验证码');
+                            vcodeBtn.removeProp('disabled');
+                        }
+                    }, 1000);
+                }
+
+            })
+            $(btns[0]).on('click', async function () {
+                if (vis1()) {
+
+                    if (until.isEmpty(vcode.val())) {
+                        alert('验证码不能为空');
+                        return;
+                    }
+
+                    let result = await client_passwdForget(forgetMobile.val(), newPasswd.val(), vcode.val());
+                    if (result.success) {
+                        jumpPage('重置密码成功', 'login');
+                    }
+
+                }
+            })
+
+        }
+    })
+})
 
 /**
  * 

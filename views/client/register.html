@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="isreg">
+    <div class="isreg" >
         <div class="logo"><span class="icon-logo"></span></div>
         <div class="form-box">
             <h3 class="fs-title">请输入手机号码</h3>
@@ -25,6 +25,7 @@
 
         </div>
         <input type="button" class="btn btn-primary isreg-btn" value="下一步">
+    
     </div>
     <form id="msform" style="display:none;">
 
@@ -50,6 +51,7 @@
                 <div class="form-item">
                     <i>性别</i>
                     <div class="drop">
+                        <div class="icon-close close"></div>
                         <h3 code="1" id="genderCode">先生</h3>
                         <ul class="drop-menu">
                             <li code="1">先生</li>
@@ -69,12 +71,15 @@
                 <div class="form-item">
                     <i>品牌</i>
                     <div class="drop" id="CarBrandList">
+
                         <script type="text/html" id="CarBrandItem">
+                            <div class="icon-close close"></div>
                             <h3 class="sex" id="carBrandCode" code="{{carBrandCode||''}}">{{carBrandList[carBrandCode-1].title||''}}</h3>
                             <ul class="drop-menu">
                                 {{each carBrandList item index}}
-                                <li code="{{item.code}}">{{item.title}}</li>
+                                <li code="{{item.code}}" style="width:100%;">{{item.title}}</li>
                                 {{/each}}
+
                             </ul>
                         </script>
                     </div>
@@ -88,6 +93,7 @@
 
                     </div>
                     <script type="text/html" id="CarModelItem">
+                        <div class="icon-close close"></div>
                         <h3 id="carModelCode" code="{{carModelCode}}">{{carModelCode |getTitle}}</h3>
                         <ul class="drop-menu">
                             {{each carModelList item index}}
@@ -162,6 +168,7 @@
                 <h2 class="fs-title" style="margin-top:1.2rem;margin-bottom:1.3rem; color:#828282;">提交<span style="color:#f96a83">行驶证</span>件号和照片</h2>
                 <div class="form-item lpprefix-warpper">
                     <div class="drop lpprefix">
+                        <div class="icon-close close"></div>
                         <h3 code="粤" id="lpprefix">粤</h3>
                         <ul class="drop-menu" id="lpprefix-list" style="width:300%;">
 
@@ -281,7 +288,8 @@
                     <input class="btn btn-primary vcode-btn" value="获取验证码" type="button" style="border:none;">
                 </div>
             </div>
-            <input type="button" name="submit" class="register btn btn-primary" disabled="disabled" value="完成注册" style="margin-bottom:2rem;" />
+            <input type="button" name="submit" class="register btn btn-primary" disabled="disabled" value="完成注册" style="margin-bottom:2rem;"
+            />
             <input type="button" name="previous" class="previous  btn btn-default" value="返回上一步" />
 
         </fieldset>

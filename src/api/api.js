@@ -5,12 +5,12 @@ import {
 } from './apiUrls';
 import until from '../modules/until';
 import { alert, dialog } from '../modules/dialog';
-// import '../modules/vconsole.min'
+import '../modules/vconsole.min'
 
 $('head').append('<link src="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"/>')
-    /**
-     * 底层函数
-     */
+/**
+ * 底层函数
+ */
 const base = opt => {
     let option = $.extend({}, {
         xhrFields: {
@@ -25,8 +25,8 @@ const base = opt => {
                     title: '请求超时',
                     content: '网络情况不是很好哟，刷新一下吧~~',
                     btns: ['确定刷新', '取消'],
-                    btnsCallback: function(btns) {
-                        $(btns).get(0).on('click', function() {
+                    btnsCallback: function (btns) {
+                        $(btns).get(0).on('click', function () {
                             window.location.reload();
                         })
                     }
@@ -46,7 +46,7 @@ function resultHandled(resolve, data, returnData) {
                 title: '温馨提醒',
                 content: data.errorDetail.msg,
                 btns: ['确定'],
-                btnsCallback: function(btns) {
+                btnsCallback: function (btns) {
                     $(btns).on('click', e => {
                         until.jumpPage('login')
                     })
@@ -75,7 +75,7 @@ export const client_login = (mobile, passowrd) => {
                 name: mobile,
                 pwd: passowrd,
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 until.loading('正在登陆中...');
             },
             success: data => {
@@ -86,7 +86,48 @@ export const client_login = (mobile, passowrd) => {
     })
 }
 
+/**
+ * 忘记密码
+ * @param {Number} mobile 手机号码
+ * @param {String} passwd 新密码
+ * @param {String} verifyCode 验证码
+ */
+export const client_passwdForget = (mobile, passwd, verifyCode) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.passwdForget,
+            type: 'post',
+            data: {
+                mobile, passwd, verifyCode
+            },
+            success: function (data) {
+                resultHandled(resolve, data, data);
+            }
+        });
 
+    })
+}
+
+/**
+ * 重置密码
+ * @param {String} newPasswd 新密码
+ * @param {String} oldPasswd 旧密码
+ */
+export const client_passwdReset = (newPasswd, oldPasswd) => {
+    return new Promise((resolve, reject) => {
+        base({
+            url: clientApi.passwdReset,
+            type: 'post',
+            data: {
+                newPasswd, oldPasswd
+            },
+            success: function (data) {
+                resultHandled(resolve, data, data);
+            }
+        });
+
+    })
+}
 
 /**
  * 订单列表请求
@@ -99,7 +140,7 @@ export const client_orderPage = arg => {
             url: clientApi.orderPage,
             type: 'post',
             data: arg,
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data.data);
             }
         });
@@ -116,7 +157,7 @@ export const client_orderSubmit = arg => {
         base({
             url: clientApi.orderSubmit,
             data: arg,
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data);
             }
         });
@@ -137,7 +178,7 @@ export const client_orderCancel = (orderId, reason) => {
                 orderId,
                 reason
             },
-            success: function(data) {
+            success: function (data) {
 
                 resultHandled(resolve, data, data);
             }
@@ -157,7 +198,7 @@ export const client_orderGetServiceno = (orderId) => {
             data: {
                 orderId
             },
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data);
             }
         });
@@ -177,7 +218,7 @@ export const client_clitypes = statusCode => {
             data: {
                 statusCode: statusCode || 1
             },
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data.data);
             }
         })
@@ -196,10 +237,10 @@ export const client_userGet = () => {
             url: clientApi.userGet,
             type: 'get',
 
-            beforeSend: function() {
+            beforeSend: function () {
                 until.loading('正在加载数据...')
             },
-            success: function(data) {
+            success: function (data) {
                 until.closeLoading();
                 resultHandled(resolve, data, data);
             }
@@ -220,7 +261,7 @@ export const client_user_Status = mobile => {
             data: {
                 mobile: mobile
             },
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data.data);
             }
         })
@@ -240,7 +281,7 @@ export const client_isReg = mobile => {
             data: {
                 mobile: mobile
             },
-            success: function(data) {
+            success: function (data) {
                 resolve(data);
             }
         })
@@ -259,7 +300,7 @@ export const client_getDraftBox = mobile => {
             data: {
                 mobile,
             },
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data.data);
             }
         });
@@ -282,7 +323,7 @@ export const client_saveDraftBox = (mobile, arg) => {
         base({
             url: clientApi.saveDraftBox,
             data: opts,
-            success: function(data) {
+            success: function (data) {
                 resultHandled(resolve, data, data);
             }
         });
@@ -293,7 +334,7 @@ export const client_saveDraftBox = (mobile, arg) => {
 /**
  * 获取汽车品牌列表
  */
-export const client_getCarBrandList = function() {
+export const client_getCarBrandList = function () {
     return new Promise((resolve, reject) => {
         base({
             url: clientApi.carbrand,

@@ -13,7 +13,8 @@ import {
     client_userGet,
     client_orderPage,
     client_orderCancel,
-    client_orderGetServiceno
+    client_orderGetServiceno,
+    client_passwdReset,
 } from '../api/api.js'
 
 
@@ -51,10 +52,10 @@ async function initOrderList(type) {
     until.renderTem('my-order-warpper', 'order-tem', {
         orders: finishOrders
     });
-    $('.goUserCenter').on('click', function(params) {
+    $('.goUserCenter').on('click', function (params) {
         $('.my-order').fadeOut();
     })
-    $('.order-list-warpper li').on('click', function() {
+    $('.order-list-warpper li').on('click', function () {
         // console.log($(this).attr('orderId'))
         let order = orders.dataLst.filter(item => {
             return item.orderId == $(this).attr('orderId');
@@ -66,14 +67,14 @@ async function initOrderList(type) {
             order: order[0]
         });
         $('.trans').fadeIn();
-        $('.goBack').on('click', function() {
+        $('.goBack').on('click', function () {
             $('#trans').fadeOut();
         });
-        $('.daodian').on('click', function() {
+        $('.daodian').on('click', function () {
             $(this).hide();
             $('.serviceno').show();
         });
-        $('.cancel').on('click', function() {
+        $('.cancel').on('click', function () {
             dialog({
                 content: `
                     <p>确定取消预约吗？</p>
@@ -84,8 +85,8 @@ async function initOrderList(type) {
                     </select>
                 `,
                 btns: ['确定取消', '返回'],
-                btnsCallback: function(btns) {
-                    $(btns[0]).on('click', async function() {
+                btnsCallback: function (btns) {
+                    $(btns[0]).on('click', async function () {
                         console.log(order.orderId)
                         let result = await client_orderCancel(order[0].orderId, $('#reason').val());
                         if (result.success) {
@@ -97,7 +98,7 @@ async function initOrderList(type) {
         });
 
 
-        $('.serviceno').on('click', async function() {
+        $('.serviceno').on('click', async function () {
             let result = await client_orderGetServiceno(order[0].orderId)
             jumpPage(`服务码为${result.data.serviceNo}`, 'userCenter')
         })
@@ -113,18 +114,69 @@ async function initUserInfo() {
     });
 
     $('#carMileage').val(userData.data.carMileage);
-    $('#carMileage').on('change', function() {
+    $('#carMileage').on('change', function () {
 
         $('.updateCarMileage').removeAttr('disabled');
 
     })
-    $('.closeUserInfo').on('click', function() {
+    $('.closeUserInfo').on('click', function () {
         $('.user-info').fadeOut();
     })
 }
 
-$(function() {
-    $('.user-controls li').on('click', function(e) {
+async function initResetPwd() {
+    let resetPwd = $('.reset-pwd');
+    resetPwd.on('click', function () {
+        dialog({
+            title: '重置密码',
+            content: `
+            <div class="form-box ">
+                    <div class="form-item">
+                        <i>旧密码</i>
+                        <input class="mobile" id="oldPasswd" type="number" pattern="[0-9]*" placeholder="请输入旧密码">
+                    </div>
+                    <div class="form-item">
+                        <i>新密码</i>
+                        <input class="name" id="newPasswd" type="text" placeholder="请输入新密码">
+                    </div>
+                </div>
+            `,
+            close: false,
+            btns: ['确定', '取消'],
+            init: function (btns, self) {
+                $(btns[1]).on('click', function () {
+                    self.close();
+                });
+                let oldPasswd = $('#oldPasswd'),
+                    newPasswd = $('#newPasswd');
+                const vis1 = () => {
+                    if (until.isEmpty(oldPasswd.val())) {
+                        alert('旧密码不能为空');
+                        return;
+                    }
+                    if (until.isEmpty(newPasswd.val())) {
+                        alert('新密码不能为空');
+                        return;
+                    }
+                    return true;
+                }
+                $(btns[0]).on('click', async function () {
+                    if (vis1()) {
+                        let result = await client_passwdReset(oldPasswd.val(), newPasswd.val());
+                        if (result.success) {
+                            jumpPage('重置密码成功', 'userCenter')
+                        }
+                    }
+                })
+
+            }
+        })
+
+    })
+}
+
+$(function () {
+    $('.user-controls li').on('click', function (e) {
         $(`.${$(this).attr('show')}`).fadeIn();
         if ($(this).hasClass('layter')) {
             initOrderList('layter');
@@ -134,5 +186,6 @@ $(function() {
         }
     })
     initUserInfo();
+    initResetPwd()
     // initOrderList();
 })

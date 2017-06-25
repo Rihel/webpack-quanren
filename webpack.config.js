@@ -137,7 +137,7 @@ if (mode === 'dev') {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        index:'/client/index.html'
+        host:"192.168.0.101"
     }
      baseConfig.plugins.push(
        new ExtractTextPlugin({

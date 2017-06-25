@@ -270,6 +270,9 @@ class Until {
         console.log(`result`, result, result.title);
         return result[0].title;
     }
+    log(...args){
+        console.log(...args);
+    }
 }
 
 export default new Until();

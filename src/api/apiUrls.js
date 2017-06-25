@@ -33,6 +33,14 @@ export const clientApi = {
     providerList: clientHostName + 'provider/list', //服务商列表
     wxbingd: clientHostName + 'wxbingd', //微信绑定
     unifiedorder: clientHostName + 'wxpay/unifiedorder', //创建支付事务订单，由客户端在调用微信支付接口之前调用。
+
+
+
+    passwdForget:'http://m1.qren163.cn:8080/v1/api/auth/passwd/forget',//忘记密码
+    passwdReset:'http://m1.qren163.cn:8080/v1/api/auth/passwd/reset',//重置密码
+
+
+
 }
 export const serverApi = {
     login: `${serverHostName}auth/login`,

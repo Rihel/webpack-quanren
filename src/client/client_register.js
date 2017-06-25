@@ -24,22 +24,30 @@ import { uploadImages, uploadTypes, alias, previewImage } from '../modules/uploa
 /**
  * 整个流程的入口
  */
-$(function() {
+$(function () {
 
     /**
      * 下拉框的操作，利用事件委托达到不同效果
      */
-    $('.drop').click(e => {
+    $('.drop').click(function (e) {
+
         let target = e.target,
             tagname = target.nodeName.toLowerCase();
         if (tagname === 'h3') {
             // $('#msform').find('.drop-menu').not($(this).next()).slideUp();
-            $(e.target).toggleClass('active');
+            $(target).toggleClass('active');
             // $('.drop-menu').hide();
-
-            $(e.target).next().slideToggle();
+            $('.close').hide();
+            $(target).prev().show();
+            $('#msform').find('.drop-menu').not($(this)).slideUp();
+            $(e.target).next().slideDown();
 
         }
+        if ($(target).hasClass('close')) {
+            $(target).nextAll('ul.drop-menu').slideUp();
+            $(target).hide();
+        }
+
         if (tagname === 'li') {
             let code = $(target).attr('code'),
                 text = $(target).text(),
@@ -48,8 +56,10 @@ $(function() {
             dropMenu.slideUp();
             title.text(text).attr('code', code);
             title.toggleClass('active')
+             $('.close').hide();
 
         }
+
 
     });
 
@@ -74,7 +84,7 @@ $(function() {
     let isRegBtn = $('.isreg-btn'),
         urlMobile = until.urlParams().mobile,
         isRegText = $('.isreg-text');
-    isRegBtn.click(async function(e) {
+    isRegBtn.click(async function (e) {
         if (until.isEmpty(isRegText.val())) {
             alert('手机号码不能为空');
             return;
@@ -89,7 +99,7 @@ $(function() {
                 title: '温馨提醒',
                 content: '该手机号码已经注册,请换另外一个手机号码进行注册',
                 btns: ['去登录', '取消'],
-                btnsCallback: function(btns) {
+                btnsCallback: function (btns) {
                     until.setItem('mobile', isRegText.val());
                     console.log($(btns).get(0));
                     $(btns[0]).on('click', e => {
@@ -119,7 +129,7 @@ $(function() {
         $('#msform').show();
     }
 
-
+//   initDraftBox(13533797833)
 
 
 })
@@ -182,11 +192,11 @@ let uploaders = {
     baodanUrl3: uploadImages(bao_dan_page_03_input[0], progress, alias['baodanUrl3'].substr(1))
 };
 console.log(uploaders)
-    /**
-     * 上传进度制作
-     * @param {Element} fileInputDom 上传input节点
-     * @param {Number} percent  上传进度
-     */
+/**
+ * 上传进度制作
+ * @param {Element} fileInputDom 上传input节点
+ * @param {Number} percent  上传进度
+ */
 function progress(fileInputDom, percent) {
     let progressWarpper = $(fileInputDom).next(),
         progresser = progressWarpper.find('.progress'),
@@ -271,7 +281,7 @@ async function initOssAll(draftBoxData) {
      * 当文件input值改变的时候，types会对应的uploadType（ps：即是上传证件的类型，是身份证还是保单）
      * 会让对应的uploader添加文件
      */
-    $('.file').on('change', function(e) {
+    $('.file').on('change', function (e) {
         console.log($(this), '事件源')
         let file = e.target.files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
@@ -297,7 +307,7 @@ async function initOssAll(draftBoxData) {
         types.push(key);
 
     });
-    $('input[id^="html5"]').on('change', function(e) {
+    $('input[id^="html5"]').on('change', function (e) {
         let key = $(this).parent().prevAll('.file').attr('uploadType');
         let file = uploaders[key].files[0];
         let postfix = /\.[^\.]+$/.exec(file.name);
@@ -315,7 +325,7 @@ async function initOssAll(draftBoxData) {
     })
 
     console.log(uploaders, '上传类型')
-    $('#papers').on('click', async function(e) {
+    $('#papers').on('click', async function (e) {
         let vehicleNumber = lpprefix.attr('code') + licensePlateNumber.val();
 
         if (until.isEmpty(idCardNumber.val())) {
@@ -358,11 +368,11 @@ async function initOssAll(draftBoxData) {
             // let arg = arguments;
             if (query < types.length) {
                 uploadTypes['upload' + key](uploaders[key], until.getItem('mobile'));
-                uploaders[key].bind('BeforeUpload', function() {
+                uploaders[key].bind('BeforeUpload', function () {
                     until.loading('正在上传数据....')
                 })
 
-                uploaders[key].bind('UploadComplete', function() {
+                uploaders[key].bind('UploadComplete', function () {
 
                     query++;
                     UPLOAD()
@@ -430,7 +440,7 @@ async function initPersonInfo(draftBoxData) {
     carPrice.val(draftBoxData.carPrice);
     carMileage.val(draftBoxData.carMileage);
 
-    recommendClientMobile.on('input', async function(e) {
+    recommendClientMobile.on('input', async function (e) {
         let val = $(this).val();
         let mess;
         console.log(`推荐人手机号码为${val}`)
@@ -461,7 +471,7 @@ async function initPersonInfo(draftBoxData) {
     /**
      * 个人信息提交
      */
-    $('#personInfo').click(async function() {
+    $('#personInfo').click(async function () {
         if (until.isEmpty(mobile.val())) {
             alert('手机号码不能为空');
             return;
@@ -543,14 +553,14 @@ async function initClitypes({ vipLevelCode }) {
     until.renderTem('vipLevelCode', 'clitype-tem', { clitypes: await client_clitypes(), vipLevelCode: defaultData(vipLevelCode) })
 
     let cliters = $('#vipLevelCode').find('.cliter');
-    cliters.on('click', function() {
+    cliters.on('click', function () {
 
         cliters.removeClass('active');
         $(this).addClass('active');
         $(this).parent().attr('code', $(this).attr('code'));
     });
 
-    $('#vipLevel').click(async function() {
+    $('#vipLevel').click(async function () {
         let vipcode = $('#vipLevelCode').attr('code');
 
         let result = await client_saveDraftBox(until.getItem('mobile'), {
@@ -586,7 +596,7 @@ async function reg() {
     /**
      * 密码强度校验
      */
-    passwd.on('input', function() {
+    passwd.on('input', function () {
         passwordStrong.show();
         let len = $(this).val().length;
         if (len < 8) {
@@ -607,7 +617,7 @@ async function reg() {
 
 
 
-    vcodeBtn.click(async(e) => {
+    vcodeBtn.click(async (e) => {
         if (until.isEmpty(passwd.val())) {
             alert('密码不能为空');
             return;
@@ -624,7 +634,7 @@ async function reg() {
         }
 
         /**
-         * 后去验证码
+         * 获取验证码
          */
         let verifyCode = await client_getVcode(until.getItem('mobile'));
         console.log(verifyCode, '验证码')
@@ -639,7 +649,7 @@ async function reg() {
         /**
          * 获取验证码倒计时
          */
-        let timer = setInterval(function() {
+        let timer = setInterval(function () {
             if (min > 0) {
                 vcodeBtn.val(min + 's');
                 min--;
@@ -650,7 +660,7 @@ async function reg() {
             }
         }, 1000);
 
-        registerbtn.on('click', async function() {
+        registerbtn.on('click', async function () {
 
             if (vcode.val() != verifyCode.data.vCode) {
                 alert('验证码错误，请重新输入');
@@ -728,30 +738,30 @@ function pageNext() {
     current_fs.animate({
         opacity: 0
     }, {
-        step: function(now, mx) {
+            step: function (now, mx) {
 
 
-            scale = 1 - (1 - now) * 0.2;
+                scale = 1 - (1 - now) * 0.2;
 
-            left = (now * 50) + "%";
+                left = (now * 50) + "%";
 
-            opacity = 1 - now;
-            current_fs.css({
-                '-webkit-transform': 'scale(' + scale + ')',
-                'transform': 'scale(' + scale + ')'
-            });
-            next_fs.css({
-                'transform': 'translate3d(' + left + ',0,0)',
-                'opacity': opacity
-            });
-        },
-        duration: 800,
-        complete: function() {
-            current_fs.hide();
-            animating = false;
-        },
-        easing: 'easeInOutBack'
-    });
+                opacity = 1 - now;
+                current_fs.css({
+                    '-webkit-transform': 'scale(' + scale + ')',
+                    'transform': 'scale(' + scale + ')'
+                });
+                next_fs.css({
+                    'transform': 'translate3d(' + left + ',0,0)',
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
+            easing: 'easeInOutBack'
+        });
 }
 
 
@@ -774,35 +784,35 @@ function pagePrev() {
     current_fs.animate({
         opacity: 0
     }, {
-        step: function(now, mx) {
+            step: function (now, mx) {
 
 
-            scale = 0.8 + (1 - now) * 0.2;
+                scale = 0.8 + (1 - now) * 0.2;
 
-            left = ((1 - now) * 50) + "%";
+                left = ((1 - now) * 50) + "%";
 
-            opacity = 1 - now;
-            current_fs.css({
-                'transform': 'translate3d(' + left + ',0,0)'
-            });
-            previous_fs.css({
-                'transform': 'scale(' + scale + ')',
-                'opacity': opacity
-            });
-        },
-        duration: 800,
-        complete: function() {
-            current_fs.hide();
-            animating = false;
-        },
+                opacity = 1 - now;
+                current_fs.css({
+                    'transform': 'translate3d(' + left + ',0,0)'
+                });
+                previous_fs.css({
+                    'transform': 'scale(' + scale + ')',
+                    'opacity': opacity
+                });
+            },
+            duration: 800,
+            complete: function () {
+                current_fs.hide();
+                animating = false;
+            },
 
-        easing: 'easeInOutBack'
-    });
+            easing: 'easeInOutBack'
+        });
 }
 
 /**
  * 上一页是必须会有的
  */
-$('.previous').on('click', function() {
+$('.previous').on('click', function () {
     pagePrev.call(this);
 });

@@ -9,7 +9,8 @@ class Dialog {
         let defaults = {
             title: '错误',
             content: $('.dialog-template').html() || '',
-            btnVal: '确定'
+            btnVal: '确定',
+            close: true
         }
         this.setting = $.extend({}, defaults, opt);
         this.container = $('<div class=" dialog-container">');
@@ -32,10 +33,10 @@ class Dialog {
         let self = this;
         this.init();
         $('body').append(this.container);
-        this.mark.fadeIn(300, function() {
-            self.box.fadeIn(300, function() {
+        this.mark.fadeIn(300, function () {
+            self.box.fadeIn(300, function () {
                 console.log('初始化')
-                self.setting.init && self.setting.init(self.controls.find('input'));
+                self.setting.init && self.setting.init(self.controls.find('input'),self);
             });
 
         })
@@ -46,24 +47,26 @@ class Dialog {
         console.log(this.container);
         this.box.append(this.title).append(this.content).append(this.controls);
         if (this.setting.btns) {
-            $.each(this.setting.btns, function(index, item) {
+            $.each(this.setting.btns, function (index, item) {
                 self.controls.append($('<input type="button" class="btn btn-primary"/>').val(item));
             });
         }
         let btns = this.controls.find('input');
-        btns.on('click', function() {
-            self.close();
-        })
+        if (this.setting.close) {
+            btns.on('click', function () {
+                self.close();
+            })
+        }
         self.setting.btnsCallback && self.setting.btnsCallback(btns, self);
 
-        this.mark.click(function() {
+        this.mark.click(function () {
             self.close();
         })
     }
     close() {
         let self = this;
-        this.box.fadeOut(300, function() {
-            self.mark.fadeOut(300, function() {
+        this.box.fadeOut(300, function () {
+            self.mark.fadeOut(300, function () {
                 self.container.remove();
             });
         });
@@ -97,8 +100,8 @@ export const jumpPage = (content, page) => {
         title: '温馨提醒',
         content,
         btns: ['确定'],
-        btnsCallback: function(btns) {
-            $(btns).on('click', function() {
+        btnsCallback: function (btns) {
+            $(btns).on('click', function () {
                 until.jumpPage(page);
             })
         }
@@ -111,8 +114,8 @@ export const reloadDialog = content => {
         title: '温馨提醒',
         content: content,
         btns: ['确定'],
-        btnsCallback: function(btns) {
-            $(btns).on('click', function() {
+        btnsCallback: function (btns) {
+            $(btns).on('click', function () {
                 window.location.reload();
             })
         }
