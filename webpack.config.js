@@ -48,62 +48,62 @@ let baseConfig = {
     },
     module: {
         rules: [{
-                test: /\.js$/,
-                // 跳过 node_modules 目录
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: {
-                    // 缓存结果
-                    cacheDirectory: true
-                }
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader', 'css-loader', 'postcss-loader'
+            test: /\.js$/,
+            // 跳过 node_modules 目录
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+                // 缓存结果
+                cacheDirectory: true
+            }
+        },
+        {
+            test: /\.css$/,
+            use: [
+                'style-loader', 'css-loader', 'postcss-loader'
+            ]
+        }, {
+            test: /\.(sass|scss)$/,
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: [{
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1
+                    }
+                },
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: function () {
+                            return [
+                                require('autoprefixer')
+                            ];
+                        }
+                    }
+                },
+                {
+                    loader: 'sass-loader'
+                },
+
                 ]
-            }, {
-                test: /\.(sass|scss)$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [{
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: function () {
-                                    return [
-                                        require('autoprefixer')
-                                    ];
-                                }
-                            }
-                        },
-                        {
-                            loader: 'sass-loader'
-                        },
+            })
+        },
+        {
+            // 处理图片文件
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            loader: 'url-loader?name=img/[name].[ext]&limit=8192',
 
-                    ]
-                })
-            },
-            {
-                // 处理图片文件
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader?name=img/[name].[ext]&limit=8192',
-
-            },
-            {
-                // 处理字体文件
-                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 7186, // inline base64 if <= 7K
-                    name: 'css/fonts/[name].[ext]'
-                }
-            },
+        },
+        {
+            // 处理字体文件
+            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+            loader: 'url-loader',
+            options: {
+                limit: 7186, // inline base64 if <= 7K
+                name: 'css/fonts/[name].[ext]'
+            }
+        },
 
         ],
     },
@@ -137,10 +137,10 @@ if (mode === 'dev') {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        host:"192.168.0.101"
+        // host:"192.168.0.101"
     }
-     baseConfig.plugins.push(
-       new ExtractTextPlugin({
+    baseConfig.plugins.push(
+        new ExtractTextPlugin({
             filename: '[name].css',
             allChunks: true
         })
@@ -153,7 +153,9 @@ if (mode === 'dev') {
     baseConfig.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: false
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
             },
             except: ['$super', '$', 'exports', 'require']
         }), new ExtractTextPlugin({

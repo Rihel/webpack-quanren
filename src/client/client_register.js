@@ -56,7 +56,7 @@ $(function () {
             dropMenu.slideUp();
             title.text(text).attr('code', code);
             title.toggleClass('active')
-             $('.close').hide();
+            $('.close').hide();
 
         }
 
@@ -129,7 +129,7 @@ $(function () {
         $('#msform').show();
     }
 
-//   initDraftBox(13533797833)
+    //   initDraftBox(13533797833)
 
 
 })

@@ -22,7 +22,7 @@ import {
     client_orderPage,
     client_orderSubmit
 } from '../api/api';
-
+import moment from 'moment';
 
 let orderJson = {
     orderTypeCode: 1,
@@ -66,7 +66,7 @@ $('.drop').on('click', changesTime);
 
 async function renderCity() {
     let citys = await client_cityList();
-      let providers = await client_providerList();
+    let providers = await client_providerList();
     let finish = [];
 
     citys.forEach(item => {
@@ -79,7 +79,7 @@ async function renderCity() {
             }
         }
     });
-       console.log(finish, '最终完成');
+    console.log(finish, '最终完成');
     until.renderTem('citys-list-warpper', 'city-tem', {
         finish
     })
@@ -105,7 +105,7 @@ async function renderDistrict(code) {
             }
         }
     });
- 
+
 
     until.renderTem('district-warpper', 'district-tem', {
         districts: finish,
@@ -123,9 +123,9 @@ async function renderDistrict(code) {
 async function renderProviders(cityCode = 1, districtCode = 1) {
     let providers = await client_providerList();
     until.renderTem('shop-list-warpper', 'shop-list-tem', {
-        providers: providers.filter(item => {
+        providers: providers ? providers.filter(item => {
             return item.cityCode == cityCode && item.districtCode == districtCode;
-        }),
+        }) : [],
     });
     // var shopList = new IScroll('#shop-list');
     $('#shop-list-warpper .list-item').on('click', function () {
@@ -149,22 +149,23 @@ function chageOrderTime(date, time) {
         statusCode: 2
     });
     let date = until.format('yyyy-MM-dd', 1);
-    let time = `${new Date().getHours() > 19 ||new Date().getHours() < 19? 9 : new Date().getHours()}:00`;
+    let time = `${new Date().getHours() > 19 || new Date().getHours() < 19 ? 9 : new Date().getHours()}:00`;
     $('.orderDate').val(date)
+
     datePicker.init({
         trigger: '#orderDate',
         /*选择器，触发弹出插件*/
         'type': 'date',
         /*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
-        'minDate': until.format('yyyy-MM-dd', 1),
+        'minDate': moment().add(1, 'd').format('YYYY-MM-DD'),
         /*最小日期*/
-        'maxDate': until.format('yyyy-MM-dd', 15),
+        'maxDate': moment().add(15, 'd').format('YYYY-MM-DD'),
         /*最大日期*/
         'onSubmit': function () { /*确认时触发事件*/
             var theSelectData = datePicker.value;
             date = theSelectData;
             chageOrderTime(theSelectData, time);
-             orderJson['orderTypeCode'] = 1;
+            orderJson['orderTypeCode'] = 1;
         },
         'onClose': function () { /*取消时触发事件*/ }
     })
