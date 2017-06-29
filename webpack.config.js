@@ -121,7 +121,7 @@ let baseConfig = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
             filename: 'js/[name].js',
-            minchuck: 2
+            minChunks: 2
         }),
 
         new Browser()
